@@ -648,4 +648,4 @@ These gaps were found while extracting tokens. Resolving them will make the syst
 4. **Contrast failures:** `text-info` (#FE6D69) and `text-info-2` (#858585) fail AA as body text (§4.5). Darker variants are needed.
 5. **Duplicate tokens:** `text-White`, `text-inverse`, `ui-white`, `ui-modal`, and `background-white` all resolve to `#FFFFFF`. Keep them only if they're planned for dark mode or theming; otherwise consolidate them.
 6. **Variable collection name:** `Collection 1` should be renamed (for example `Tokens`), and variables could be split into `Primitives` and `Semantic` collections.
-7. **Purple hero exploration:** A purple, semi-realistic illustrated landing page sits inside the ❖ Components section. Confirm whether it's a reference or a future direction, because it doesn't match the current pink and blue token set.
+7. ~~**Purple hero exploration**~~: resolved. It is a screenshot of the external **E-Learning "The Inclusion Lab"** site, used as a promo image on the Result page. It is not a direction for this site's design.

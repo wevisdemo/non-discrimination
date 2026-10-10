@@ -13,6 +13,37 @@ The product is a single isometric illustration of a Thai city (`BG-Final`, 3241 
 
 The site is **fully static**, with no backend. Progress is stored in the browser, behind an interface so a backend can be added later without UI changes.
 
+### Story flow (from the Figma prototype)
+
+Source: the prototype's flows `DE-Intro`, `DE-KP1`, `DE-KP2`, `DE-KP3`, `DE-Result` and `Mobile-Intro` (start node `571:8266`). The product's working title in the prototype is **"Spot the Discrimination: ตระหนัก เข้าใจ ไม่เลือกปฏิบัติ"**. Every stage has a ☰ menu (top right, labelled with the current stage) and a floating **อ่านเนื้อหาเต็ม** button (bottom right).
+
+| Stage                           | Start node  | Menu label                          | What happens                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| ------------------------------- | ----------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Intro**                       | `571:8266`  | Intro                               | Scroll-driven story over the faded map. Opens with "คุณเห็นความผิดปกติในภาพนี้หรือไม่ ?", then the map comes into full colour. Thought bubbles point out cases (for example "มีคนไม่ได้ขึ้นเป็นหัวหน้างานเพราะเป็นผู้หญิง"). Then text cards say discrimination is an "abnormality" hidden in everyday life, caused by ignorance or prejudice (อคติ), and it's time to see and understand the right not to be discriminated against. Ends on the title lock-up and a **คลิกเพื่อดูต่อ** CTA. A **ข้ามส่วนเกริ่น ▶** button skips the whole Intro.                                                                                                                                                                                                                                                                                           |
+| **KP1: what discrimination is** | `571:10659` | Intro                               | Scroll-driven explainer on the map. First, "การมี**ภาพจำที่ลดคุณค่า**คนบางกลุ่ม" (holding stereotypes that devalue some groups), with bubbles such as "คนเพศนี้เป็นผู้นำไม่ได้". Second, these stereotypes "นำไปสู่การ**แบ่งแยก-กีดกัน-จำกัดสิทธิ**ต่อคนกลุ่มนั้น" (lead to separating, excluding and restricting the rights of that group). Ends with the game-start popup **"สืบหา 18 การเลือกปฏิบัติที่ซ่อนอยู่"**. It has instructions (pan and zoom the city to find 18 spots, then click one to read it), a **สำรวจเลย!** CTA, and an **แนะนำการสำรวจ** link.                                                                                                                                                                                                                                                                         |
+| **KP2: the game**               | `588:6601`  | สืบหา 18 การเลือกปฏิบัติที่ซ่อนอยู่ | The full-colour, pannable map. Controls on the right: **ออกจากการสำรวจ** (exit and continue the story), **เฉลยตำแหน่งภาพ** (reveal positions), **เจาะดูทีละภาพ** (step through cases one by one). Bottom left: **เปิดตัวช่วย** (hint drawer). Opening a case shows the case card (see below).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| **KP3: why it persists**        | `571:10724` | สาเหตุที่ยังพบเห็นการเลือกปฏิบัติ   | An article page on a white background. First, "เราทุกคนมีสิทธิที่จะไม่ถูกเลือกปฏิบัติ", backed by three sources: the UDHR, international human rights law, and the 2017 (B.E. 2560) Constitution sections 4 and 27. Then "แต่ทำไมการเลือกปฏิบัติจึงยังมีให้เห็นอยู่?", answered with two cards: ① stereotypes that go unchallenged, ② no **specific** anti-discrimination law (data as of Nov 2026 / B.E. 2569). Then a note that parliament is considering the **พ.ร.บ. ขจัดการเลือกปฏิบัติต่อบุคคล** (drafts from the public, political parties and the cabinet), and a **Parliament Watch** link ("คลิกที่นี่"). Ends with an **opinion poll** ("แล้วคุณคิดยังไง กับการมีกฎหมายขจัดการเลือกปฏิบัติต่อบุคคล 'เป็นการเฉพาะ'?", options ดีเลย / ไม่เห็นจำเป็น / ไม่เห็นด้วย, marked as collecting no personal data) and **คลิกเพื่อดูต่อ**. |
+| **Result: conclusion**          | `1069:5176` | บทสรุป                              | Closing cards over the map. Closing gaps in the law must go together with dismantling stereotypes, and everyone can start "วันนี้ ตอนนี้". Then **ขอบคุณที่อยู่ด้วยกันจนจบ!** and an **anonymous survey**: age, gender, occupation, province, and a 5-face satisfaction scale, with a **ส่งคำตอบ** button. The data is for กสม. only. Then share buttons (copy link, Facebook, X), a promo for **E-Learning "The Inclusion Lab"** (กสม. × MovED × มูลนิธิเพื่อสิทธิความหลากหลาย), and กสม. contact channels: Facebook, complaints.nhrc.or.th, hotline 1377, and nhrc.or.th.                                                                                                                                                                                                                                                                 |
+
+**Case card** (opened from the map or via เจาะดูทีละภาพ). Top to bottom:
+
+- Cut-out illustration and a counter (`13/18`) with ‹ › controls
+- Title, for example "ผู้ติดเชื้อ HIV เป็นตำรวจไม่ได้", and the story text
+- Three labelled facts:
+  - **สาเหตุแห่งการเลือกปฏิบัติ** (cause chip)
+  - **มิติแห่งการเลือกปฏิบัติ** (dimension, e.g. การจ้างงาน)
+  - **รูปแบบของการเลือกปฏิบัติ** (form, e.g. เชิงโครงสร้าง)
+- A **ชวนคุย** poll with 4 choices: เคยโดนกับตัว / เคยเห็นกับตา / เคยได้ยินมา / ไม่เคยโดนกับตัว. After voting it shows **the percentage of all voters** for each choice.
+- กสม. contact channels
+
+**Definition panel** (อ่านเนื้อหาเต็ม). One shared overlay, not a page per cause. It has three tabs: **คำนิยาม**, **ใครมักถูกเลือกปฏิบัติ** and **กรณีที่พบบ่อย**. The คำนิยาม tab defines discrimination as citing a "เหตุ", with three accordions:
+
+- **เหตุ**: the 13 grounds in Constitution section 27, plus "เหตุอื่นใดที่ไม่เป็นธรรม"
+- **มิติ**: employment, work, access to education, access to goods and services, and social participation (source: กสม. 2017 / B.E. 2560 research)
+- **รูปแบบ**: direct, indirect, harassment, by association, and structural
+
+It ends with the "สืบหา 18…" CTA.
+
 ## 2. Stack
 
 | Concern       | Choice                                                                                   |
@@ -146,6 +177,13 @@ Case {
 
 1. **Assets export** from Figma: `BG-Final`, 18 `case-*` cut-outs, icons, logo, OG image.
 2. **Kondolar Thai** `.woff2` files and web license. Drop them in `static/fonts/` and uncomment `@font-face` in `layout.css`.
-3. **KP1 / KP2 / KP3 / Result**: what each stage contains and which cases belong to it.
-4. **Cause mapping per case.** The current `causes` in `cases/*.json` are **guesses from layer names** and must be confirmed.
-5. **Copy** for all cases and definitions. Each currently says `รอเนื้อหาจากทีม content`.
+3. ~~**KP1 / KP2 / KP3 / Result**~~: resolved from the prototype (see §1 Story flow).
+   Cases are all part of KP2, so `kp` on `Case` is no longer needed.
+4. **Backend for polls and the survey.** The case poll and the KP3 poll show aggregated percentages, and the Result survey submits data for กสม. All three need shared storage, which conflicts with the "no backend" decision in M0.
+5. **Gaps between the M0 scaffold and the prototype:**
+   - `Case` needs `dimension` and `form` fields.
+   - Definitions should be one tabbed panel, not 8 per-cause pages.
+   - Intro, KP1, KP3 and Result need scroll-driven story pages.
+   - The game needs a เจาะดูทีละภาพ mode (step through cards with ‹ ›) and an exit to KP3.
+6. **Cause mapping per case.** The current `causes` in `cases/*.json` are **guesses from layer names** and must be confirmed.
+7. **Copy** for all cases and definitions. Each currently says `รอเนื้อหาจากทีม content`.
