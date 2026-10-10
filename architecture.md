@@ -163,27 +163,28 @@ Case {
 
 ## 8. Roadmap
 
-| #      | Scope                                                                                                   | Status        |
-| ------ | ------------------------------------------------------------------------------------------------------- | ------------- |
-| **M0** | Scaffold, tokens, content schema + placeholders, component skeletons, tests, CI/CD                      | ✅ Done       |
-| **M1** | Final UI components against Figma; Kondolar Thai; logo; `/styleguide` dev page                          | Next          |
-| **M2** | Real content for 18 cases and 8 definitions; confirm cause mapping and `kp`                             | Needs content |
-| **M3** | Master map art, responsive crops, panzoom polish (bounds, initial view, keyboard pan)                   | Needs assets  |
-| **M4** | Case card art, Definition panel layout, Intro storytelling, KP1–3/Result flow, KP2 animation            |               |
-| **M5** | Performance, OG images, SEO, analytics provider                                                         |               |
-| **M6** | Cross-device QA (Figma frames: desktop, iPad Pro 11, iPad Mini 8.3, iPhone 17 Pro Max, Android Compact) |               |
+| #      | Scope                                                                                                           | Status        |
+| ------ | --------------------------------------------------------------------------------------------------------------- | ------------- |
+| **M0** | Scaffold, tokens, content schema + placeholders, component skeletons, tests, CI/CD                              | ✅ Done       |
+| **M1** | Final UI components against Figma; Kondolar Thai; logo; `/styleguide` dev page                                  | Next          |
+| **M2** | Real content for 18 cases and 8 definitions; confirm cause mapping and `kp`                                     | Needs content |
+| **M3** | ~~Master map art~~ (done: `scripts/extract-map-assets.js`); panzoom polish (bounds, initial view, keyboard pan) | In progress   |
+| **M4** | ~~Intro storytelling~~ (done); KP1, KP3, Result pages; case card art; Definition panel; KP2 animation           | In progress   |
+| **M5** | Performance, OG images, SEO, analytics provider                                                                 |               |
+| **M6** | Cross-device QA (Figma frames: desktop, iPad Pro 11, iPad Mini 8.3, iPhone 17 Pro Max, Android Compact)         |               |
 
 ## 9. Blocked on design / content
 
-1. **Assets export** from Figma: `BG-Final`, 18 `case-*` cut-outs, icons, logo, OG image.
-2. **Kondolar Thai** `.woff2` files and web license. Drop them in `static/fonts/` and uncomment `@font-face` in `layout.css`.
-3. ~~**KP1 / KP2 / KP3 / Result**~~: resolved from the prototype (see §1 Story flow).
+1. **Assets export** from Figma: ~~`BG-Final`, 18 `case-*` cut-outs~~ (done: run `node scripts/extract-map-assets.js "<Group 63>.svg"` after any map change), icons, WeVis logo, "Spot the Discrimination" logo, OG image.
+2. **Intro bubbles.** Only one bubble text could be read from the prototype; add the rest to `introBubbles` in `src/lib/content/intro.ts`.
+3. **Kondolar Thai** `.woff2` files and web license. Drop them in `static/fonts/` and uncomment `@font-face` in `layout.css`.
+4. ~~**KP1 / KP2 / KP3 / Result**~~: resolved from the prototype (see §1 Story flow).
    Cases are all part of KP2, so `kp` on `Case` is no longer needed.
-4. **Backend for polls and the survey.** The case poll and the KP3 poll show aggregated percentages, and the Result survey submits data for กสม. All three need shared storage, which conflicts with the "no backend" decision in M0.
-5. **Gaps between the M0 scaffold and the prototype:**
+5. **Backend for polls and the survey.** The case poll and the KP3 poll show aggregated percentages, and the Result survey submits data for กสม. All three need shared storage, which conflicts with the "no backend" decision in M0.
+6. **Gaps between the M0 scaffold and the prototype:**
    - `Case` needs `dimension` and `form` fields.
    - Definitions should be one tabbed panel, not 8 per-cause pages.
-   - Intro, KP1, KP3 and Result need scroll-driven story pages.
+   - KP1, KP3 and Result need story pages (Intro is done; reuse `MapCamera` + `MapScene`).
    - The game needs a เจาะดูทีละภาพ mode (step through cards with ‹ ›) and an exit to KP3.
-6. **Cause mapping per case.** The current `causes` in `cases/*.json` are **guesses from layer names** and must be confirmed.
-7. **Copy** for all cases and definitions. Each currently says `รอเนื้อหาจากทีม content`.
+7. **Cause mapping per case.** The current `causes` in `cases/*.json` are **guesses from layer names** and must be confirmed.
+8. **Copy** for all cases and definitions. Each currently says `รอเนื้อหาจากทีม content`.

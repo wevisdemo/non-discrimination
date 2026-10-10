@@ -3,7 +3,6 @@
 	import '@fontsource/ibm-plex-sans-thai-looped/700.css';
 	import './layout.css';
 	import favicon from '#lib/assets/favicon.svg';
-	import Footer from '#lib/components/layout/Footer.svelte';
 	import Header from '#lib/components/layout/Header.svelte';
 	import type { LayoutProps } from './$types';
 
@@ -13,7 +12,10 @@
 <svelte:head>
 	<link rel="icon" href={favicon} />
 	<title>ไม่เลือกปฏิบัติ</title>
-	<meta name="description" content="สำรวจเมืองและค้นหาการเลือกปฏิบัติที่ซ่อนอยู่ในชีวิตประจำวัน" />
+	<meta
+		name="description"
+		content="Spot the Discrimination: ตระหนัก เข้าใจ ไม่เลือกปฏิบัติ สำรวจเมืองและค้นหาการเลือกปฏิบัติที่ซ่อนอยู่ในชีวิตประจำวัน"
+	/>
 </svelte:head>
 
 <a
@@ -26,5 +28,4 @@
 	<main id="main" class="flex flex-1 flex-col">
 		{@render children()}
 	</main>
-	<Footer />
 </div>

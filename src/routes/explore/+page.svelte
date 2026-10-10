@@ -30,10 +30,10 @@
 <svelte:head><title>สำรวจเมือง · ไม่เลือกปฏิบัติ</title></svelte:head>
 
 <h1 class="sr-only">สำรวจเมือง</h1>
-<div class="relative h-[calc(100dvh-5rem)]">
+<div class="relative h-dvh">
 	<MapCanvas {game} onselect={openCase} />
 	<div
-		class="pointer-events-none absolute inset-x-m top-m flex flex-col gap-s *:pointer-events-auto"
+		class="pointer-events-none absolute inset-x-m top-20 flex flex-col gap-s *:pointer-events-auto lg:inset-x-l"
 	>
 		<ModeControls {game} />
 		{#if game.mode === 'hint'}<CauseFilterBar {game} />{/if}

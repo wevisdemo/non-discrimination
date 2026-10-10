@@ -2,6 +2,7 @@
 	import type { PanzoomObject } from '@panzoom/panzoom';
 	import type { Game } from '#lib/state/game.svelte.ts';
 	import Hotspot from './Hotspot.svelte';
+	import MapScene from './MapScene.svelte';
 
 	let { game, onselect }: { game: Game; onselect: (slug: string) => void } = $props();
 
@@ -33,24 +34,19 @@
 	}
 </script>
 
-<div class="relative h-full w-full overflow-hidden bg-surface-tint">
-	<div {@attach panzoom} class="relative aspect-[3241/3242] w-[max(100%,1600px)]">
-		<!--
-			TODO(M3): replace with the exported master map, e.g.
-			<enhanced:img src="#lib/assets/map/bg-final.png" alt="" class="absolute inset-0 size-full" />
-		-->
-		<div
-			aria-hidden="true"
-			class="absolute inset-0 bg-[linear-gradient(var(--color-ui-secondary)_1px,transparent_1px),linear-gradient(90deg,var(--color-ui-secondary)_1px,transparent_1px)] bg-[size:4%_4%]"
-		></div>
-		{#each game.cases as item (item.slug)}
-			<Hotspot
-				{item}
-				found={game.found.has(item.slug)}
-				highlighted={game.highlighted.has(item.slug)}
-				{onselect}
-			/>
-		{/each}
+<div class="relative h-full w-full overflow-hidden bg-surface">
+	<div {@attach panzoom} class="w-[max(100%,1600px)]">
+		<!-- Reveal / hint: wash the city so highlighted cases pop (design.md §2.4) -->
+		<MapScene dim={game.highlighted.size ? 0.6 : 0} spotlight={game.highlighted}>
+			{#each game.cases as item (item.slug)}
+				<Hotspot
+					{item}
+					found={game.found.has(item.slug)}
+					highlighted={game.highlighted.has(item.slug)}
+					{onselect}
+				/>
+			{/each}
+		</MapScene>
 	</div>
 
 	<div class="absolute right-m bottom-m flex flex-col gap-xs">

@@ -12,7 +12,7 @@
 	<meta property="og:description" content={data.item.summaryTh} />
 </svelte:head>
 
-<div class="mx-auto flex w-full max-w-[640px] flex-col gap-xl px-m py-xl">
+<div class="mx-auto flex w-full max-w-[640px] flex-col gap-xl px-m pt-xxl pb-xl">
 	<CaseCard item={data.item} headingLevel={1} />
 	<SearchCTA />
 </div>

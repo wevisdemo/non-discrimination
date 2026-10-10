@@ -8,6 +8,6 @@
 
 <svelte:head><title>{getCause(data.cause).labelTh} · ไม่เลือกปฏิบัติ</title></svelte:head>
 
-<div class="px-m py-xl">
+<div class="px-m pt-xxl pb-xl">
 	<DefinitionPanel cause={data.cause} />
 </div>

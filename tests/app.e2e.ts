@@ -1,10 +1,24 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
-test('intro links to the map', async ({ page }) => {
+test('intro scrolls through its steps and can be skipped', async ({ page }) => {
 	await page.goto('/');
-	await expect(page.getByRole('heading', { level: 1 })).toHaveText('ไม่เลือกปฏิบัติ');
-	await page.getByRole('link', { name: 'เริ่มสำรวจเมือง' }).click();
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+		/คุณเห็น.*ความผิดปกติ.*ในภาพนี้หรือไม่/
+	);
+	await expect(page.getByRole('button', { name: /^Intro/ })).toBeVisible();
+
+	await page.getByRole('heading', { name: /Discrimination/ }).scrollIntoViewIfNeeded();
+	await expect(page.getByRole('link', { name: 'คลิกเพื่อดูต่อ' })).toBeVisible();
+
+	await page.getByRole('link', { name: 'ข้ามส่วนเกริ่น' }).click();
+	await expect(page).toHaveURL(/\/explore\/$/);
+});
+
+test('stage menu lists the built stages', async ({ page }) => {
+	await page.goto('/');
+	await page.getByRole('button', { name: /^Intro/ }).click();
+	await page.getByRole('link', { name: 'สืบหา 18 การเลือกปฏิบัติที่ซ่อนอยู่' }).click();
 	await expect(page).toHaveURL(/\/explore\/$/);
 });
 
