@@ -1,0 +1,14 @@
+{
+	"slug": "hiv-test-job",
+	"titleTh": "ตรวจเอชไอวีก่อนรับเข้าทำงาน",
+	"summaryTh": "รอเนื้อหาจากทีม content",
+	"causes": ["health"],
+	"hotspot": {
+		"x": 297,
+		"y": 853,
+		"w": 315,
+		"h": 390
+	},
+	"law": [],
+	"sources": []
+}

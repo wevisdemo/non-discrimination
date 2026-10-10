@@ -1,0 +1,14 @@
+{
+	"slug": "housework-gender",
+	"titleTh": "งานบ้านกับเพศ",
+	"summaryTh": "รอเนื้อหาจากทีม content",
+	"causes": ["gender"],
+	"hotspot": {
+		"x": 1031,
+		"y": 504,
+		"w": 312,
+		"h": 303
+	},
+	"law": [],
+	"sources": []
+}

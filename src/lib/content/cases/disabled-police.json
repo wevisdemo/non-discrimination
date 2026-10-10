@@ -1,0 +1,14 @@
+{
+	"slug": "disabled-police",
+	"titleTh": "ผู้พิการแจ้งความ",
+	"summaryTh": "รอเนื้อหาจากทีม content",
+	"causes": ["health"],
+	"hotspot": {
+		"x": 2193,
+		"y": 1485,
+		"w": 183,
+		"h": 270
+	},
+	"law": [],
+	"sources": []
+}

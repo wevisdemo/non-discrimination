@@ -1,0 +1,14 @@
+{
+	"slug": "prison-corruption",
+	"titleTh": "ผู้ต้องขังกับการทุจริต",
+	"summaryTh": "รอเนื้อหาจากทีม content",
+	"causes": ["social-status"],
+	"hotspot": {
+		"x": 2796,
+		"y": 1280,
+		"w": 418,
+		"h": 328
+	},
+	"law": [],
+	"sources": []
+}

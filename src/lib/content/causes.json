@@ -1,0 +1,14 @@
+[
+	{ "id": "race", "labelTh": "เชื้อชาติ", "labelEn": "Race" },
+	{ "id": "gender", "labelTh": "เพศ", "labelEn": "Sex / Gender" },
+	{ "id": "age", "labelTh": "อายุ", "labelEn": "Age" },
+	{ "id": "religion", "labelTh": "ความเชื่อทางศาสนา", "labelEn": "Religious belief" },
+	{ "id": "health", "labelTh": "สภาพทางกายหรือสุขภาพ", "labelEn": "Physical condition / Health" },
+	{ "id": "personal-status", "labelTh": "สถานะของบุคคล", "labelEn": "Personal status" },
+	{ "id": "social-status", "labelTh": "สถานะทางสังคม", "labelEn": "Social status" },
+	{
+		"id": "origin",
+		"labelTh": "เผ่าพันธุ์แห่งชาติหรือสังคม",
+		"labelEn": "National or social origin"
+	}
+]

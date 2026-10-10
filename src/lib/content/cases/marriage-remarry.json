@@ -1,0 +1,14 @@
+{
+	"slug": "marriage-remarry",
+	"titleTh": "การสมรสใหม่",
+	"summaryTh": "รอเนื้อหาจากทีม content",
+	"causes": ["personal-status"],
+	"hotspot": {
+		"x": 2818,
+		"y": 532,
+		"w": 347,
+		"h": 456
+	},
+	"law": [],
+	"sources": []
+}

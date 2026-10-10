@@ -1,0 +1,14 @@
+{
+	"slug": "age-limit-job",
+	"titleTh": "จำกัดอายุผู้สมัครงาน",
+	"summaryTh": "รอเนื้อหาจากทีม content",
+	"causes": ["age"],
+	"hotspot": {
+		"x": 2287,
+		"y": 2175,
+		"w": 212,
+		"h": 306
+	},
+	"law": [],
+	"sources": []
+}

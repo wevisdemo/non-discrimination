@@ -1,0 +1,14 @@
+{
+	"slug": "hate-speech",
+	"titleTh": "ถ้อยคำแห่งความเกลียดชัง",
+	"summaryTh": "รอเนื้อหาจากทีม content",
+	"causes": ["race"],
+	"hotspot": {
+		"x": 1673,
+		"y": 384,
+		"w": 356,
+		"h": 273
+	},
+	"law": [],
+	"sources": []
+}

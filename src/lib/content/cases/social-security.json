@@ -1,0 +1,14 @@
+{
+	"slug": "social-security",
+	"titleTh": "สิทธิประกันสังคม",
+	"summaryTh": "รอเนื้อหาจากทีม content",
+	"causes": ["social-status"],
+	"hotspot": {
+		"x": 1156,
+		"y": 2619,
+		"w": 302,
+		"h": 456
+	},
+	"law": [],
+	"sources": []
+}

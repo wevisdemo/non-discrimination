@@ -1,0 +1,14 @@
+{
+	"slug": "disability-judge",
+	"titleTh": "ผู้พิการสอบผู้พิพากษา",
+	"summaryTh": "รอเนื้อหาจากทีม content",
+	"causes": ["health"],
+	"hotspot": {
+		"x": 1221,
+		"y": 1589,
+		"w": 165,
+		"h": 302
+	},
+	"law": [],
+	"sources": []
+}

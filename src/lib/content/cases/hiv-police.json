@@ -1,0 +1,14 @@
+{
+	"slug": "hiv-police",
+	"titleTh": "ผู้มีเชื้อเอชไอวีสมัครตำรวจ",
+	"summaryTh": "รอเนื้อหาจากทีม content",
+	"causes": ["health"],
+	"hotspot": {
+		"x": 1632,
+		"y": 1378,
+		"w": 354,
+		"h": 405
+	},
+	"law": [],
+	"sources": []
+}

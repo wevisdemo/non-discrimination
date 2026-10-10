@@ -1,0 +1,14 @@
+{
+	"slug": "gender-promotion",
+	"titleTh": "เลื่อนตำแหน่งตามเพศ",
+	"summaryTh": "รอเนื้อหาจากทีม content",
+	"causes": ["gender"],
+	"hotspot": {
+		"x": 298,
+		"y": 401,
+		"w": 522,
+		"h": 458
+	},
+	"law": [],
+	"sources": []
+}

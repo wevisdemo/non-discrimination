@@ -1,0 +1,142 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+/*
+ * Design tokens: source of truth is Figma "Collection 1" (see design.md §4).
+ * Utility names are flattened so they read naturally (`text-primary`, `bg-ui-primary`).
+ * The comment on each token gives the original Figma variable name.
+ */
+@theme {
+	/* Only project colours: no default Tailwind palette */
+	--color-*: initial;
+	--color-white: #ffffff;
+	--color-black: #000000;
+
+	/* Brand */
+	--color-primary: #2755cd; /* text-Primary, border-primary, active-primary, link-Hover */
+	--color-accent: #ff76d4; /* border-secondary, active-secondary */
+
+	/* Text */
+	--color-ink: #000000; /* text-Black, link-primary */
+	--color-body: #4c4c4c; /* text-Secondary (default body) */
+	--color-muted: #858585; /* text-info-2: large/bold text only (fails AA at body size) */
+	--color-info: #fe6d69; /* text-info: badge backgrounds only (fails AA as text) */
+
+	/* Surfaces */
+	--color-surface: #ffffff; /* background-white, ui-white, ui-modal */
+	--color-surface-tint: #fff1fb; /* background-primary */
+	--color-ui-primary: #f6c9e8; /* ui-primary */
+	--color-ui-primary-hover: #ffb1ed; /* hover-primary */
+	--color-ui-secondary: #dde6ff; /* ui-secondary */
+	--color-ui-secondary-hover: #7fa0f4; /* hover-secondary */
+	--color-ui-disable: #d9d9d9; /* ui-disable */
+
+	/* Discrimination causes (Causes/*): always pair with black text + a text label */
+	--color-cause-race: #ff8080; /* เชื้อชาติ */
+	--color-cause-gender: #f6c9e8; /* เพศ */
+	--color-cause-age: #93ffdd; /* อายุ */
+	--color-cause-religion: #fafd56; /* ความเชื่อทางศาสนา */
+	--color-cause-health: #edd165; /* สภาพทางกายหรือสุขภาพ */
+	--color-cause-personal-status: #cbe79a; /* สถานะของบุคคล */
+	--color-cause-social-status: #bbcefe; /* สถานะทางสังคม */
+	--color-cause-origin: #ffb703; /* เผ่าพันธุ์แห่งชาติหรือสังคม */
+
+	/* Spacing/* (×2 scale): use as p-m, gap-l, mt-xl … */
+	--spacing-xxs: 2px;
+	--spacing-xs: 4px;
+	--spacing-s: 8px;
+	--spacing-m: 16px;
+	--spacing-l: 32px;
+	--spacing-xl: 64px;
+	--spacing-xxl: 128px;
+	--spacing-xxxl: 256px;
+
+	/* Breakpoints: Figma device frames; Screen = 1280 */
+	--breakpoint-*: initial;
+	--breakpoint-sm: 412px;
+	--breakpoint-md: 744px;
+	--breakpoint-lg: 1024px;
+	--breakpoint-xl: 1280px;
+
+	/* Text Style/Header, Text Style/Body */
+	--font-header: 'Kondolar Thai', 'Noto Sans Thai', sans-serif;
+	--font-body: 'IBM Plex Sans Thai Looped', 'Noto Sans Thai Looped', 'Noto Sans Thai', sans-serif;
+
+	/* Text Size/*: line height 140% everywhere (Thai diacritics), 120% for H3 display.
+	   `-m` = mobile size; use e.g. `text-h6-m lg:text-h6`. */
+	--text-h3: 3.75rem; /* 60 */
+	--text-h3--line-height: 1.2;
+	--text-h3-m: 2.5rem; /* 40, proposed */
+	--text-h3-m--line-height: 1.2;
+	--text-h6: 2rem; /* 32 */
+	--text-h6--line-height: 1.4;
+	--text-h6-m: 1.5rem; /* 24 */
+	--text-h6-m--line-height: 1.4;
+	--text-h7: 1.75rem; /* 28 */
+	--text-h7--line-height: 1.4;
+	--text-h7-m: 1.375rem; /* 22, proposed */
+	--text-h7-m--line-height: 1.4;
+	--text-b4: 1.125rem; /* 18 */
+	--text-b4--line-height: 1.4;
+	--text-b5: 1rem; /* 16 */
+	--text-b5--line-height: 1.4;
+	--text-b6: 0.875rem; /* 14 */
+	--text-b6--line-height: 1.4;
+	--text-b7: 0.75rem; /* 12 */
+	--text-b7--line-height: 1.4;
+
+	/* Proposed: not yet in Figma (design.md §5) */
+	--radius-card: 16px;
+}
+
+/*
+ * Kondolar Thai is a licensed font. Once the .woff2 files are in static/fonts/,
+ * uncomment these. Until then headings fall back to Noto Sans Thai.
+ *
+ * @font-face {
+ * 	font-family: 'Kondolar Thai';
+ * 	src: url('/fonts/KondolarThai-Regular.woff2') format('woff2');
+ * 	font-weight: 400;
+ * 	font-display: swap;
+ * }
+ * @font-face {
+ * 	font-family: 'Kondolar Thai';
+ * 	src: url('/fonts/KondolarThai-Bold.woff2') format('woff2');
+ * 	font-weight: 700;
+ * 	font-display: swap;
+ * }
+ */
+
+@layer base {
+	html {
+		font-family: var(--font-body);
+		font-size: 100%;
+		color: var(--color-body);
+		background-color: var(--color-surface);
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-family: var(--font-header);
+		color: var(--color-primary);
+	}
+
+	:focus-visible {
+		outline: 2px solid var(--color-primary);
+		outline-offset: 2px;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		*,
+		*::before,
+		*::after {
+			animation-duration: 0.01ms !important;
+			transition-duration: 0.01ms !important;
+			scroll-behavior: auto !important;
+		}
+	}
+}

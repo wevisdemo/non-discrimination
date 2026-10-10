@@ -1,0 +1,14 @@
+{
+	"slug": "ex-con-job",
+	"titleTh": "อดีตผู้ต้องขังหางาน",
+	"summaryTh": "รอเนื้อหาจากทีม content",
+	"causes": ["personal-status"],
+	"hotspot": {
+		"x": 87,
+		"y": 861,
+		"w": 201,
+		"h": 368
+	},
+	"law": [],
+	"sources": []
+}

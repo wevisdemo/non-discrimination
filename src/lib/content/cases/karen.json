@@ -1,0 +1,14 @@
+{
+	"slug": "karen",
+	"titleTh": "ชาวกะเหรี่ยง",
+	"summaryTh": "รอเนื้อหาจากทีม content",
+	"causes": ["race"],
+	"hotspot": {
+		"x": 2371,
+		"y": 969,
+		"w": 198,
+		"h": 310
+	},
+	"law": [],
+	"sources": []
+}
