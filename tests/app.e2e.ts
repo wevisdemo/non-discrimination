@@ -8,10 +8,20 @@ test('intro scrolls through its steps and can be skipped', async ({ page }) => {
 	);
 	await expect(page.getByRole('button', { name: /^Intro/ })).toBeVisible();
 
-	await page.getByRole('heading', { name: /Discrimination/ }).scrollIntoViewIfNeeded();
-	await expect(page.getByRole('link', { name: 'คลิกเพื่อดูต่อ' })).toBeVisible();
-
 	await page.getByRole('link', { name: 'ข้ามส่วนเกริ่น' }).click();
+	await expect(page).toHaveURL(/\/explore\/$/);
+});
+
+test('intro continues to KP1, which ends by starting the game', async ({ page }) => {
+	await page.goto('/');
+	await page.getByRole('link', { name: 'คลิกเพื่อดูต่อ' }).click();
+	await expect(page).toHaveURL(/\/what-is-discrimination\/$/);
+	await expect(page.getByText('ภาพจำที่ลดคุณค่า')).toBeVisible();
+
+	const mission = page.getByRole('heading', { name: /สืบหา 18 การเลือกปฏิบัติ/ });
+	await mission.scrollIntoViewIfNeeded();
+	await expect(mission).toBeVisible();
+	await page.getByRole('link', { name: 'สำรวจเลย !' }).click();
 	await expect(page).toHaveURL(/\/explore\/$/);
 });
 
@@ -52,7 +62,14 @@ test('case and definition pages are prerendered', async ({ page }) => {
 	await expect(page).toHaveURL(/\/definition\/religion\/$/);
 });
 
-for (const path of ['/', '/explore/', '/cases/', '/cases/karen/', '/definition/age/']) {
+for (const path of [
+	'/',
+	'/what-is-discrimination/',
+	'/explore/',
+	'/cases/',
+	'/cases/karen/',
+	'/definition/age/'
+]) {
 	test(`no axe violations on ${path}`, async ({ page }) => {
 		await page.goto(path);
 		const { violations } = await new AxeBuilder({ page }).analyze();

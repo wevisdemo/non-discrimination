@@ -86,6 +86,7 @@ src/
 │  ├─ +layout.ts                prerender = true, trailingSlash = 'always'
 │  ├─ +layout.svelte            Fonts, skip link, Header/Footer
 │  ├─ +page.svelte              Intro
+│  ├─ what-is-discrimination/   KP1
 │  ├─ explore/                  The map game
 │  ├─ cases/                    List of all cases (accessible alternative to the map)
 │  ├─ cases/[slug]/             Single case page (share links, OG tags)
@@ -103,7 +104,8 @@ src/
    ├─ components/
    │  ├─ ui/                    Button, CauseChip, Modal
    │  ├─ layout/                Header, Footer
-   │  ├─ map/                   MapCanvas, Hotspot, ModeControls, CauseFilterBar
+   │  ├─ map/                   MapScene, MapCamera, MapCanvas, Hotspot, ModeControls, CauseFilterBar
+   │  ├─ story/                 ScrollStory (sticky map + scroll steps), StoryCard, ThoughtBubble, ContinueLink
    │  ├─ case/                  CaseCard, CaseList
    │  └─ definition/            DefinitionPanel, SearchCTA
    └─ analytics.ts              trackEvent(): no-op until a provider is chosen
@@ -169,7 +171,7 @@ Case {
 | **M1** | Final UI components against Figma; Kondolar Thai; logo; `/styleguide` dev page                                  | Next          |
 | **M2** | Real content for 18 cases and 8 definitions; confirm cause mapping and `kp`                                     | Needs content |
 | **M3** | ~~Master map art~~ (done: `scripts/extract-map-assets.js`); panzoom polish (bounds, initial view, keyboard pan) | In progress   |
-| **M4** | ~~Intro storytelling~~ (done); KP1, KP3, Result pages; case card art; Definition panel; KP2 animation           | In progress   |
+| **M4** | ~~Intro, KP1~~ (done); KP3, Result pages; case card art; Definition panel; KP2 animation                        | In progress   |
 | **M5** | Performance, OG images, SEO, analytics provider                                                                 |               |
 | **M6** | Cross-device QA (Figma frames: desktop, iPad Pro 11, iPad Mini 8.3, iPhone 17 Pro Max, Android Compact)         |               |
 
@@ -184,7 +186,7 @@ Case {
 6. **Gaps between the M0 scaffold and the prototype:**
    - `Case` needs `dimension` and `form` fields.
    - Definitions should be one tabbed panel, not 8 per-cause pages.
-   - KP1, KP3 and Result need story pages (Intro is done; reuse `MapCamera` + `MapScene`).
+   - KP3 and Result need their pages (Intro and KP1 are done with `ScrollStory`; KP3 is a plain article page).
    - The game needs a เจาะดูทีละภาพ mode (step through cards with ‹ ›) and an exit to KP3.
 7. **Cause mapping per case.** The current `causes` in `cases/*.json` are **guesses from layer names** and must be confirmed.
 8. **Copy** for all cases and definitions. Each currently says `รอเนื้อหาจากทีม content`.

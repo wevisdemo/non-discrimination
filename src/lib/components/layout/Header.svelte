@@ -65,7 +65,7 @@
 								: 'text-ink'}"
 							href={resolve(stage.path)}
 							aria-current={stage.id === current.id ? 'page' : undefined}
-							onclick={() => (open = false)}>{stage.label}</a
+							onclick={() => (open = false)}>{stage.title}</a
 						>
 					</li>
 				{/each}
