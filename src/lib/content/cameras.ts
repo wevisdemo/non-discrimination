@@ -9,6 +9,12 @@ export const cityOverview: Camera = { x: 0.42, y: 0.26, zoom: ZOOM };
 /** Prototype "KP1" frame: the junction with the red car, temple gate and police station. */
 export const cityCentre: Camera = { x: 0.53, y: 0.53, zoom: ZOOM };
 
+/**
+ * Intro "bubbles" frame: the gender, HIV-test and ex-convict cases and their bubbles. Matches the
+ * prototype's scale (map ≈ 1651px wide on a 1280px frame) with the map's left edge on screen.
+ */
+export const introCases: Camera = { x: 0.15, y: 0.265, zoom: 1.29 };
+
 /** Centre the camera on a case so anything pinned to it is on screen, even on a narrow phone. */
 export function focusOn(slug: string): Camera {
 	const { hotspot: h } = getCase(slug)!;

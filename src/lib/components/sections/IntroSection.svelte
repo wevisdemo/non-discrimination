@@ -1,15 +1,19 @@
 <script lang="ts">
+	import scrollHint from '#lib/assets/intro/scroll-hint.svg';
+	import skipForward from '#lib/assets/intro/skip-forward.svg';
+	import IntroBubble from '#lib/components/intro/IntroBubble.svelte';
+	import SpotLogo from '#lib/components/intro/SpotLogo.svelte';
 	import ContinueLink from '#lib/components/story/ContinueLink.svelte';
 	import ScrollStory from '#lib/components/story/ScrollStory.svelte';
 	import StoryCard from '#lib/components/story/StoryCard.svelte';
-	import ThoughtBubble from '#lib/components/story/ThoughtBubble.svelte';
 	import { getCase, MAP_SIZE } from '#lib/content/index.ts';
 	import { introBubbles, introSteps } from '#lib/content/intro.ts';
 	import { stageTracker } from '#lib/state/stage.svelte.ts';
 
-	function pinAbove(slug: string) {
+	/** Top-left of a bubble: its case's top-left on the map plus the prototype's offset in px. */
+	function pinTo(slug: string, offset: { x: number; y: number }) {
 		const { hotspot: h } = getCase(slug)!;
-		return `left:${((h.x + h.w / 2) / MAP_SIZE.width) * 100}%;top:${(h.y / MAP_SIZE.height) * 100}%`;
+		return `left:calc(${(h.x / MAP_SIZE.width) * 100}% + ${offset.x}px);top:calc(${(h.y / MAP_SIZE.height) * 100}% + ${offset.y}px)`;
 	}
 </script>
 
@@ -18,12 +22,10 @@
 	<ScrollStory steps={introSteps}>
 		{#snippet mapOverlay(active)}
 			{#each introBubbles as bubble (bubble.slug)}
-				<ThoughtBubble
-					class="absolute -translate-x-1/2 -translate-y-full transition-opacity duration-700 lg:w-72 {active ===
-					'bubbles'
-						? ''
-						: 'opacity-0'}"
-					style={pinAbove(bubble.slug)}>{bubble.text}</ThoughtBubble
+				<IntroBubble
+					variant={bubble.variant}
+					class="absolute transition-opacity duration-700 {active === 'bubbles' ? '' : 'opacity-0'}"
+					style={pinTo(bubble.slug, bubble.offset)}>{bubble.text}</IntroBubble
 				>
 			{/each}
 		{/snippet}
@@ -39,7 +41,15 @@
 				</h1>
 			</section>
 
-			<section data-step="city" {@attach track} class="h-dvh" aria-hidden="true"></section>
+			<section
+				data-step="city"
+				{@attach track}
+				class="flex h-dvh flex-col items-center gap-xs bg-gradient-to-b from-white/80 to-transparent pt-xl text-b5 font-bold text-primary drop-shadow-[0_4px_2px_rgba(0,0,0,0.25)]"
+				aria-hidden="true"
+			>
+				เลื่อนลงเพื่อดูเฉลย
+				<img src={scrollHint} alt="" width="13" height="24.4142" />
+			</section>
 
 			<section data-step="bubbles" {@attach track} class="h-dvh">
 				<!-- The map bubbles are decorative; this list carries the same text for screen readers -->
@@ -63,7 +73,7 @@
 				<StoryCard>
 					<p>
 						ถึงเวลา ‘มองเห็น’ และ ‘ตระหนัก’<br />ใน <strong>สิทธิที่จะไม่ถูกเลือกปฏิบัติ</strong><br
-						/>ซึ่งเป็นสิทธิขั้นพื้นฐานของเราทุกคน
+						/>ซึ่งเป็นสิทธิพื้นฐานของเราทุกคน
 					</p>
 				</StoryCard>
 			</section>
@@ -73,15 +83,9 @@
 				{@attach track}
 				class="flex h-dvh flex-col items-center justify-center gap-m px-m text-center"
 			>
-				<!-- TODO: replace with the "Spot the Discrimination" logo SVG from Figma -->
-				<h2 class="font-header leading-none font-bold text-ink">
-					<span class="block text-h3-m lg:text-h3">
-						Sp<span class="inline-block size-[0.7em] rounded-full bg-primary align-middle"></span>t
-						<span class="text-b5 text-primary">the</span>
-					</span>
-					<span class="block text-h6 lg:text-h3">Discrimination</span>
-				</h2>
-				<p class="text-h7-m font-bold text-primary lg:text-h6">
+				<h2 class="sr-only">Spot the Discrimination</h2>
+				<SpotLogo />
+				<p class="font-header text-h7 font-bold text-primary">
 					ตระหนัก เข้าใจ<br />ไม่เลือกปฏิบัติ
 				</p>
 				<div class="mt-l"><ContinueLink href="#definition" /></div>
@@ -93,9 +97,9 @@
 	{#if stageTracker.current === 'intro'}
 		<a
 			href="#explore"
-			class="fixed right-m bottom-m z-30 flex items-center gap-xs rounded-full bg-ui-primary px-m py-s text-b6 text-ink shadow hover:bg-ui-primary-hover lg:right-l lg:bottom-l"
+			class="fixed right-m bottom-m z-30 flex items-center gap-xs rounded-full bg-ui-primary px-m py-s text-b5 text-ink shadow hover:bg-ui-primary-hover lg:right-l lg:bottom-l"
 		>
-			ข้ามส่วนเกริ่น <span aria-hidden="true">▶</span>
+			ข้ามส่วนเกริ่น <img src={skipForward} alt="" width="16" height="16" />
 		</a>
 	{/if}
 </section>

@@ -179,8 +179,8 @@ Case {
 
 ## 9. Blocked on design / content
 
-1. **Assets export** from Figma: ~~`BG-Final`, 18 `case-*` cut-outs~~ (done: run `node scripts/extract-map-assets.js "<Group 63>.svg"` after any map change), icons, WeVis logo, "Spot the Discrimination" logo, OG image.
-2. **Intro bubbles.** Only one bubble text could be read from the prototype; add the rest to `introBubbles` in `src/lib/content/intro.ts`.
+1. **Assets export** from Figma: ~~`BG-Final`, 18 `case-*` cut-outs~~ (done: run `node scripts/extract-map-assets.js "<Group 63>.svg"` after any map change), ~~icons, WeVis logo, "Spot the Discrimination" logo~~ (done: `src/lib/assets/intro/`, from Figma node `571:8266`), OG image.
+2. ~~**Intro bubbles.**~~ Done: the three bubbles (blue, orange, yellow) from Figma frame `m-2` are in `introBubbles` in `src/lib/content/intro.ts`. The Intro's bubble layout is tuned for desktop; on narrow phones the right-hand bubbles run off screen (check in M6).
 3. **Kondolar Thai** `.woff2` files and web license. Drop them in `static/fonts/` and uncomment `@font-face` in `layout.css`.
 4. ~~**KP1 / KP2 / KP3 / Result**~~: resolved from the prototype (see §1 Story flow).
    Cases are all part of KP2, so `kp` on `Case` is no longer needed.

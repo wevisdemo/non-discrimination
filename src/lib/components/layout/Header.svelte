@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
+	import hamburger from '#lib/assets/intro/hamburger.svg';
+	import wevisLogo from '#lib/assets/intro/wevis-logo.svg';
 	import { stages } from '#lib/stages.ts';
 	import { stageTracker } from '#lib/state/stage.svelte.ts';
 
@@ -31,12 +33,9 @@
 <header
 	class="pointer-events-none fixed inset-x-0 top-0 z-40 flex items-start justify-between px-m py-m lg:px-l"
 >
-	<!-- TODO: swap for the WeVis logo SVG once exported from Figma -->
-	<a
-		href={resolve('/')}
-		class="pointer-events-auto font-header text-h7-m font-bold tracking-tight text-ink lg:text-h7"
-		>WeVis</a
-	>
+	<a href={resolve('/')} class="pointer-events-auto">
+		<img src={wevisLogo} alt="WeVis" width="105" height="32" />
+	</a>
 
 	<nav aria-label="เนื้อหา" class="pointer-events-auto relative" {@attach closeOnOutside}>
 		<!-- One button for both states so keyboard focus stays on it when the menu opens -->
@@ -44,7 +43,7 @@
 			type="button"
 			class="flex h-8 items-center justify-center border border-ink bg-surface text-b6 text-body hover:border-transparent hover:bg-ui-primary-hover {open
 				? 'w-8 rounded-full'
-				: 'gap-s rounded-full pr-s pl-m'}"
+				: 'gap-s rounded-full px-m'}"
 			aria-expanded={open}
 			aria-controls={open ? 'stage-menu' : undefined}
 			aria-label={open ? 'ปิดเมนู' : undefined}
@@ -61,14 +60,7 @@
 				</svg>
 			{:else}
 				<span class="max-w-[45vw] truncate">{current.label}</span>
-				<svg aria-hidden="true" width="20" height="20" viewBox="0 0 20 20" fill="none">
-					<path
-						d="M3 5h14M3 10h14M3 15h14"
-						stroke="currentColor"
-						stroke-width="2"
-						stroke-linecap="round"
-					/>
-				</svg>
+				<img src={hamburger} alt="" width="24" height="24" />
 				<span class="sr-only">เมนู</span>
 			{/if}
 		</button>
