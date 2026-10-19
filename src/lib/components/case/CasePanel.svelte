@@ -21,7 +21,7 @@
 		>
 			<div class="flex justify-end">
 				<Dialog.Close aria-label="ปิด" class="rounded-sm hover:bg-ui-primary-hover">
-					<img src={close} alt="" width="24" height="24" />
+					<img src={close} alt="" width="24" height="24" class="mix-blend-multiply" />
 				</Dialog.Close>
 			</div>
 			<CaseCard {item} {onprev} {onnext} />

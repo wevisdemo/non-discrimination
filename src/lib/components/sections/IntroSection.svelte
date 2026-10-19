@@ -114,7 +114,13 @@
 			href="#explore"
 			class="fixed right-m bottom-m z-30 flex items-center gap-xs rounded-full bg-ui-primary px-m py-s text-b5 text-ink shadow hover:bg-ui-primary-hover lg:right-l lg:bottom-l"
 		>
-			ข้ามส่วนเกริ่น <img src={skipForward} alt="" width="16" height="16" />
+			ข้ามส่วนเกริ่น <img
+				src={skipForward}
+				alt=""
+				width="16"
+				height="16"
+				class="mix-blend-multiply"
+			/>
 		</a>
 	{/if}
 </section>
