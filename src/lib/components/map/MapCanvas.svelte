@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { PanzoomObject } from '@panzoom/panzoom';
 	import type { Game } from '#lib/state/game.svelte.ts';
+	import CauseChip from '#lib/components/ui/CauseChip.svelte';
+	import { MAP_SIZE } from '#lib/content/index.ts';
 	import Hotspot from './Hotspot.svelte';
 	import MapScene from './MapScene.svelte';
 
@@ -45,7 +47,7 @@
 <div class="relative h-full w-full overflow-hidden bg-surface">
 	<div {@attach panzoom} class="w-[max(100%,1600px)]">
 		<!-- Reveal / hint: wash the city so highlighted cases pop (design.md §2.4) -->
-		<MapScene dim={game.highlighted.size ? 0.6 : 0} spotlight={game.highlighted}>
+		<MapScene dim={game.highlighted.size ? 0.8 : 0} spotlight={game.highlighted}>
 			{#each game.cases as item (item.slug)}
 				<Hotspot
 					{item}
@@ -54,6 +56,19 @@
 					{onselect}
 				/>
 			{/each}
+			<!-- Reveal (Figma "ดูเฉลย"): each case's causes as tags below it -->
+			{#if game.mode === 'reveal'}
+				{#each game.cases as item (item.slug)}
+					<ul
+						class="pointer-events-none absolute flex -translate-x-1/2 flex-col items-center gap-xs pt-[10px] whitespace-nowrap"
+						style="left:{((item.hotspot.x + item.hotspot.w / 2) / MAP_SIZE.width) *
+							100}%;top:{((item.hotspot.y + item.hotspot.h) / MAP_SIZE.height) * 100}%"
+						aria-hidden="true"
+					>
+						{#each item.causes as cause (cause)}<li><CauseChip {cause} /></li>{/each}
+					</ul>
+				{/each}
+			{/if}
 		</MapScene>
 	</div>
 

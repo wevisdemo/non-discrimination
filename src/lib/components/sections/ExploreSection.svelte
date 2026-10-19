@@ -1,15 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
-	import { pushState } from '$app/navigation';
+	import { pushState, replaceState } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import { trackEvent } from '#lib/analytics.ts';
-	import CaseCard from '#lib/components/case/CaseCard.svelte';
+	import CasePanel from '#lib/components/case/CasePanel.svelte';
 	import MapCanvas from '#lib/components/map/MapCanvas.svelte';
 	import ExploreNav from '#lib/components/map/ExploreNav.svelte';
 	import HintDrawer from '#lib/components/map/HintDrawer.svelte';
-	import Modal from '#lib/components/ui/Modal.svelte';
 	import { cases, getCase } from '#lib/content/index.ts';
 	import { explore } from '#lib/state/explore.svelte.ts';
 	import { Game } from '#lib/state/game.svelte.ts';
@@ -38,6 +37,25 @@
 		// Shallow routing: URL becomes shareable /cases/<slug>/, back button closes the card.
 		pushState(resolve('/cases/[slug]', { slug }), { caseSlug: slug });
 	}
+
+	/** เจาะดูทีละภาพ: open the first case and step through them with ‹ › */
+	function startStepping() {
+		const slug = cases[0].slug;
+		trackEvent({ name: 'mode_changed', mode: 'stepping' });
+		pushState(resolve('/cases/[slug]', { slug }), { caseSlug: slug, stepping: true });
+	}
+
+	/** ‹ › replace the open card, so Back still closes the panel in one step */
+	function step(by: number) {
+		if (!activeCase) return;
+		const next = cases[cases.indexOf(activeCase) + by];
+		if (!next) return;
+		trackEvent({ name: 'case_opened', slug: next.slug });
+		replaceState(resolve('/cases/[slug]', { slug: next.slug }), {
+			...page.state,
+			caseSlug: next.slug
+		});
+	}
 </script>
 
 {#if explore.open}
@@ -62,8 +80,10 @@
 			>
 				พบแล้ว {game.found.size}/{game.cases.length} เคส
 			</p>
-			<div class="absolute top-[79px] right-m lg:right-[34px]"><ExploreNav {game} /></div>
-			<div class="absolute bottom-m left-m"><HintDrawer {game} /></div>
+			<div class="absolute top-[79px] right-m lg:right-[34px]">
+				<ExploreNav {game} stepping={!!page.state.stepping} onstep={startStepping} />
+			</div>
+			<div class="absolute bottom-0 left-0"><HintDrawer {game} /></div>
 		</div>
 		<!-- /cases is the accessible alternative to the map; the menu design has no entry for it -->
 		<a
@@ -75,7 +95,10 @@
 {/if}
 
 {#if activeCase}
-	<Modal open title={activeCase.titleTh} onclose={() => history.back()}>
-		<CaseCard item={activeCase} />
-	</Modal>
+	<CasePanel
+		item={activeCase}
+		onclose={() => history.back()}
+		onprev={() => step(-1)}
+		onnext={() => step(1)}
+	/>
 {/if}

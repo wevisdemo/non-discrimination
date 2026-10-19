@@ -107,9 +107,9 @@ src/
    │  ├─ ui/                    Button, CauseChip, Modal
    │  ├─ layout/                Header, Footer
    │  ├─ sections/              IntroSection, DefinitionSection, ExploreSection, SectionPlaceholder
-   │  ├─ map/                   MapScene, MapCamera, MapCanvas, Hotspot, ExploreNav, HintDrawer, CauseFilterBar
+   │  ├─ map/                   MapScene, MapCamera, MapCanvas, Hotspot, ExploreNav, HintDrawer
    │  ├─ story/                 ScrollStory (sticky map + scroll steps), StoryCard, ThoughtBubble, ContinueLink, Balloons, GameThumbnail
-   │  ├─ case/                  CaseCard, CaseList
+   │  ├─ case/                  CaseCard, CasePanel, CasePoll, ReportingChannels, CaseList
    │  └─ definition/            DefinitionPanel, SearchCTA
    └─ analytics.ts              trackEvent(): no-op until a provider is chosen
 tests/app.e2e.ts                Playwright flows + axe on every page type

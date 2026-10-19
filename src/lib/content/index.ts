@@ -24,7 +24,7 @@ export const cases: Case[] = Object.entries(caseFiles)
 		}
 		return parsed.data;
 	})
-	.sort((a, b) => a.slug.localeCompare(b.slug));
+	.sort((a, b) => a.order - b.order);
 
 type DefinitionModule = { default: Component };
 const definitionFiles = import.meta.glob<DefinitionModule>('./definitions/*.md', { eager: true });

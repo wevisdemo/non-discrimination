@@ -114,11 +114,57 @@ test('opening a case updates the URL, counts it as found, and back closes it', a
 	await expect(page.getByText('พบแล้ว 1/18 เคส')).toBeVisible();
 });
 
-test('hint mode filters hotspots by cause', async ({ page }) => {
+test('hints list every case to look for', async ({ page }) => {
 	await page.goto('/#explore');
 	await page.getByRole('button', { name: 'เปิดตัวช่วย' }).click();
-	await page.getByRole('button', { name: 'ความเชื่อทางศาสนา' }).click();
-	await expect(page.getByRole('button', { name: 'ความเชื่อทางศาสนา' })).toHaveAttribute(
+	const hints = page.getByRole('region', { name: '18 การเลือกปฏิบัติมีอะไรบ้าง ?' });
+	await expect(hints.getByRole('listitem')).toHaveCount(18);
+	await expect(hints.getByRole('listitem').first()).toHaveText(
+		'กลุ่มอินฟลูเอนเซอร์ทำร้ายชาวกะเหรี่ยง'
+	);
+});
+
+test('reveal tags each case with its causes', async ({ page }) => {
+	await page.goto('/#explore');
+	await page.getByRole('button', { name: 'เฉลยตำแหน่งภาพ' }).click();
+	// One tag per cause across the 18 cases (the intersex case has two)
+	await expect(page.locator('#explore ul[aria-hidden="true"] li')).toHaveCount(19);
+});
+
+test('เจาะดูทีละภาพ steps through the cases in datasheet order', async ({ page }) => {
+	await page.goto('/#explore');
+	await page.getByRole('button', { name: 'เจาะดูทีละภาพ' }).click();
+	// The map overlay is a dialog too; the case panel is the one with ‹ ›
+	const card = page
+		.getByRole('dialog')
+		.filter({ has: page.getByRole('button', { name: 'เคสถัดไป' }) });
+	await expect(card.getByRole('heading', { level: 2 })).toHaveText(
+		'กลุ่มอินฟลูเอนเซอร์ทำร้ายชาวกะเหรี่ยง'
+	);
+	await expect(card.getByText('1/18')).toBeVisible();
+	await expect(card.getByRole('button', { name: 'เคสก่อนหน้า' })).toBeDisabled();
+	await expect(page.getByRole('button', { name: 'เจาะดูทีละภาพ' })).toHaveAttribute(
+		'aria-pressed',
+		'true'
+	);
+
+	await card.getByRole('button', { name: 'เคสถัดไป' }).click();
+	await expect(card.getByText('2/18')).toBeVisible();
+	await expect(page).toHaveURL(/\/cases\/social-security\/?$/);
+
+	// ‹ › replace the card, so one Back closes the panel
+	await page.goBack();
+	await expect(card).toBeHidden();
+	await expect(page).toHaveURL(/#explore$/);
+});
+
+test('the case card poll remembers the answer', async ({ page }) => {
+	await page.goto('/cases/karen/');
+	const answer = page.getByRole('button', { name: 'เคยเห็นกับตา' });
+	await answer.click();
+	await expect(answer).toHaveAttribute('aria-pressed', 'true');
+	await page.reload();
+	await expect(page.getByRole('button', { name: 'เคยเห็นกับตา' })).toHaveAttribute(
 		'aria-pressed',
 		'true'
 	);
@@ -170,8 +216,9 @@ test('case and definition pages are prerendered', async ({ page }) => {
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText(
 		'นักเรียนมุสลิมถูกห้ามคลุมฮิญาบมาโรงเรียนในเขตวัด'
 	);
-	await page.getByRole('link', { name: /อ่านนิยาม/ }).click();
-	await expect(page).toHaveURL(/\/definition\/religion\/$/);
+	// The card design has no link to the definitions; they are still prerendered pages
+	await page.goto('/definition/religion/');
+	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 });
 
 /**

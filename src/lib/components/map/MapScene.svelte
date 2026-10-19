@@ -1,24 +1,8 @@
-<script lang="ts" module>
-	import type { Picture } from '@sveltejs/enhanced-img';
-
-	// Extracted from Figma by scripts/extract-map-assets.js
-	const caseImages = import.meta.glob<Picture>('../../assets/cases/*.png', {
-		eager: true,
-		import: 'default',
-		query: { enhanced: true }
-	});
-
-	function caseImage(slug: string): Picture {
-		const img = caseImages[`../../assets/cases/${slug}.png`];
-		if (!img) throw new Error(`Missing case image for "${slug}"`);
-		return img;
-	}
-</script>
-
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import { cases, MAP_SIZE, type Case } from '#lib/content/index.ts';
 	import bg from '#lib/assets/map/bg-final.png?enhanced';
+	import { caseImage } from '#lib/components/case/caseImage.ts';
 
 	let {
 		dim = 0,

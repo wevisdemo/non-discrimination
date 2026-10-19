@@ -28,6 +28,8 @@ export const caseSchema = z
 	.object({
 		/** Matches the Figma layer name without the `case-` prefix, e.g. `hijab-school` */
 		slug: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/),
+		/** Position in the Cases datasheet; the card counter (13/18) and ‹ › follow it */
+		order: z.number().int().min(1),
 		titleTh: z.string().min(1),
 		summaryTh: z.string().min(1),
 		causes: z.array(causeIdSchema).min(1),

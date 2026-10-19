@@ -8,6 +8,8 @@ declare global {
 		interface PageState {
 			/** Set by shallow routing when a case card is opened over the map */
 			caseSlug?: string;
+			/** Opened with เจาะดูทีละภาพ: stepping through the cases with ‹ › */
+			stepping?: boolean;
 		}
 		// interface Platform {}
 	}

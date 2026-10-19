@@ -16,11 +16,12 @@
 	);
 </script>
 
-<!-- Invisible until found/highlighted so players still have to look (design.md §2.4) -->
+<!-- Invisible until found so players still have to look; in reveal the case itself is drawn
+	above the wash (design.md §2.4) -->
 <button
 	type="button"
 	class="absolute rounded-card border-4 transition-colors {highlighted
-		? 'border-accent bg-accent/20'
+		? 'border-transparent'
 		: found
 			? 'border-primary/60'
 			: 'border-transparent hover:border-primary/40'}"
