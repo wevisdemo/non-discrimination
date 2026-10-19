@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { fade } from 'svelte/transition';
 	import { pushState } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
@@ -10,11 +11,23 @@
 	import HintDrawer from '#lib/components/map/HintDrawer.svelte';
 	import Modal from '#lib/components/ui/Modal.svelte';
 	import { cases, getCase } from '#lib/content/index.ts';
+	import { explore } from '#lib/state/explore.svelte.ts';
 	import { Game } from '#lib/state/game.svelte.ts';
 	import { LocalProgressStore } from '#lib/state/progress.ts';
 
 	const game = new Game(cases, new LocalProgressStore());
 	onMount(() => game.restore());
+
+	// Only the page's scrollbar is locked while the map is up; the map pans and zooms itself
+	$effect(() => {
+		if (!explore.open) return;
+		const root = document.documentElement;
+		const before = root.style.overflow;
+		root.style.overflow = 'hidden';
+		return () => (root.style.overflow = before);
+	});
+
+	const fadeMs = () => (matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 250);
 
 	const activeCase = $derived(page.state.caseSlug ? getCase(page.state.caseSlug) : undefined);
 
@@ -27,27 +40,39 @@
 	}
 </script>
 
-<section id="explore" class="relative h-dvh">
-	<h2 class="sr-only">สืบหา 18 การเลือกปฏิบัติที่ซ่อนอยู่</h2>
-	<MapCanvas {game} onselect={openCase} />
-	<!-- Figma "kp2-play": exit and reveal buttons top right, hints bottom left -->
-	<div class="pointer-events-none absolute inset-0 *:pointer-events-auto">
-		<p
-			class="absolute top-[79px] left-m rounded-full bg-surface px-m py-s text-b6 text-ink lg:left-[34px]"
-			aria-live="polite"
-		>
-			พบแล้ว {game.found.size}/{game.cases.length} เคส
-		</p>
-		<div class="absolute top-[79px] right-m lg:right-[34px]"><ExploreNav {game} /></div>
-		<div class="absolute bottom-m left-m"><HintDrawer {game} /></div>
-	</div>
-	<!-- /cases is the accessible alternative to the map; the menu design has no entry for it -->
-	<a
-		href={resolve('/cases')}
-		class="sr-only focus:not-sr-only focus:absolute focus:bottom-m focus:left-m focus:z-30 focus:bg-surface focus:p-s"
-		>ดูเคสทั้งหมดแบบรายการ</a
+{#if explore.open}
+	<!-- Full-screen overlay (Figma "kp2-play"); the header floats above it at z-40 -->
+	<div
+		id="explore"
+		role="dialog"
+		aria-modal="true"
+		aria-labelledby="explore-title"
+		tabindex="-1"
+		class="fixed inset-0 z-[35] bg-surface outline-none"
+		transition:fade={{ duration: fadeMs() }}
+		{@attach (node) => node.focus({ preventScroll: true })}
 	>
-</section>
+		<h2 id="explore-title" class="sr-only">สืบหา 18 การเลือกปฏิบัติที่ซ่อนอยู่</h2>
+		<MapCanvas {game} onselect={openCase} />
+		<!-- Figma "kp2-play": exit and reveal buttons top right, hints bottom left -->
+		<div class="pointer-events-none absolute inset-0 *:pointer-events-auto">
+			<p
+				class="absolute top-[79px] left-m rounded-full bg-surface px-m py-s text-b6 text-ink lg:left-[34px]"
+				aria-live="polite"
+			>
+				พบแล้ว {game.found.size}/{game.cases.length} เคส
+			</p>
+			<div class="absolute top-[79px] right-m lg:right-[34px]"><ExploreNav {game} /></div>
+			<div class="absolute bottom-m left-m"><HintDrawer {game} /></div>
+		</div>
+		<!-- /cases is the accessible alternative to the map; the menu design has no entry for it -->
+		<a
+			href={resolve('/cases')}
+			class="sr-only focus:not-sr-only focus:absolute focus:bottom-m focus:left-m focus:z-30 focus:bg-surface focus:p-s"
+			>ดูเคสทั้งหมดแบบรายการ</a
+		>
+	</div>
+{/if}
 
 {#if activeCase}
 	<Modal open title={activeCase.titleTh} onclose={() => history.back()}>

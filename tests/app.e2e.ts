@@ -95,26 +95,48 @@ test('stage menu on a case page links back into the single page', async ({ page 
 });
 
 test('opening a case updates the URL, counts it as found, and back closes it', async ({ page }) => {
-	await page.goto('/');
+	await page.goto('/#explore');
 	await page.getByRole('button', { name: 'กรณี: นักเรียนสวมฮิญาบ' }).click();
 
-	const dialog = page.getByRole('dialog');
+	const dialog = page.getByRole('dialog', { name: 'นักเรียนสวมฮิญาบ' });
 	await expect(dialog.getByRole('heading', { name: 'นักเรียนสวมฮิญาบ' })).toBeVisible();
 	await expect(page).toHaveURL(/\/cases\/hijab-school\/?$/);
 
 	await page.goBack();
 	await expect(dialog).toBeHidden();
+	// The map overlay is still up underneath
 	await expect(page.getByText('พบแล้ว 1/18 เคส')).toBeVisible();
 });
 
 test('hint mode filters hotspots by cause', async ({ page }) => {
-	await page.goto('/');
+	await page.goto('/#explore');
 	await page.getByRole('button', { name: 'เปิดตัวช่วย' }).click();
 	await page.getByRole('button', { name: 'ความเชื่อทางศาสนา' }).click();
 	await expect(page.getByRole('button', { name: 'ความเชื่อทางศาสนา' })).toHaveAttribute(
 		'aria-pressed',
 		'true'
 	);
+});
+
+test('the map is a full-screen overlay opened by สำรวจเลย, not a section of the page', async ({
+	page
+}) => {
+	await page.goto('/');
+	await expect(page.locator('#explore')).toHaveCount(0);
+
+	await page.locator('#definition').getByRole('link', { name: 'สำรวจเลย !' }).click();
+	const map = page.getByRole('dialog', { name: 'สืบหา 18 การเลือกปฏิบัติที่ซ่อนอยู่' });
+	await expect(map).toBeVisible();
+	await expect(map).toBeInViewport({ ratio: 0.99 });
+	// The sections behind it are inert, so Tab and screen readers can't reach them
+	await expect(page.locator('div[inert] #definition')).toHaveCount(1);
+
+	await page.getByRole('link', { name: 'ออกจากการสำรวจ' }).click();
+	await expect(map).toBeHidden();
+	await expect(page.locator('#causes')).toBeInViewport();
+
+	await page.goBack();
+	await expect(map).toBeVisible();
 });
 
 test('map controls: reveal, hints drawer and exit', async ({ page }) => {

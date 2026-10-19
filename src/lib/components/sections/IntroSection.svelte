@@ -8,6 +8,7 @@
 	import StoryCard from '#lib/components/story/StoryCard.svelte';
 	import { getCase, MAP_SIZE } from '#lib/content/index.ts';
 	import { introBubbles, introSteps } from '#lib/content/intro.ts';
+	import { explore } from '#lib/state/explore.svelte.ts';
 	import { stageTracker } from '#lib/state/stage.svelte.ts';
 
 	/**
@@ -108,7 +109,7 @@
 	</ScrollStory>
 
 	<!-- Skips the whole preamble (Intro and KP1) straight to the game; only while the Intro is on screen -->
-	{#if stageTracker.current === 'intro'}
+	{#if stageTracker.current === 'intro' && !explore.open}
 		<a
 			href="#explore"
 			class="fixed right-m bottom-m z-30 flex items-center gap-xs rounded-full bg-ui-primary px-m py-s text-b5 text-ink shadow hover:bg-ui-primary-hover lg:right-l lg:bottom-l"

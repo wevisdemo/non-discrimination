@@ -5,6 +5,7 @@
 	import IntroSection from '#lib/components/sections/IntroSection.svelte';
 	import SectionPlaceholder from '#lib/components/sections/SectionPlaceholder.svelte';
 	import { stages } from '#lib/stages.ts';
+	import { explore } from '#lib/state/explore.svelte.ts';
 	import { stageTracker } from '#lib/state/stage.svelte.ts';
 
 	onMount(() => stageTracker.watch());
@@ -15,9 +16,12 @@
 
 <svelte:head><title>Spot the Discrimination · ไม่เลือกปฏิบัติ</title></svelte:head>
 
-<IntroSection />
-<DefinitionSection />
+<!-- The page behind the map overlay can't be reached while it is open -->
+<div inert={explore.open}>
+	<IntroSection />
+	<DefinitionSection />
+	{#each placeholders as stage (stage.id)}
+		<SectionPlaceholder id={stage.id} title={stage.label} />
+	{/each}
+</div>
 <ExploreSection />
-{#each placeholders as stage (stage.id)}
-	<SectionPlaceholder id={stage.id} title={stage.label} />
-{/each}

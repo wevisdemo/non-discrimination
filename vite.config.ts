@@ -18,6 +18,12 @@ export default defineConfig({
 			// GitHub Pages serves static files only; 404.html covers unknown URLs.
 			adapter: adapter({ fallback: '404.html' }),
 			// CI sets BASE_PATH=/non-discrimination for wevisdemo.github.io/non-discrimination
+			prerender: {
+				// `/#explore` opens the map overlay on the client; the prerendered page has no #explore
+				handleMissingId: ({ id, message }) => {
+					if (id !== 'explore') throw new Error(message);
+				}
+			},
 			paths: { base: (process.env.BASE_PATH ?? '') as '' | `/${string}` },
 			preprocess: [mdsvex({ extensions: ['.svx', '.md'] })],
 			extensions: ['.svelte', '.svx', '.md']

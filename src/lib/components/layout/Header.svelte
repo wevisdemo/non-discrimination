@@ -4,10 +4,13 @@
 	import hamburger from '#lib/assets/intro/hamburger.svg';
 	import wevisLogo from '#lib/assets/intro/wevis-logo.svg';
 	import { stages } from '#lib/stages.ts';
+	import { explore } from '#lib/state/explore.svelte.ts';
 	import { stageTracker } from '#lib/state/stage.svelte.ts';
 
 	// /cases and /definition pages are part of the game, so they keep showing the explore label.
-	const currentId = $derived(page.route.id === '/' ? stageTracker.current : 'explore');
+	const currentId = $derived(
+		explore.open || page.route.id !== '/' ? 'explore' : stageTracker.current
+	);
 	const current = $derived(stages.find((s) => s.id === currentId) ?? stages[0]);
 	let open = $state(false);
 

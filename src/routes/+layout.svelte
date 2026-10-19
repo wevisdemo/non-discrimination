@@ -1,12 +1,16 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import '@fontsource/ibm-plex-sans-thai-looped/400.css';
 	import '@fontsource/ibm-plex-sans-thai-looped/700.css';
 	import './layout.css';
 	import favicon from '#lib/assets/favicon.svg';
 	import Header from '#lib/components/layout/Header.svelte';
+	import { explore } from '#lib/state/explore.svelte.ts';
 	import type { LayoutProps } from './$types';
 
 	let { children }: LayoutProps = $props();
+
+	onMount(() => (explore.ready = true));
 </script>
 
 <svelte:head>
