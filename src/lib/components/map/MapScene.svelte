@@ -23,6 +23,7 @@
 	let {
 		dim = 0,
 		spotlight = new Set<string>(),
+		only = false,
 		class: className = '',
 		children
 	}: {
@@ -30,6 +31,8 @@
 		dim?: number;
 		/** Cases drawn above the wash so they stand out */
 		spotlight?: ReadonlySet<string>;
+		/** Draw only the spotlighted cases and the overlays, for a layer stacked above a wash */
+		only?: boolean;
 		class?: string;
 		/** Overlays positioned in map space (hotspots, bubbles) */
 		children?: Snippet;
@@ -42,29 +45,35 @@
 </script>
 
 <div class="relative aspect-[3241/3242] {className}">
-	<enhanced:img
-		src={bg}
-		alt=""
-		sizes="(orientation: portrait) 300vh, 200vw"
-		class="absolute inset-0 size-full select-none"
-		draggable="false"
-	/>
-	{#each cases as item (item.slug)}
+	{#if !only}
 		<enhanced:img
-			src={caseImage(item.slug)}
+			src={bg}
 			alt=""
-			sizes="25vw"
-			loading="lazy"
-			class="absolute select-none {spotlight.has(item.slug) ? 'z-20' : 'z-0'}"
-			style={box(item)}
+			sizes="(orientation: portrait) 300vh, 200vw"
+			class="absolute inset-0 size-full select-none"
 			draggable="false"
 		/>
+	{/if}
+	{#each cases as item (item.slug)}
+		{#if !only || spotlight.has(item.slug)}
+			<enhanced:img
+				src={caseImage(item.slug)}
+				alt=""
+				sizes="25vw"
+				loading="lazy"
+				class="absolute select-none {spotlight.has(item.slug) ? 'z-20' : 'z-0'}"
+				style={box(item)}
+				draggable="false"
+			/>
+		{/if}
 	{/each}
-	<div
-		aria-hidden="true"
-		class="pointer-events-none absolute inset-0 z-10 bg-white transition-opacity duration-700"
-		style="opacity:{dim}"
-	></div>
+	{#if !only}
+		<div
+			aria-hidden="true"
+			class="pointer-events-none absolute inset-0 z-10 bg-white transition-opacity duration-700"
+			style="opacity:{dim}"
+		></div>
+	{/if}
 	<div class="absolute inset-0 z-30">
 		{@render children?.()}
 	</div>

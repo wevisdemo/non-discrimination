@@ -34,16 +34,21 @@ export const introBubbles: {
 	}
 ];
 
-/** Scroll steps of the Intro (Figma flow "DE-Intro", start node 571:8266). */
+/**
+ * Scroll steps of the Intro (Figma flow "DE-Intro", start node 571:8266). `wash` follows the
+ * prototype's frame gradients: white fading to 80%, lifting to reveal the city, coming back for
+ * the bubbles and cards, then fading to white for the title.
+ */
 export const introSteps = [
-	{ id: 'question', camera: cityOverview, dim: 0.75 },
-	{ id: 'city', camera: cityOverview, dim: 0 },
+	{ id: 'question', camera: cityOverview, dim: 0.8, wash: [1, 0.8] },
+	{ id: 'city', camera: cityOverview, dim: 0, wash: [0.8, 0, 0.8] },
 	{
 		id: 'bubbles',
 		camera: introCases,
 		dim: 0.8,
+		wash: [0.8],
 		spotlight: introBubbles.map((b) => b.slug)
 	},
-	{ id: 'meaning', camera: cityOverview, dim: 0.8 },
-	{ id: 'title', camera: cityOverview, dim: 0.75 }
+	{ id: 'meaning', camera: cityOverview, dim: 0.8, wash: [0.8] },
+	{ id: 'title', camera: cityOverview, dim: 0.8, wash: [0.8, 1] }
 ] as const satisfies readonly StoryStep[];

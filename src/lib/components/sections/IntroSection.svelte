@@ -41,14 +41,15 @@
 				</h1>
 			</section>
 
-			<section
-				data-step="city"
-				{@attach track}
-				class="flex h-dvh flex-col items-center gap-xs bg-gradient-to-b from-white/80 to-transparent pt-xl text-b5 font-bold text-primary drop-shadow-[0_4px_2px_rgba(0,0,0,0.25)]"
-				aria-hidden="true"
-			>
-				เลื่อนลงเพื่อดูเฉลย
-				<img src={scrollHint} alt="" width="13" height="24.4142" />
+			<!-- Two Figma frames: the wash lifts to reveal the city, then comes back for the bubbles -->
+			<section data-step="city" {@attach track} aria-hidden="true">
+				<div
+					class="flex h-dvh flex-col items-center gap-xs pt-xl text-b5 font-bold text-primary drop-shadow-[0_4px_2px_rgba(0,0,0,0.25)]"
+				>
+					เลื่อนลงเพื่อดูเฉลย
+					<img src={scrollHint} alt="" width="13" height="24.4142" />
+				</div>
+				<div class="h-dvh"></div>
 			</section>
 
 			<section data-step="bubbles" {@attach track} class="h-dvh">
