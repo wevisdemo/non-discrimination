@@ -10,7 +10,11 @@
 
 	function panzoom(node: HTMLElement) {
 		const parent = node.parentElement!;
-		const onWheel = (e: WheelEvent) => pz?.zoomWithWheel(e);
+		// The map sits inside a scrolling page, so only zoom on Ctrl/⌘+wheel (trackpad pinch sends
+		// ctrlKey too); a plain wheel is left alone and scrolls the page past the map.
+		const onWheel = (e: WheelEvent) => {
+			if (e.ctrlKey || e.metaKey) pz?.zoomWithWheel(e);
+		};
 		let destroyed = false;
 
 		// Client-only and lazy: the package is CJS (breaks SSR) and the map works without it.

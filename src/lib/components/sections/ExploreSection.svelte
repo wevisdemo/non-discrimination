@@ -27,10 +27,8 @@
 	}
 </script>
 
-<svelte:head><title>สำรวจเมือง · ไม่เลือกปฏิบัติ</title></svelte:head>
-
-<h1 class="sr-only">สำรวจเมือง</h1>
-<div class="relative h-dvh">
+<section id="explore" class="relative h-dvh">
+	<h2 class="sr-only">สืบหา 18 การเลือกปฏิบัติที่ซ่อนอยู่</h2>
 	<MapCanvas {game} onselect={openCase} />
 	<div
 		class="pointer-events-none absolute inset-x-m top-20 flex flex-col gap-s *:pointer-events-auto lg:inset-x-l"
@@ -38,7 +36,13 @@
 		<ModeControls {game} />
 		{#if game.mode === 'hint'}<CauseFilterBar {game} />{/if}
 	</div>
-</div>
+	<!-- /cases is the accessible alternative to the map; the menu design has no entry for it -->
+	<a
+		href={resolve('/cases')}
+		class="sr-only focus:not-sr-only focus:absolute focus:bottom-m focus:left-m focus:z-30 focus:bg-surface focus:p-s"
+		>ดูเคสทั้งหมดแบบรายการ</a
+	>
+</section>
 
 {#if activeCase}
 	<Modal open title={activeCase.titleTh} onclose={() => history.back()}>

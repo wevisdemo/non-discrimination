@@ -1,5 +1,5 @@
 <script lang="ts">
-	/** `href` must already be resolved by the caller, e.g. `resolve('/explore')` */
+	/** `href` must already be resolved by the caller, e.g. `resolve('/cases')` or a `#section` hash */
 	let { href, label = 'คลิกเพื่อดูต่อ' }: { href: string; label?: string } = $props();
 </script>
 

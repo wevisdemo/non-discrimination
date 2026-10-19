@@ -17,10 +17,12 @@ The site is **fully static**, with no backend. Progress is stored in the browser
 
 Source: the prototype's flows `DE-Intro`, `DE-KP1`, `DE-KP2`, `DE-KP3`, `DE-Result` and `Mobile-Intro` (start node `571:8266`). The product's working title in the prototype is **"Spot the Discrimination: ตระหนัก เข้าใจ ไม่เลือกปฏิบัติ"**. Every stage has a ☰ menu (top right, labelled with the current stage) and a floating **อ่านเนื้อหาเต็ม** button (bottom right).
 
+**The site is a single page.** The stages are sections of `/`, in this menu order: Intro, คำนิยามสั้น ๆ ของการเลือกปฏิบัติ (KP1), สืบหา 18 การเลือกปฏิบัติที่ซ่อนอยู่ (KP2), สาเหตุที่ยังพบเห็นการเลือกปฏิบัติ (KP3), บทสรุป (Result) and เกี่ยวกับโครงการ (About). Each is a `<section id>` (`intro`, `definition`, `explore`, `causes`, `summary`, `about`). The menu links to `/#<id>` and scrolls there, and `StageTracker` (scroll-spy) changes the pill label as you scroll. **KP3, Result and About are still placeholders** (`SectionPlaceholder`); the menu already scrolls to them.
+
 | Stage                           | Start node  | Menu label                          | What happens                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | ------------------------------- | ----------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Intro**                       | `571:8266`  | Intro                               | Scroll-driven story over the faded map. Opens with "คุณเห็นความผิดปกติในภาพนี้หรือไม่ ?", then the map comes into full colour. Thought bubbles point out cases (for example "มีคนไม่ได้ขึ้นเป็นหัวหน้างานเพราะเป็นผู้หญิง"). Then text cards say discrimination is an "abnormality" hidden in everyday life, caused by ignorance or prejudice (อคติ), and it's time to see and understand the right not to be discriminated against. Ends on the title lock-up and a **คลิกเพื่อดูต่อ** CTA. A **ข้ามส่วนเกริ่น ▶** button skips the whole Intro.                                                                                                                                                                                                                                                                                           |
-| **KP1: what discrimination is** | `571:10659` | Intro                               | Scroll-driven explainer on the map. First, "การมี**ภาพจำที่ลดคุณค่า**คนบางกลุ่ม" (holding stereotypes that devalue some groups), with bubbles such as "คนเพศนี้เป็นผู้นำไม่ได้". Second, these stereotypes "นำไปสู่การ**แบ่งแยก-กีดกัน-จำกัดสิทธิ**ต่อคนกลุ่มนั้น" (lead to separating, excluding and restricting the rights of that group). Ends with the game-start popup **"สืบหา 18 การเลือกปฏิบัติที่ซ่อนอยู่"**. It has instructions (pan and zoom the city to find 18 spots, then click one to read it), a **สำรวจเลย!** CTA, and an **แนะนำการสำรวจ** link.                                                                                                                                                                                                                                                                         |
+| **KP1: what discrimination is** | `571:10659` | คำนิยามสั้น ๆ ของการเลือกปฏิบัติ    | Scroll-driven explainer on the map. First, "การมี**ภาพจำที่ลดคุณค่า**คนบางกลุ่ม" (holding stereotypes that devalue some groups), with bubbles such as "คนเพศนี้เป็นผู้นำไม่ได้". Second, these stereotypes "นำไปสู่การ**แบ่งแยก-กีดกัน-จำกัดสิทธิ**ต่อคนกลุ่มนั้น" (lead to separating, excluding and restricting the rights of that group). Ends with the game-start popup **"สืบหา 18 การเลือกปฏิบัติที่ซ่อนอยู่"**. It has instructions (pan and zoom the city to find 18 spots, then click one to read it), a **สำรวจเลย!** CTA, and an **แนะนำการสำรวจ** link.                                                                                                                                                                                                                                                                         |
 | **KP2: the game**               | `588:6601`  | สืบหา 18 การเลือกปฏิบัติที่ซ่อนอยู่ | The full-colour, pannable map. Controls on the right: **ออกจากการสำรวจ** (exit and continue the story), **เฉลยตำแหน่งภาพ** (reveal positions), **เจาะดูทีละภาพ** (step through cases one by one). Bottom left: **เปิดตัวช่วย** (hint drawer). Opening a case shows the case card (see below).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | **KP3: why it persists**        | `571:10724` | สาเหตุที่ยังพบเห็นการเลือกปฏิบัติ   | An article page on a white background. First, "เราทุกคนมีสิทธิที่จะไม่ถูกเลือกปฏิบัติ", backed by three sources: the UDHR, international human rights law, and the 2017 (B.E. 2560) Constitution sections 4 and 27. Then "แต่ทำไมการเลือกปฏิบัติจึงยังมีให้เห็นอยู่?", answered with two cards: ① stereotypes that go unchallenged, ② no **specific** anti-discrimination law (data as of Nov 2026 / B.E. 2569). Then a note that parliament is considering the **พ.ร.บ. ขจัดการเลือกปฏิบัติต่อบุคคล** (drafts from the public, political parties and the cabinet), and a **Parliament Watch** link ("คลิกที่นี่"). Ends with an **opinion poll** ("แล้วคุณคิดยังไง กับการมีกฎหมายขจัดการเลือกปฏิบัติต่อบุคคล 'เป็นการเฉพาะ'?", options ดีเลย / ไม่เห็นจำเป็น / ไม่เห็นด้วย, marked as collecting no personal data) and **คลิกเพื่อดูต่อ**. |
 | **Result: conclusion**          | `1069:5176` | บทสรุป                              | Closing cards over the map. Closing gaps in the law must go together with dismantling stereotypes, and everyone can start "วันนี้ ตอนนี้". Then **ขอบคุณที่อยู่ด้วยกันจนจบ!** and an **anonymous survey**: age, gender, occupation, province, and a 5-face satisfaction scale, with a **ส่งคำตอบ** button. The data is for กสม. only. Then share buttons (copy link, Facebook, X), a promo for **E-Learning "The Inclusion Lab"** (กสม. × MovED × มูลนิธิเพื่อสิทธิความหลากหลาย), and กสม. contact channels: Facebook, complaints.nhrc.or.th, hotline 1377, and nhrc.or.th.                                                                                                                                                                                                                                                                 |
@@ -85,9 +87,7 @@ src/
 │  ├─ layout.css                Design tokens (@theme) + base styles
 │  ├─ +layout.ts                prerender = true, trailingSlash = 'always'
 │  ├─ +layout.svelte            Fonts, skip link, Header/Footer
-│  ├─ +page.svelte              Intro
-│  ├─ what-is-discrimination/   KP1
-│  ├─ explore/                  The map game
+│  ├─ +page.svelte              The single page: all six sections, in menu order
 │  ├─ cases/                    List of all cases (accessible alternative to the map)
 │  ├─ cases/[slug]/             Single case page (share links, OG tags)
 │  └─ definition/[cause]/       Definition of one cause
@@ -100,10 +100,12 @@ src/
    │  └─ definitions/*.md       8 definitions
    ├─ state/
    │  ├─ game.svelte.ts         Game class: found, mode, causeFilter, progress, highlighted
+   │  ├─ stage.svelte.ts        StageTracker: scroll-spy for the current section (drives the ☰ pill)
    │  └─ progress.ts            ProgressStore interface; Local + Memory implementations
    ├─ components/
    │  ├─ ui/                    Button, CauseChip, Modal
    │  ├─ layout/                Header, Footer
+   │  ├─ sections/              IntroSection, DefinitionSection, ExploreSection, SectionPlaceholder
    │  ├─ map/                   MapScene, MapCamera, MapCanvas, Hotspot, ModeControls, CauseFilterBar
    │  ├─ story/                 ScrollStory (sticky map + scroll steps), StoryCard, ThoughtBubble, ContinueLink
    │  ├─ case/                  CaseCard, CaseList
@@ -135,7 +137,7 @@ Case {
 
 ## 5. State & interaction
 
-- **`Game`** (`game.svelte.ts`) is created per visit to `/explore`.
+- **`Game`** (`game.svelte.ts`) is created by `ExploreSection`.
   - It holds `found` (a reactive `SvelteSet`), `mode` (`default | hint | reveal`) and `causeFilter`.
   - `progress`, `isComplete` and `highlighted` are derived from those.
   - Saved progress is loaded in `onMount` via `restore()`, so the prerendered HTML matches hydration.
@@ -186,7 +188,7 @@ Case {
 6. **Gaps between the M0 scaffold and the prototype:**
    - `Case` needs `dimension` and `form` fields.
    - Definitions should be one tabbed panel, not 8 per-cause pages.
-   - KP3 and Result need their pages (Intro and KP1 are done with `ScrollStory`; KP3 is a plain article page).
+   - KP3, Result and About need their sections (`SectionPlaceholder` stands in; Intro and KP1 are done with `ScrollStory`; KP3 is a plain article page).
    - The game needs a เจาะดูทีละภาพ mode (step through cards with ‹ ›) and an exit to KP3.
 7. **Cause mapping per case.** The current `causes` in `cases/*.json` are **guesses from layer names** and must be confirmed.
 8. **Copy** for all cases and definitions. Each currently says `รอเนื้อหาจากทีม content`.

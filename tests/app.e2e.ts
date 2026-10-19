@@ -9,31 +9,87 @@ test('intro scrolls through its steps and can be skipped', async ({ page }) => {
 	await expect(page.getByRole('button', { name: /^Intro/ })).toBeVisible();
 
 	await page.getByRole('link', { name: 'ข้ามส่วนเกริ่น' }).click();
-	await expect(page).toHaveURL(/\/explore\/$/);
+	await expect(page).toHaveURL(/#explore$/);
+	await expect(page.getByRole('button', { name: /^สืบหา 18/ })).toBeVisible();
+	await expect(page.getByRole('link', { name: 'ข้ามส่วนเกริ่น' })).toBeHidden();
 });
 
 test('intro continues to KP1, which ends by starting the game', async ({ page }) => {
 	await page.goto('/');
 	await page.getByRole('link', { name: 'คลิกเพื่อดูต่อ' }).click();
-	await expect(page).toHaveURL(/\/what-is-discrimination\/$/);
+	await expect(page).toHaveURL(/#definition$/);
 	await expect(page.getByText('ภาพจำที่ลดคุณค่า')).toBeVisible();
 
-	const mission = page.getByRole('heading', { name: /สืบหา 18 การเลือกปฏิบัติ/ });
+	const mission = page.getByRole('heading', { name: /สืบหา 18 การเลือกปฏิบัติ/ }).first();
 	await mission.scrollIntoViewIfNeeded();
 	await expect(mission).toBeVisible();
 	await page.getByRole('link', { name: 'สำรวจเลย !' }).click();
-	await expect(page).toHaveURL(/\/explore\/$/);
+	await expect(page).toHaveURL(/#explore$/);
 });
 
-test('stage menu lists the built stages', async ({ page }) => {
+const menuLabels = [
+	'Intro',
+	'คำนิยามสั้น ๆ ของการเลือกปฏิบัติ',
+	'สืบหา 18 การเลือกปฏิบัติที่ซ่อนอยู่',
+	'สาเหตุที่ยังพบเห็นการเลือกปฏิบัติ',
+	'บทสรุป',
+	'เกี่ยวกับโครงการ'
+];
+
+test('stage menu lists all six sections and scrolls to the chosen one', async ({ page }) => {
 	await page.goto('/');
 	await page.getByRole('button', { name: /^Intro/ }).click();
-	await page.getByRole('link', { name: 'สืบหา 18 การเลือกปฏิบัติที่ซ่อนอยู่' }).click();
-	await expect(page).toHaveURL(/\/explore\/$/);
+	const menu = page.locator('#stage-menu');
+	await expect(menu.getByRole('link')).toHaveText(menuLabels);
+
+	await menu.getByRole('link', { name: 'บทสรุป' }).click();
+	await expect(page).toHaveURL(/#summary$/);
+	await expect(menu).toBeHidden();
+	await expect(page.locator('#summary')).toBeInViewport();
+});
+
+test('the pill label follows the section being scrolled through', async ({ page }) => {
+	await page.goto('/');
+	const pill = page.getByRole('button', { name: /เมนู$/ });
+	await expect(pill).toContainText('Intro');
+
+	await page.locator('#about').scrollIntoViewIfNeeded();
+	await expect(pill).toContainText('เกี่ยวกับโครงการ');
+
+	await page.locator('#causes').scrollIntoViewIfNeeded();
+	await expect(pill).toContainText('สาเหตุที่ยังพบเห็นการเลือกปฏิบัติ');
+
+	await pill.click();
+	await expect(
+		page.locator('#stage-menu').getByRole('link', { name: 'สาเหตุที่ยังพบเห็นการเลือกปฏิบัติ' })
+	).toHaveAttribute('aria-current', 'true');
+});
+
+test('stage menu closes with the ✕ button and with Escape', async ({ page }) => {
+	await page.goto('/');
+	const menu = page.locator('#stage-menu');
+
+	await page.getByRole('button', { name: /^Intro/ }).click();
+	await expect(menu).toBeVisible();
+	await page.getByRole('button', { name: 'ปิดเมนู' }).click();
+	await expect(menu).toBeHidden();
+
+	await page.getByRole('button', { name: /^Intro/ }).click();
+	await expect(menu).toBeVisible();
+	await page.keyboard.press('Escape');
+	await expect(menu).toBeHidden();
+});
+
+test('stage menu on a case page links back into the single page', async ({ page }) => {
+	await page.goto('/cases/karen/');
+	await page.getByRole('button', { name: /^สืบหา 18/ }).click();
+	await page.locator('#stage-menu').getByRole('link', { name: 'บทสรุป' }).click();
+	await expect(page).toHaveURL(/\/#summary$/);
+	await expect(page.locator('#summary')).toBeInViewport();
 });
 
 test('opening a case updates the URL, counts it as found, and back closes it', async ({ page }) => {
-	await page.goto('/explore/');
+	await page.goto('/');
 	await page.getByRole('button', { name: 'กรณี: นักเรียนสวมฮิญาบ' }).click();
 
 	const dialog = page.getByRole('dialog');
@@ -46,7 +102,7 @@ test('opening a case updates the URL, counts it as found, and back closes it', a
 });
 
 test('hint mode filters hotspots by cause', async ({ page }) => {
-	await page.goto('/explore/');
+	await page.goto('/');
 	await page.getByRole('button', { name: 'ใช้ตัวช่วย' }).click();
 	await page.getByRole('button', { name: 'ความเชื่อทางศาสนา' }).click();
 	await expect(page.getByRole('button', { name: 'ความเชื่อทางศาสนา' })).toHaveAttribute(
@@ -62,14 +118,7 @@ test('case and definition pages are prerendered', async ({ page }) => {
 	await expect(page).toHaveURL(/\/definition\/religion\/$/);
 });
 
-for (const path of [
-	'/',
-	'/what-is-discrimination/',
-	'/explore/',
-	'/cases/',
-	'/cases/karen/',
-	'/definition/age/'
-]) {
+for (const path of ['/', '/cases/', '/cases/karen/', '/definition/age/']) {
 	test(`no axe violations on ${path}`, async ({ page }) => {
 		await page.goto(path);
 		const { violations } = await new AxeBuilder({ page }).analyze();
