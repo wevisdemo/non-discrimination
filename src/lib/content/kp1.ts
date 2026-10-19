@@ -10,13 +10,14 @@ import { cityCentre } from './cameras.ts';
 /**
  * KP1, what discrimination is (Figma flow "DE-KP1", start node 571:10659).
  * Stereotypes → separating, excluding, restricting rights → "that is discrimination" → the
- * game-start popup. The map is under a flat 80% white wash throughout.
+ * game-start popup. The map is under an 80% white wash, fading in from the Intro's white at the
+ * start and back out to white at the end so neither edge shows a hard cut.
  */
 export const kp1Steps = [
-	{ id: 'stereotype', camera: cityCentre, dim: 0.8, wash: [0.8] },
+	{ id: 'stereotype', camera: cityCentre, dim: 0.8, wash: [1, 0.8] },
 	{ id: 'harm', camera: cityCentre, dim: 0.8, wash: [0.8] },
 	{ id: 'conclusion', camera: cityCentre, dim: 0.8, wash: [0.8] },
-	{ id: 'mission', camera: cityCentre, dim: 0.8, wash: [0.8] }
+	{ id: 'mission', camera: cityCentre, dim: 0.8, wash: [0.8, 1] }
 ] as const satisfies readonly StoryStep[];
 
 /**
