@@ -1,4 +1,6 @@
 <script lang="ts">
+	import FullContentPanel from '#lib/components/definition/FullContentPanel.svelte';
+	import InfoButton from '#lib/components/definition/InfoButton.svelte';
 	import Balloons from '#lib/components/story/Balloons.svelte';
 	import ContinueLink from '#lib/components/story/ContinueLink.svelte';
 	import GameThumbnail from '#lib/components/story/GameThumbnail.svelte';
@@ -7,13 +9,14 @@
 	import Button from '#lib/components/ui/Button.svelte';
 	import { cases } from '#lib/content/index.ts';
 	import { harmBalloons, kp1Steps, stereotypeBalloons } from '#lib/content/kp1.ts';
+	import { explore } from '#lib/state/explore.svelte.ts';
+	import { stageTracker } from '#lib/state/stage.svelte.ts';
+
+	let reading = $state(false);
 </script>
 
 <section id="definition">
-	<!--
-		Figma flow "DE-KP1". The prototype also shows an "อ่านเนื้อหาเต็ม" button here; it opens the
-		Definition panel, which is not built yet.
-	-->
+	<!-- Figma flow "DE-KP1" -->
 	<ScrollStory steps={kp1Steps}>
 		{#snippet children(track)}
 			<section
@@ -81,4 +84,12 @@
 			</section>
 		{/snippet}
 	</ScrollStory>
+
+	<!-- Floats bottom right while KP1 is on screen, where the Intro's skip button was -->
+	{#if stageTracker.current === 'definition' && !explore.open}
+		<div class="fixed right-m bottom-m z-30 lg:right-[34px] lg:bottom-[30px]">
+			<InfoButton onclick={() => (reading = true)} />
+		</div>
+	{/if}
+	<FullContentPanel open={reading} onclose={() => (reading = false)} />
 </section>

@@ -193,6 +193,34 @@ test('the tutorial can be skipped', async ({ page }) => {
 	await expect(page.getByRole('button', { name: 'เปิดตัวช่วย' })).toBeVisible();
 });
 
+test('อ่านเนื้อหาเต็ม opens the three-tab panel from KP1 and from the map', async ({ page }) => {
+	await page.goto('/');
+	await page.locator('[data-step="stereotype"]').scrollIntoViewIfNeeded();
+	await page.getByRole('button', { name: 'อ่านเนื้อหาเต็ม' }).click();
+	const panel = page.getByRole('dialog', { name: 'อ่านเนื้อหาเต็ม' });
+	await expect(
+		panel.getByRole('heading', { name: 'การเลือกปฏิบัติ (Discrimination)' })
+	).toBeVisible();
+
+	await panel.getByRole('tab', { name: /ใครมักถูก/ }).click();
+	await expect(panel.getByRole('heading', { name: 'ผู้ถูกเลือกปฏิบัติ' })).toBeVisible();
+	await panel.getByRole('tab', { name: /กรณีที่/ }).click();
+	await expect(panel.getByRole('button', { name: 'การเข้าถึงการรักษาพยาบาล' })).toHaveAttribute(
+		'aria-expanded',
+		'true'
+	);
+	// From KP1 the panel ends with a way into the map
+	await panel.getByRole('link', { name: 'ไปที่หน้าสำรวจ' }).click();
+	await expect(page).toHaveURL(/#explore$/);
+	await expect(panel).toBeHidden();
+
+	await page.getByRole('button', { name: 'อ่านเนื้อหาเต็ม' }).click();
+	await expect(panel).toBeVisible();
+	await expect(panel.getByRole('link', { name: 'ไปที่หน้าสำรวจ' })).toHaveCount(0);
+	await page.keyboard.press('Escape');
+	await expect(panel).toBeHidden();
+});
+
 test('the case card poll remembers the answer', async ({ page }) => {
 	await page.goto('/cases/karen/');
 	const answer = page.getByRole('button', { name: 'เคยเห็นกับตา' });

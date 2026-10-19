@@ -67,7 +67,11 @@
 		</MapScene>
 	</div>
 
-	<div class="absolute right-m bottom-m flex flex-col gap-xs" data-tutorial="zoom">
+	<!-- Above อ่านเนื้อหาเต็ม, which takes the bottom-right corner -->
+	<div
+		class="absolute right-m bottom-[72px] flex flex-col gap-xs lg:right-[34px] lg:bottom-[86px]"
+		data-tutorial="zoom"
+	>
 		<button
 			type="button"
 			class="size-10 rounded-full bg-surface text-b4 text-ink shadow"

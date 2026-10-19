@@ -6,6 +6,8 @@
 	import { page } from '$app/state';
 	import { trackEvent } from '#lib/analytics.ts';
 	import CasePanel from '#lib/components/case/CasePanel.svelte';
+	import FullContentPanel from '#lib/components/definition/FullContentPanel.svelte';
+	import InfoButton from '#lib/components/definition/InfoButton.svelte';
 	import MapCanvas from '#lib/components/map/MapCanvas.svelte';
 	import ExploreNav from '#lib/components/map/ExploreNav.svelte';
 	import HintDrawer from '#lib/components/map/HintDrawer.svelte';
@@ -16,6 +18,7 @@
 	import { LocalProgressStore } from '#lib/state/progress.ts';
 
 	const game = new Game(cases, new LocalProgressStore());
+	let reading = $state(false);
 	onMount(() => game.restore());
 
 	// Only the page's scrollbar is locked while the map is up; the map pans and zooms itself
@@ -92,7 +95,11 @@
 				<ExploreNav {game} stepping={!!page.state.stepping} onstep={startStepping} />
 			</div>
 			<div class="absolute bottom-0 left-0"><HintDrawer {game} /></div>
+			<div class="absolute right-m bottom-m lg:right-[34px] lg:bottom-[30px]" data-tutorial="info">
+				<InfoButton onclick={() => (reading = true)} />
+			</div>
 		</div>
+		<FullContentPanel open={reading} onclose={() => (reading = false)} inGame />
 		{#if explore.tutorial}<Tutorial onfinish={endTutorial} />{/if}
 		<!-- /cases is the accessible alternative to the map; the menu design has no entry for it -->
 		<a
