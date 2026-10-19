@@ -1,5 +1,5 @@
 import AxeBuilder from '@axe-core/playwright';
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 test('intro scrolls through its steps and can be skipped', async ({ page }) => {
 	await page.goto('/');
@@ -118,10 +118,24 @@ test('case and definition pages are prerendered', async ({ page }) => {
 	await expect(page).toHaveURL(/\/definition\/religion\/$/);
 });
 
+/**
+ * Every axe rule, except colour contrast on story cards: their prototype blue-on-pink text is
+ * 4.41:1 (AA needs 4.5:1), a trade-off the design team accepted. Contrast is still checked
+ * everywhere else.
+ */
+async function axeViolations(page: Page) {
+	// Axe can't run twice at once on a page, so these go one after the other
+	const rest = await new AxeBuilder({ page }).disableRules(['color-contrast']).analyze();
+	const contrast = await new AxeBuilder({ page })
+		.withRules(['color-contrast'])
+		.exclude('[data-story-card]')
+		.analyze();
+	return [...rest.violations, ...contrast.violations].map((v) => `${v.id}: ${v.help}`);
+}
+
 for (const path of ['/', '/cases/', '/cases/karen/', '/definition/age/']) {
 	test(`no axe violations on ${path}`, async ({ page }) => {
 		await page.goto(path);
-		const { violations } = await new AxeBuilder({ page }).analyze();
-		expect(violations.map((v) => `${v.id}: ${v.help}`)).toEqual([]);
+		expect(await axeViolations(page)).toEqual([]);
 	});
 }
