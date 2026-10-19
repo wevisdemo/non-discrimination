@@ -21,7 +21,11 @@
 		import('@panzoom/panzoom').then(({ default: Panzoom }) => {
 			if (destroyed) return;
 			const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+			// Open on the junction (the same view as KP1) rather than the map's top-left corner
+			const mapWidth = Math.max(parent.clientWidth, 1600);
 			pz = Panzoom(node, {
+				startX: parent.clientWidth / 2 - 0.53 * mapWidth,
+				startY: parent.clientHeight / 2 - 0.53 * mapWidth,
 				maxScale: 4,
 				minScale: 0.5,
 				contain: 'outside',

@@ -5,9 +5,9 @@
 	import { page } from '$app/state';
 	import { trackEvent } from '#lib/analytics.ts';
 	import CaseCard from '#lib/components/case/CaseCard.svelte';
-	import CauseFilterBar from '#lib/components/map/CauseFilterBar.svelte';
 	import MapCanvas from '#lib/components/map/MapCanvas.svelte';
-	import ModeControls from '#lib/components/map/ModeControls.svelte';
+	import ExploreNav from '#lib/components/map/ExploreNav.svelte';
+	import HintDrawer from '#lib/components/map/HintDrawer.svelte';
 	import Modal from '#lib/components/ui/Modal.svelte';
 	import { cases, getCase } from '#lib/content/index.ts';
 	import { Game } from '#lib/state/game.svelte.ts';
@@ -30,11 +30,16 @@
 <section id="explore" class="relative h-dvh">
 	<h2 class="sr-only">สืบหา 18 การเลือกปฏิบัติที่ซ่อนอยู่</h2>
 	<MapCanvas {game} onselect={openCase} />
-	<div
-		class="pointer-events-none absolute inset-x-m top-20 flex flex-col gap-s *:pointer-events-auto lg:inset-x-l"
-	>
-		<ModeControls {game} />
-		{#if game.mode === 'hint'}<CauseFilterBar {game} />{/if}
+	<!-- Figma "kp2-play": exit and reveal buttons top right, hints bottom left -->
+	<div class="pointer-events-none absolute inset-0 *:pointer-events-auto">
+		<p
+			class="absolute top-[79px] left-m rounded-full bg-surface px-m py-s text-b6 text-ink lg:left-[34px]"
+			aria-live="polite"
+		>
+			พบแล้ว {game.found.size}/{game.cases.length} เคส
+		</p>
+		<div class="absolute top-[79px] right-m lg:right-[34px]"><ExploreNav {game} /></div>
+		<div class="absolute bottom-m left-m"><HintDrawer {game} /></div>
 	</div>
 	<!-- /cases is the accessible alternative to the map; the menu design has no entry for it -->
 	<a

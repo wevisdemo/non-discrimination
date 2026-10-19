@@ -109,12 +109,32 @@ test('opening a case updates the URL, counts it as found, and back closes it', a
 
 test('hint mode filters hotspots by cause', async ({ page }) => {
 	await page.goto('/');
-	await page.getByRole('button', { name: 'ใช้ตัวช่วย' }).click();
+	await page.getByRole('button', { name: 'เปิดตัวช่วย' }).click();
 	await page.getByRole('button', { name: 'ความเชื่อทางศาสนา' }).click();
 	await expect(page.getByRole('button', { name: 'ความเชื่อทางศาสนา' })).toHaveAttribute(
 		'aria-pressed',
 		'true'
 	);
+});
+
+test('map controls: reveal, hints drawer and exit', async ({ page }) => {
+	await page.goto('/#explore');
+	const reveal = page.getByRole('button', { name: 'เฉลยตำแหน่งภาพ' });
+	await reveal.click();
+	await expect(reveal).toHaveAttribute('aria-pressed', 'true');
+	await reveal.click();
+	await expect(reveal).toHaveAttribute('aria-pressed', 'false');
+
+	await page.getByRole('button', { name: 'เปิดตัวช่วย' }).click();
+	await expect(page.getByRole('button', { name: 'ปิดตัวช่วย' })).toHaveAttribute(
+		'aria-expanded',
+		'true'
+	);
+	await page.getByRole('button', { name: 'ปิดตัวช่วย' }).click();
+	await expect(page.getByRole('button', { name: 'เปิดตัวช่วย' })).toBeVisible();
+
+	await page.getByRole('link', { name: 'ออกจากการสำรวจ' }).click();
+	await expect(page).toHaveURL(/#causes$/);
 });
 
 test('case and definition pages are prerendered', async ({ page }) => {

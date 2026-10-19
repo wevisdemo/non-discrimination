@@ -106,7 +106,7 @@ src/
    │  ├─ ui/                    Button, CauseChip, Modal
    │  ├─ layout/                Header, Footer
    │  ├─ sections/              IntroSection, DefinitionSection, ExploreSection, SectionPlaceholder
-   │  ├─ map/                   MapScene, MapCamera, MapCanvas, Hotspot, ModeControls, CauseFilterBar
+   │  ├─ map/                   MapScene, MapCamera, MapCanvas, Hotspot, ExploreNav, HintDrawer, CauseFilterBar
    │  ├─ story/                 ScrollStory (sticky map + scroll steps), StoryCard, ThoughtBubble, ContinueLink, Balloons, GameThumbnail
    │  ├─ case/                  CaseCard, CaseList
    │  └─ definition/            DefinitionPanel, SearchCTA
