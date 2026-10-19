@@ -1,7 +1,15 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
-	let { class: className = '', children }: { class?: string; children: Snippet } = $props();
+	let {
+		class: className = '',
+		compact = false,
+		children
+	}: {
+		class?: string;
+		/** The narrow card used in KP1 */ compact?: boolean;
+		children: Snippet;
+	} = $props();
 </script>
 
 <!--
@@ -11,7 +19,9 @@
 -->
 <div
 	data-story-card
-	class="max-w-md rounded-card bg-ui-primary p-l text-center text-b5 text-primary lg:text-b4 {className}"
+	class="rounded-card bg-ui-primary text-center text-b5 text-primary {compact
+		? 'w-[246px] p-m'
+		: 'max-w-md p-l lg:text-b4'} {className}"
 >
 	{@render children()}
 </div>

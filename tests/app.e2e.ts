@@ -16,7 +16,7 @@ test('intro scrolls through its steps and can be skipped', async ({ page }) => {
 
 test('intro continues to KP1, which ends by starting the game', async ({ page }) => {
 	await page.goto('/');
-	await page.getByRole('link', { name: 'คลิกเพื่อดูต่อ' }).click();
+	await page.locator('#intro').getByRole('link', { name: 'คลิกเพื่อดูต่อ' }).click();
 	await expect(page).toHaveURL(/#definition$/);
 	await expect(page.getByText('ภาพจำที่ลดคุณค่า')).toBeVisible();
 
@@ -25,6 +25,12 @@ test('intro continues to KP1, which ends by starting the game', async ({ page })
 	await expect(mission).toBeVisible();
 	await page.getByRole('link', { name: 'สำรวจเลย !' }).click();
 	await expect(page).toHaveURL(/#explore$/);
+});
+
+test('KP1 can continue on to the causes section', async ({ page }) => {
+	await page.goto('/#definition');
+	await page.locator('#definition').getByRole('link', { name: 'คลิกเพื่อดูต่อ' }).click();
+	await expect(page).toHaveURL(/#causes$/);
 });
 
 const menuLabels = [
