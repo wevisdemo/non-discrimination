@@ -1,12 +1,7 @@
 <script lang="ts">
 	import { MAP_SIZE, type Case } from '#lib/content/index.ts';
 
-	let {
-		item,
-		found,
-		highlighted,
-		onselect
-	}: { item: Case; found: boolean; highlighted: boolean; onselect: (slug: string) => void } =
+	let { item, found, onselect }: { item: Case; found: boolean; onselect: (slug: string) => void } =
 		$props();
 
 	const pct = (v: number, total: number) => `${(v / total) * 100}%`;
@@ -16,15 +11,11 @@
 	);
 </script>
 
-<!-- Invisible until found so players still have to look; in reveal the case itself is drawn
-	above the wash (design.md §2.4) -->
+<!-- No frame, even once found, so the illustration stays clean; only keyboard focus shows an
+	outline (layout.css). "Found" is still announced in the label. -->
 <button
 	type="button"
-	class="absolute rounded-card border-4 transition-colors {highlighted
-		? 'border-transparent'
-		: found
-			? 'border-primary/60'
-			: 'border-transparent hover:border-primary/40'}"
+	class="absolute rounded-card"
 	{style}
 	aria-label="กรณี: {item.titleTh}{found ? ' (พบแล้ว)' : ''}"
 	onclick={() => onselect(item.slug)}

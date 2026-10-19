@@ -49,12 +49,7 @@
 		<!-- Reveal / hint: wash the city so highlighted cases pop (design.md §2.4) -->
 		<MapScene dim={game.highlighted.size ? 0.8 : 0} spotlight={game.highlighted}>
 			{#each game.cases as item (item.slug)}
-				<Hotspot
-					{item}
-					found={game.found.has(item.slug)}
-					highlighted={game.highlighted.has(item.slug)}
-					{onselect}
-				/>
+				<Hotspot {item} found={game.found.has(item.slug)} {onselect} />
 			{/each}
 			<!-- Reveal (Figma "ดูเฉลย"): each case's causes as tags below it -->
 			{#if game.mode === 'reveal'}
