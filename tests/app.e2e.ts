@@ -110,8 +110,9 @@ test('opening a case updates the URL, counts it as found, and back closes it', a
 
 	await page.goBack();
 	await expect(dialog).toBeHidden();
-	// The map overlay is still up underneath
+	// The map overlay is still up underneath, with a check on the found case
 	await expect(page.getByText('พบแล้ว 1/18 เคส')).toBeVisible();
+	await expect(page.locator('#explore button[aria-label$="(พบแล้ว)"] svg')).toHaveCount(1);
 });
 
 test('hints list every case to look for', async ({ page }) => {
