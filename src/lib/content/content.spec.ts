@@ -15,6 +15,25 @@ describe('content', () => {
 		expect(new Set(cases.map((c) => c.slug)).size).toBe(cases.length);
 	});
 
+	it('has the datasheet fields on every case', () => {
+		for (const c of cases) {
+			expect(c.summaryTh.length, c.slug).toBeGreaterThan(20);
+			expect(c.dimensionTh, c.slug).toBeTruthy();
+			expect(c.formsTh.length, c.slug).toBeGreaterThan(0);
+			expect(c.perpetratorTh, c.slug).toBeTruthy();
+			expect(c.affectedTh, c.slug).toBeTruthy();
+		}
+	});
+
+	it('uses the datasheet titles and causes', () => {
+		expect(getCase('hijab-school')?.titleTh).toBe(
+			'นักเรียนมุสลิมถูกห้ามคลุมฮิญาบมาโรงเรียนในเขตวัด'
+		);
+		// An intersex applicant: both a health and a gender ground
+		expect(getCase('katoey-police')?.causes).toEqual(['health', 'gender']);
+		expect(getCase('gender-promotion')?.formsTh).toEqual(['ทางตรง', 'เชิงโครงสร้าง']);
+	});
+
 	it('looks cases up by slug', () => {
 		expect(getCase('hijab-school')?.causes).toContain('religion');
 		expect(getCase('nope')).toBeUndefined();

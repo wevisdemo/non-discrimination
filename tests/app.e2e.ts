@@ -96,10 +96,16 @@ test('stage menu on a case page links back into the single page', async ({ page 
 
 test('opening a case updates the URL, counts it as found, and back closes it', async ({ page }) => {
 	await page.goto('/#explore');
-	await page.getByRole('button', { name: 'กรณี: นักเรียนสวมฮิญาบ' }).click();
+	await page
+		.getByRole('button', { name: 'กรณี: นักเรียนมุสลิมถูกห้ามคลุมฮิญาบมาโรงเรียนในเขตวัด' })
+		.click();
 
-	const dialog = page.getByRole('dialog', { name: 'นักเรียนสวมฮิญาบ' });
-	await expect(dialog.getByRole('heading', { name: 'นักเรียนสวมฮิญาบ' })).toBeVisible();
+	const dialog = page.getByRole('dialog', {
+		name: 'นักเรียนมุสลิมถูกห้ามคลุมฮิญาบมาโรงเรียนในเขตวัด'
+	});
+	await expect(
+		dialog.getByRole('heading', { name: 'นักเรียนมุสลิมถูกห้ามคลุมฮิญาบมาโรงเรียนในเขตวัด' })
+	).toBeVisible();
 	await expect(page).toHaveURL(/\/cases\/hijab-school\/?$/);
 
 	await page.goBack();
@@ -161,7 +167,9 @@ test('map controls: reveal, hints drawer and exit', async ({ page }) => {
 
 test('case and definition pages are prerendered', async ({ page }) => {
 	await page.goto('/cases/hijab-school/');
-	await expect(page.getByRole('heading', { level: 1 })).toHaveText('นักเรียนสวมฮิญาบ');
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+		'นักเรียนมุสลิมถูกห้ามคลุมฮิญาบมาโรงเรียนในเขตวัด'
+	);
 	await page.getByRole('link', { name: /อ่านนิยาม/ }).click();
 	await expect(page).toHaveURL(/\/definition\/religion\/$/);
 });

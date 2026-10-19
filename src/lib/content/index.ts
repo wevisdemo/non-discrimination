@@ -45,4 +45,5 @@ export function getCause(id: CauseId): Cause {
 	return causes.find((c) => c.id === id)!;
 }
 
+export * from './reporting.ts';
 export * from './schema.ts';

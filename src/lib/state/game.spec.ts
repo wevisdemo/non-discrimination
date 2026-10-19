@@ -31,7 +31,8 @@ describe('Game', () => {
 		game.setMode('hint');
 		expect(game.highlighted.size).toBe(0);
 		game.causeFilter = 'religion';
-		expect([...game.highlighted]).toEqual(['hijab-school']);
+		// The datasheet files the Karen prisoner's forced haircut under religion too
+		expect([...game.highlighted]).toEqual(['hijab-school', 'karen']);
 		game.setMode('reveal');
 		expect(game.causeFilter).toBeNull();
 		expect(game.highlighted.size).toBe(cases.length);

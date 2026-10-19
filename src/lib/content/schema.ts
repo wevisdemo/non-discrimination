@@ -31,6 +31,16 @@ export const caseSchema = z
 		titleTh: z.string().min(1),
 		summaryTh: z.string().min(1),
 		causes: z.array(causeIdSchema).min(1),
+		/** มิติแห่งการเลือกปฏิบัติ, e.g. สิทธิการทำงาน */
+		dimensionTh: z.string().min(1),
+		/** รูปแบบของการเลือกปฏิบัติ, e.g. ทางตรง, เชิงโครงสร้าง */
+		formsTh: z.array(z.string().min(1)).min(1),
+		/** ผู้กระทำ */
+		perpetratorTh: z.string().min(1),
+		/** ผู้ได้รับผลกระทบ */
+		affectedTh: z.string().min(1),
+		/** บันทึกเพิ่มเติม: the legal basis or a later development, when the datasheet has one */
+		noteTh: z.string().min(1).optional(),
 		hotspot: z.object({
 			x: z.number().min(0),
 			y: z.number().min(0),
