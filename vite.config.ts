@@ -19,9 +19,10 @@ export default defineConfig({
 			adapter: adapter({ fallback: '404.html' }),
 			// CI sets BASE_PATH=/non-discrimination for wevisdemo.github.io/non-discrimination
 			prerender: {
-				// `/#explore` opens the map overlay on the client; the prerendered page has no #explore
+				// `/#explore` (and `#explore-tutorial`) open the map overlay on the client; the prerendered
+				// page has no such element
 				handleMissingId: ({ id, message }) => {
-					if (id !== 'explore') throw new Error(message);
+					if (id !== 'explore' && id !== 'explore-tutorial') throw new Error(message);
 				}
 			},
 			paths: { base: (process.env.BASE_PATH ?? '') as '' | `/${string}` },

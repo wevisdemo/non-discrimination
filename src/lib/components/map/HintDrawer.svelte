@@ -20,6 +20,7 @@
 		<button
 			type="button"
 			class="flex items-center justify-center gap-s rounded-lg bg-ui-primary p-s text-b6 text-ink hover:bg-ui-primary-hover"
+			data-tutorial="hints"
 			aria-expanded={open}
 			aria-controls="hint-list"
 			onclick={toggle}

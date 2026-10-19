@@ -23,6 +23,7 @@
 	<!-- eslint-disable svelte/no-navigation-without-resolve -- in-page anchor -->
 	<a
 		href="#causes"
+		data-tutorial="exit"
 		class="flex items-center justify-center gap-s rounded-lg bg-ui-secondary p-s text-b6 text-ink hover:bg-ui-secondary-hover"
 	>
 		<span class="relative size-[22px] shrink-0 overflow-clip" aria-hidden="true">
@@ -38,11 +39,23 @@
 	</a>
 	<!-- eslint-enable svelte/no-navigation-without-resolve -->
 	<!-- The exported icons carry a white square meant to be multiplied away -->
-	<button type="button" class={button} aria-pressed={game.mode === 'reveal'} onclick={toggleReveal}>
+	<button
+		type="button"
+		class={button}
+		data-tutorial="reveal"
+		aria-pressed={game.mode === 'reveal'}
+		onclick={toggleReveal}
+	>
 		<img src={view} alt="" width="22" height="22" class="mix-blend-multiply" />
 		เฉลยตำแหน่งภาพ
 	</button>
-	<button type="button" class={button} aria-pressed={stepping} onclick={onstep}>
+	<button
+		type="button"
+		class={button}
+		data-tutorial="step"
+		aria-pressed={stepping}
+		onclick={onstep}
+	>
 		<img src={crossroads} alt="" width="22" height="22" class="mix-blend-multiply" />
 		เจาะดูทีละภาพ
 	</button>

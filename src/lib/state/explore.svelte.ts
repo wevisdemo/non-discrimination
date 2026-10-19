@@ -10,7 +10,12 @@ class ExploreOverlay {
 	ready = $state(false);
 
 	get open() {
-		return this.ready && (page.url.hash === '#explore' || !!page.state.caseSlug);
+		return this.ready && (this.tutorial || page.url.hash === '#explore' || !!page.state.caseSlug);
+	}
+
+	/** แนะนำการสำรวจ (KP1) opens the map with the tutorial over it */
+	get tutorial() {
+		return this.ready && page.url.hash === '#explore-tutorial';
 	}
 }
 

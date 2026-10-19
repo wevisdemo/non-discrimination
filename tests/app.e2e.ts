@@ -159,6 +159,40 @@ test('เจาะดูทีละภาพ steps through the cases in datashe
 	await expect(page).toHaveURL(/#explore$/);
 });
 
+test('แนะนำการสำรวจ opens the map with a four-step tutorial', async ({ page }) => {
+	await page.goto('/#definition');
+	await page.locator('#definition').getByRole('link', { name: 'แนะนำการสำรวจ' }).click();
+	await expect(page).toHaveURL(/#explore-tutorial$/);
+	const tutorial = page.getByRole('dialog', { name: /มาดูกันว่าปุ่มต่าง ๆ/ });
+	await expect(tutorial).toBeVisible();
+
+	for (const [n, title] of [
+		[1, 'ตัวช่วย'],
+		[2, 'เฉลยตำแหน่งภาพ'],
+		[3, 'เจาะดูทีละภาพ'],
+		[4, 'ออกจากการสำรวจ']
+	] as const) {
+		await page.getByRole('button', { name: 'ถัดไป' }).click();
+		const tip = page.getByRole('dialog', { name: title });
+		await expect(tip.getByText(`${n}/4`)).toBeVisible();
+	}
+	// The controls not being explained are dimmed and inert
+	await expect(page.locator('[data-tutorial="reveal"]')).toHaveCSS('opacity', '0.2');
+
+	await page.getByRole('button', { name: 'ถัดไป' }).click();
+	await page.getByRole('button', { name: 'เริ่มสำรวจ!' }).click();
+	await expect(page).toHaveURL(/#explore$/);
+	await expect(page.locator('[data-tutorial="reveal"]')).toHaveCSS('opacity', '1');
+	await expect(page.getByRole('button', { name: 'ถัดไป' })).toHaveCount(0);
+});
+
+test('the tutorial can be skipped', async ({ page }) => {
+	await page.goto('/#explore-tutorial');
+	await page.getByRole('button', { name: 'ข้าม', exact: true }).click();
+	await expect(page).toHaveURL(/#explore$/);
+	await expect(page.getByRole('button', { name: 'เปิดตัวช่วย' })).toBeVisible();
+});
+
 test('the case card poll remembers the answer', async ({ page }) => {
 	await page.goto('/cases/karen/');
 	const answer = page.getByRole('button', { name: 'เคยเห็นกับตา' });

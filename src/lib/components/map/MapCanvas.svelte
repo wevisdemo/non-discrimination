@@ -67,7 +67,7 @@
 		</MapScene>
 	</div>
 
-	<div class="absolute right-m bottom-m flex flex-col gap-xs">
+	<div class="absolute right-m bottom-m flex flex-col gap-xs" data-tutorial="zoom">
 		<button
 			type="button"
 			class="size-10 rounded-full bg-surface text-b4 text-ink shadow"

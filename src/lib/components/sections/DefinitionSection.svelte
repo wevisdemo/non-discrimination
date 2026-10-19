@@ -72,7 +72,10 @@
 						เลื่อนและขยายภาพเมืองเพื่อค้นหาการเลือกปฏิบัติที่ซ่อนอยู่ {cases.length} จุด ภาพการเลือกปฏิบัติจะสามารถกดเพื่ออ่านรายละเอียดได้
 					</p>
 					<Button href="#explore">สำรวจเลย !</Button>
-					<!-- TODO: "แนะนำการสำรวจ" (exploration tips) link; its content is not in the prototype yet -->
+					<!-- Opens the map with the tutorial over it (Figma "kp2-tutorial") -->
+					<a href="#explore-tutorial" class="text-b6 text-ink underline hover:text-primary"
+						>แนะนำการสำรวจ</a
+					>
 				</div>
 				<ContinueLink href="#causes" />
 			</section>
