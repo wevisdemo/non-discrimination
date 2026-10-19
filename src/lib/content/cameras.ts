@@ -9,11 +9,16 @@ export const cityOverview: Camera = { x: 0.42, y: 0.26, zoom: ZOOM };
 /** Prototype "KP1" frame: the junction with the red car, temple gate and police station. */
 export const cityCentre: Camera = { x: 0.53, y: 0.53, zoom: ZOOM };
 
-/**
- * Intro "bubbles" frame: the gender, HIV-test and ex-convict cases and their bubbles. Matches the
- * prototype's scale (map ≈ 1651px wide on a 1280px frame) with the map's left edge on screen.
+/*
+ * Intro "bubbles" frames (Figma "Intro Animation"): one close-up per case with its bubble, then a
+ * wide shot of all three. Each centre is the middle of the case plus its bubble, in map units
+ * divided by MAP_SIZE. The cases hug the map's left edge, so the camera clamps there and the
+ * close-ups sit toward the left of the screen; the map always fills the frame.
  */
-export const introCases: Camera = { x: 0.15, y: 0.265, zoom: 1.29 };
+export const introGender: Camera = { x: 0.2024, y: 0.1607, zoom: 1.95 };
+export const introExCon: Camera = { x: 0.0674, y: 0.3641, zoom: 2.3 };
+export const introHiv: Camera = { x: 0.1993, y: 0.343, zoom: 2.1 };
+export const introAllCases: Camera = { x: 0.1607, y: 0.2594, zoom: 1.25 };
 
 /** Centre the camera on a case so anything pinned to it is on screen, even on a narrow phone. */
 export function focusOn(slug: string): Camera {

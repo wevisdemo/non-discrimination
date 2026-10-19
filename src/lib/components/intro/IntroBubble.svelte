@@ -48,9 +48,11 @@
 	}: { variant: BubbleVariant; class?: string; style?: string; children: Snippet } = $props();
 
 	const shape = $derived(shapes[variant]);
+	/** Map width in Figma px at the prototype's scale; sizes are shares of it so bubbles scale with the map. */
+	const cqw = (px: number) => `${(px / 1651) * 100}cqw`;
 </script>
 
-<div class={className} style="width:{shape.w}px;height:{shape.h}px;{style}">
+<div class={className} style="width:{cqw(shape.w)};height:{cqw(shape.h)};{style}">
 	<img
 		src={shape.src}
 		alt=""
@@ -58,8 +60,10 @@
 		style={shape.rotate ? `transform:rotate(${shape.rotate}deg)` : undefined}
 	/>
 	<p
-		class="absolute -translate-x-1/2 text-center text-b6 whitespace-pre-line text-primary"
-		style="left:{shape.text.x}%;top:{shape.text.top}%;width:{shape.text.w}%"
+		class="absolute -translate-x-1/2 text-center whitespace-pre-line text-primary"
+		style="left:{shape.text.x}%;top:{shape.text.top}%;width:{shape.text.w}%;font-size:{cqw(
+			14
+		)};line-height:1.5"
 	>
 		{@render children()}
 	</p>

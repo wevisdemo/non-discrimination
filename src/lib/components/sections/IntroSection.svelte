@@ -10,10 +10,13 @@
 	import { introBubbles, introSteps } from '#lib/content/intro.ts';
 	import { stageTracker } from '#lib/state/stage.svelte.ts';
 
-	/** Top-left of a bubble: its case's top-left on the map plus the prototype's offset in px. */
+	/**
+	 * Top-left of a bubble: its case's top-left on the map plus the prototype's offset, which is
+	 * converted to a share of the map width (1651 Figma px) so it scales with the camera.
+	 */
 	function pinTo(slug: string, offset: { x: number; y: number }) {
 		const { hotspot: h } = getCase(slug)!;
-		return `left:calc(${(h.x / MAP_SIZE.width) * 100}% + ${offset.x}px);top:calc(${(h.y / MAP_SIZE.height) * 100}% + ${offset.y}px)`;
+		return `left:calc(${(h.x / MAP_SIZE.width) * 100}% + ${(offset.x / 1651) * 100}cqw);top:calc(${(h.y / MAP_SIZE.height) * 100}% + ${(offset.y / 1651) * 100}cqw)`;
 	}
 </script>
 
@@ -21,13 +24,19 @@
 	<!-- Figma flow "DE-Intro" -->
 	<ScrollStory steps={introSteps}>
 		{#snippet mapOverlay(active)}
-			{#each introBubbles as bubble (bubble.slug)}
-				<IntroBubble
-					variant={bubble.variant}
-					class="absolute transition-opacity duration-700 {active === 'bubbles' ? '' : 'opacity-0'}"
-					style={pinTo(bubble.slug, bubble.offset)}>{bubble.text}</IntroBubble
-				>
-			{/each}
+			<!-- A size container, so bubbles and their text scale with the map as the camera zooms -->
+			<div class="[container-type:inline-size] absolute inset-0">
+				{#each introBubbles as bubble (bubble.slug)}
+					<IntroBubble
+						variant={bubble.variant}
+						class="absolute transition-opacity duration-700 {active === bubble.slug ||
+						active === 'bubbles-all'
+							? ''
+							: 'opacity-0'}"
+						style={pinTo(bubble.slug, bubble.offset)}>{bubble.text}</IntroBubble
+					>
+				{/each}
+			</div>
 		{/snippet}
 
 		{#snippet children(track)}
@@ -52,12 +61,16 @@
 				<div class="h-dvh"></div>
 			</section>
 
-			<section data-step="bubbles" {@attach track} class="h-dvh">
+			<!-- One screen per case, then all three together -->
+			<section data-step="gender-promotion" {@attach track} class="h-dvh">
 				<!-- The map bubbles are decorative; this list carries the same text for screen readers -->
 				<ul class="sr-only">
 					{#each introBubbles as bubble (bubble.slug)}<li>{bubble.text}</li>{/each}
 				</ul>
 			</section>
+			<section data-step="ex-con-job" {@attach track} class="h-dvh" aria-hidden="true"></section>
+			<section data-step="hiv-test-job" {@attach track} class="h-dvh" aria-hidden="true"></section>
+			<section data-step="bubbles-all" {@attach track} class="h-dvh" aria-hidden="true"></section>
 
 			<section
 				data-step="meaning"

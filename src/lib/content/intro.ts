@@ -1,10 +1,10 @@
 import type { StoryStep } from '#lib/components/story/ScrollStory.svelte';
 import type { BubbleVariant } from '#lib/components/intro/IntroBubble.svelte';
-import { cityOverview, introCases } from './cameras.ts';
+import { cityOverview, introAllCases, introExCon, introGender, introHiv } from './cameras.ts';
 
 /**
- * Thought bubbles in the "bubbles" step (Figma frame "m-2"); each is pinned to a case, which is
- * spotlighted. `offset` is the bubble's top-left from its case's top-left, in px. The prototype
+ * Thought bubbles (Figma frame "m-2"), in the order the Intro reveals them; each is pinned to a
+ * case, which is spotlighted while its bubble is shown. `offset` is the bubble's top-left from its case's top-left, in px. The prototype
  * lays the ex-convict case out away from where it sits on the map, so that bubble is placed
  * below its case instead.
  */
@@ -21,16 +21,16 @@ export const introBubbles: {
 		offset: { x: 160, y: -111 }
 	},
 	{
-		slug: 'hiv-test-job',
-		variant: 'orange',
-		text: 'มีคนถูกบังคับ\nตรวจเชื้อ HIV\nก่อนเข้าทำงาน',
-		offset: { x: 176, y: 120 }
-	},
-	{
 		slug: 'ex-con-job',
 		variant: 'yellow',
 		text: 'มีคนไม่ถูกรับเข้า\nทำงานเพราะมี\nประวัติอาชญากรรม',
 		offset: { x: -30, y: 150 }
+	},
+	{
+		slug: 'hiv-test-job',
+		variant: 'orange',
+		text: 'มีคนถูกบังคับ\nตรวจเชื้อ HIV\nก่อนเข้าทำงาน',
+		offset: { x: 176, y: 120 }
 	}
 ];
 
@@ -42,9 +42,19 @@ export const introBubbles: {
 export const introSteps = [
 	{ id: 'question', camera: cityOverview, dim: 0.8, wash: [1, 0.8] },
 	{ id: 'city', camera: cityOverview, dim: 0, wash: [0.8, 0, 0.8] },
+	// One close-up per case and bubble ("Intro Animation"), then a wide shot of all three
 	{
-		id: 'bubbles',
-		camera: introCases,
+		id: 'gender-promotion',
+		camera: introGender,
+		dim: 0.8,
+		wash: [0.8],
+		spotlight: ['gender-promotion']
+	},
+	{ id: 'ex-con-job', camera: introExCon, dim: 0.8, wash: [0.8], spotlight: ['ex-con-job'] },
+	{ id: 'hiv-test-job', camera: introHiv, dim: 0.8, wash: [0.8], spotlight: ['hiv-test-job'] },
+	{
+		id: 'bubbles-all',
+		camera: introAllCases,
 		dim: 0.8,
 		wash: [0.8],
 		spotlight: introBubbles.map((b) => b.slug)
