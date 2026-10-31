@@ -4,9 +4,6 @@
 	import learn3 from '#lib/assets/definition/elearning-3.png?enhanced';
 
 	let { class: className = '' }: { class?: string } = $props();
-
-	// TODO(content): the E-Learning "The Inclusion Lab" URL; the design has no link target
-	const ELEARNING_URL: string | undefined = undefined;
 </script>
 
 <!-- Figma "E-Learning": in the full-content panel and at the end of the Result -->
@@ -28,17 +25,12 @@
 		{/each}
 	</div>
 	<p class="text-b6">
-		ชวนเรียนรู้ต่อที่ <strong>E-Learning: ‘The Inclusion Lab’</strong><br />โดย
-		สํานักงานคณะกรรมการสิทธิมนุษยชนแห่งชาติ เครือข่ายประชาชนขจัดการเลือกปฏิบัติ (MovED)
-		และมูลนิธิเพื่อสิทธิความหลากหลาย พร้อมรับเกียรติบัตรหลังทำแบบทดสอบ !
-	</p>
-	{#if ELEARNING_URL}
-		<a
-			href={ELEARNING_URL}
+		ชวนเรียนรู้ต่อที่ <a
+			href="https://move-d.org/lab/"
 			target="_blank"
 			rel="noopener external"
-			class="rounded-full border-2 border-ink bg-ui-primary px-m py-s text-b5 hover:bg-ui-primary-hover"
-			>คลิกที่นี่</a
-		>
-	{/if}
+			class="font-bold underline hover:text-primary">E-Learning: ‘The Inclusion Lab’</a
+		><br />โดย สํานักงานคณะกรรมการสิทธิมนุษยชนแห่งชาติ เครือข่ายประชาชนขจัดการเลือกปฏิบัติ (MovED)
+		และมูลนิธิเพื่อสิทธิความหลากหลาย พร้อมรับเกียรติบัตรหลังทำแบบทดสอบ !
+	</p>
 </section>

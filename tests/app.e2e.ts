@@ -273,6 +273,10 @@ test('the Result has share links and continues to About', async ({ page }) => {
 		'href',
 		/twitter\.com\/intent/
 	);
+	await expect(summary.getByRole('link', { name: /The Inclusion Lab/ })).toHaveAttribute(
+		'href',
+		'https://move-d.org/lab/'
+	);
 	await summary.getByRole('link', { name: 'คลิกเพื่อดูต่อ' }).click();
 	await expect(page).toHaveURL(/#about$/);
 });
