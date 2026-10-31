@@ -1,7 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 
-test('intro scrolls through its steps and can be skipped', async ({ page }) => {
+test('intro scrolls through its steps and can be skipped to the title', async ({ page }) => {
 	await page.goto('/');
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText(
 		/คุณเห็น.*ความผิดปกติ.*ในภาพนี้หรือไม่/
@@ -9,8 +9,9 @@ test('intro scrolls through its steps and can be skipped', async ({ page }) => {
 	await expect(page.getByRole('button', { name: /^Intro/ })).toBeVisible();
 
 	await page.getByRole('link', { name: 'ข้ามส่วนเกริ่น' }).click();
-	await expect(page).toHaveURL(/#explore$/);
-	await expect(page.getByRole('button', { name: /^สืบหา 18/ })).toBeVisible();
+	await expect(page).toHaveURL(/#intro-title$/);
+	await expect(page.locator('#intro-title').getByText('ตระหนัก เข้าใจ')).toBeInViewport();
+	// Nothing left to skip once you are there
 	await expect(page.getByRole('link', { name: 'ข้ามส่วนเกริ่น' })).toBeHidden();
 });
 

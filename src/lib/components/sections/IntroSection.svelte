@@ -11,6 +11,8 @@
 	import { explore } from '#lib/state/explore.svelte.ts';
 	import { stageTracker } from '#lib/state/stage.svelte.ts';
 
+	let step = $state<(typeof introSteps)[number]['id']>('question');
+
 	/**
 	 * Top-left of a bubble: its case's top-left on the map plus the prototype's offset, which is
 	 * converted to a share of the map width (1651 Figma px) so it scales with the camera.
@@ -23,7 +25,7 @@
 
 <section id="intro">
 	<!-- Figma flow "DE-Intro" -->
-	<ScrollStory steps={introSteps}>
+	<ScrollStory steps={introSteps} bind:active={step}>
 		{#snippet mapOverlay(active)}
 			<!-- A size container, so bubbles and their text scale with the map as the camera zooms -->
 			<div class="[container-type:inline-size] absolute inset-0">
@@ -94,6 +96,7 @@
 			</section>
 
 			<section
+				id="intro-title"
 				data-step="title"
 				{@attach track}
 				class="flex h-svh flex-col items-center justify-center gap-m px-m text-center"
@@ -108,10 +111,10 @@
 		{/snippet}
 	</ScrollStory>
 
-	<!-- Skips the whole preamble (Intro and KP1) straight to the game; only while the Intro is on screen -->
-	{#if stageTracker.current === 'intro' && !explore.open}
+	<!-- Skips the story to the title lock-up; not needed once you are there -->
+	{#if stageTracker.current === 'intro' && step !== 'title' && !explore.open}
 		<a
-			href="#explore"
+			href="#intro-title"
 			class="fixed right-m bottom-m z-30 flex items-center gap-xs rounded-full bg-ui-primary px-m py-s text-b5 text-ink shadow hover:bg-ui-primary-hover lg:right-l lg:bottom-l"
 		>
 			ข้ามส่วนเกริ่น <img
