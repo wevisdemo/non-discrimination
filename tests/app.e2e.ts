@@ -356,6 +356,26 @@ test('case and definition pages are prerendered', async ({ page }) => {
 	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 });
 
+/** The screens in the Figma "Illustration for screens" section */
+const devices = [
+	['Standard Desktop', 1440, 1024],
+	['iPad Pro 11', 834, 1194],
+	['iPad Mini 8.3', 744, 1133],
+	['iPhone 17 Pro Max', 440, 956],
+	['Android Compact', 412, 917]
+] as const;
+
+for (const [name, width, height] of devices) {
+	test(`nothing overflows sideways on ${name}`, async ({ page }) => {
+		await page.setViewportSize({ width, height });
+		for (const path of ['/', '/#explore', '/cases/', '/cases/karen/', '/definition/age/']) {
+			await page.goto(path);
+			const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+			expect(scrollWidth, path).toBeLessThanOrEqual(width);
+		}
+	});
+}
+
 /**
  * Every axe rule, except colour contrast on story cards: their prototype blue-on-pink text is
  * 4.41:1 (AA needs 4.5:1), a trade-off the design team accepted. Contrast is still checked
