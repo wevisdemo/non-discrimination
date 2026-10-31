@@ -4,11 +4,11 @@
 	import person from '#lib/assets/kp2/poll-person.svg';
 	import cross from '#lib/assets/kp2/poll-x.svg';
 	import { trackEvent } from '#lib/analytics.ts';
-	import { LocalPollStore, type PollChoice } from '#lib/state/poll.ts';
+	import { LocalPollStore, POLL_CHOICES, type PollChoice } from '#lib/state/poll.ts';
 
 	let { slug, headingLevel = 3 }: { slug: string; headingLevel?: 2 | 3 } = $props();
 
-	const store = new LocalPollStore();
+	const store = new LocalPollStore('non-discrimination:poll', POLL_CHOICES);
 	// Not $derived: the saved answer must be read after hydration, so the prerendered card matches
 	// eslint-disable-next-line svelte/prefer-writable-derived
 	let answer = $state<PollChoice | undefined>();

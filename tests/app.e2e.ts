@@ -18,7 +18,7 @@ test('intro continues to KP1, which ends by starting the game', async ({ page })
 	await page.goto('/');
 	await page.locator('#intro').getByRole('link', { name: 'คลิกเพื่อดูต่อ' }).click();
 	await expect(page).toHaveURL(/#definition$/);
-	await expect(page.getByText('ภาพจำที่ลดคุณค่า')).toBeVisible();
+	await expect(page.locator('#definition').getByText('ภาพจำที่ลดคุณค่า')).toBeVisible();
 
 	const mission = page.getByRole('heading', { name: /สืบหา 18 การเลือกปฏิบัติ/ }).first();
 	await mission.scrollIntoViewIfNeeded();
@@ -219,6 +219,30 @@ test('อ่านเนื้อหาเต็ม opens the three-tab panel fr
 	await expect(panel.getByRole('link', { name: 'ไปที่หน้าสำรวจ' })).toHaveCount(0);
 	await page.keyboard.press('Escape');
 	await expect(panel).toBeHidden();
+});
+
+test('KP3 explains why discrimination persists and asks about a dedicated law', async ({
+	page
+}) => {
+	await page.goto('/#causes');
+	const kp3 = page.locator('#causes');
+	await expect(
+		kp3.getByRole('heading', { name: 'เราทุกคนมีสิทธิที่จะไม่ถูกเลือกปฏิบัติ' })
+	).toBeVisible();
+	await expect(page.getByRole('button', { name: 'อ่านเนื้อหาเต็ม' })).toBeVisible();
+	await expect(kp3.getByRole('link', { name: /คลิกที่นี่/ })).toHaveAttribute(
+		'href',
+		/parliamentwatch/
+	);
+
+	const agree = kp3.getByRole('button', { name: /^ดีเลย/ });
+	await agree.click();
+	await expect(agree).toHaveAttribute('aria-pressed', 'true');
+	await page.reload();
+	await expect(page.locator('#causes').getByRole('button', { name: /^ดีเลย/ })).toHaveAttribute(
+		'aria-pressed',
+		'true'
+	);
 });
 
 test('the case card poll remembers the answer', async ({ page }) => {

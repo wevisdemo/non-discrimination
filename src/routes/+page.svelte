@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import CausesSection from '#lib/components/sections/CausesSection.svelte';
 	import DefinitionSection from '#lib/components/sections/DefinitionSection.svelte';
+	import FloatingInfo from '#lib/components/definition/FloatingInfo.svelte';
 	import ExploreSection from '#lib/components/sections/ExploreSection.svelte';
 	import IntroSection from '#lib/components/sections/IntroSection.svelte';
 	import SectionPlaceholder from '#lib/components/sections/SectionPlaceholder.svelte';
@@ -10,8 +12,8 @@
 
 	onMount(() => stageTracker.watch());
 
-	// TODO: replace the placeholders with the real KP3, Result and About sections
-	const placeholders = stages.filter((s) => ['causes', 'summary', 'about'].includes(s.id));
+	// TODO: replace the placeholders with the real Result and About sections
+	const placeholders = stages.filter((s) => ['summary', 'about'].includes(s.id));
 </script>
 
 <svelte:head><title>Spot the Discrimination · ไม่เลือกปฏิบัติ</title></svelte:head>
@@ -20,8 +22,10 @@
 <div inert={explore.open}>
 	<IntroSection />
 	<DefinitionSection />
+	<CausesSection />
 	{#each placeholders as stage (stage.id)}
 		<SectionPlaceholder id={stage.id} title={stage.label} />
 	{/each}
 </div>
 <ExploreSection />
+<FloatingInfo />
