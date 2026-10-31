@@ -2,12 +2,10 @@
 	import { Dialog } from 'bits-ui';
 	import close from '#lib/assets/kp2/close.svg';
 	import GameThumbnail from '#lib/components/story/GameThumbnail.svelte';
+	import ELearning from '#lib/components/result/ELearning.svelte';
 	import Accordion from './Accordion.svelte';
 	import SpotArt from './SpotArt.svelte';
 	import shortcutBg from '#lib/assets/definition/kp2-shortcut-bg.png?enhanced';
-	import learn1 from '#lib/assets/definition/elearning-1.png?enhanced';
-	import learn2 from '#lib/assets/definition/elearning-2.png?enhanced';
-	import learn3 from '#lib/assets/definition/elearning-3.png?enhanced';
 	import { cases } from '#lib/content/index.ts';
 
 	let {
@@ -20,9 +18,6 @@
 		/** Opened from the map (Figma Context=KP2): no "go to the map" box */
 		inGame?: boolean;
 	} = $props();
-
-	// TODO(content): the E-Learning "The Inclusion Lab" URL; the design has no link target
-	const ELEARNING_URL: string | undefined = undefined;
 
 	const tabs = [
 		{ id: 'definition', label: 'คำนิยาม' },
@@ -326,41 +321,7 @@
 						</div>
 					{/if}
 
-					<!-- Figma "E-Learning" -->
-					<section
-						class="flex flex-col items-center gap-l rounded-b-card bg-ui-primary px-m py-l text-center text-ink"
-					>
-						<div class="flex flex-col gap-xs">
-							<h2 class="font-header text-h7 leading-normal font-bold text-ink">
-								อยากเข้าใจการเลือกปฏิบัติแบบละเอียดยิ่งขึ้น ?
-							</h2>
-							<p class="text-b5">คำนิยาม รูปแบบ การแยกแยะ วิธีรับมือ และอื่น ๆ</p>
-						</div>
-						<div class="flex w-full gap-xs">
-							{#each [learn1, learn2, learn3] as img, i (i)}
-								<enhanced:img
-									src={img}
-									alt=""
-									sizes="190px"
-									class="aspect-[224/118] min-w-0 flex-1 object-cover"
-								/>
-							{/each}
-						</div>
-						<p class="text-b6">
-							ชวนเรียนรู้ต่อที่ <strong>E-Learning: ‘The Inclusion Lab’</strong><br />โดย
-							สํานักงานคณะกรรมการสิทธิมนุษยชนแห่งชาติ เครือข่ายประชาชนขจัดการเลือกปฏิบัติ (MovED)
-							และมูลนิธิเพื่อสิทธิความหลากหลาย พร้อมรับเกียรติบัตรหลังทำแบบทดสอบ !
-						</p>
-						{#if ELEARNING_URL}
-							<a
-								href={ELEARNING_URL}
-								target="_blank"
-								rel="noopener external"
-								class="rounded-full border-2 border-ink bg-ui-primary px-m py-s text-b5 hover:bg-ui-primary-hover"
-								>คลิกที่นี่</a
-							>
-						{/if}
-					</section>
+					<ELearning class="rounded-b-card px-m py-l" />
 				</div>
 			</div>
 		</Dialog.Content>

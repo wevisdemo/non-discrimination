@@ -6,5 +6,6 @@ export const reportingChannels = {
 	// TODO(content): the official page URL; the datasheet only names the page
 	facebookUrl: undefined as string | undefined,
 	complaintsUrl: 'https://complaints.nhrc.or.th',
-	hotline: '1377'
+	hotline: '1377',
+	website: 'https://www.nhrc.or.th'
 } as const;

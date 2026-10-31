@@ -245,6 +245,35 @@ test('KP3 explains why discrimination persists and asks about a dedicated law', 
 	);
 });
 
+test('the Result survey can be answered once', async ({ page }) => {
+	await page.goto('/#summary');
+	const survey = page.getByRole('form', { name: 'ขอบคุณที่อยู่ด้วยกันจนจบ !' });
+	await survey.getByLabel('อายุ').selectOption('18-35 ปี');
+	await survey.getByLabel('จังหวัด').selectOption('เชียงใหม่');
+	await survey.getByRole('button', { name: 'พอใจมาก', exact: true }).click();
+	await survey.getByRole('button', { name: 'ส่งคำตอบ' }).click();
+	await expect(survey.getByText('ขอบคุณสำหรับคำตอบ')).toBeVisible();
+
+	await page.reload();
+	await expect(page.getByText('ขอบคุณสำหรับคำตอบ')).toBeVisible();
+	await expect(page.getByRole('button', { name: 'ส่งคำตอบ' })).toHaveCount(0);
+});
+
+test('the Result has share links and continues to About', async ({ page }) => {
+	await page.goto('/#summary');
+	const summary = page.locator('#summary');
+	await expect(summary.getByRole('link', { name: 'แชร์ทาง Facebook' })).toHaveAttribute(
+		'href',
+		/facebook\.com\/sharer/
+	);
+	await expect(summary.getByRole('link', { name: 'แชร์ทาง X' })).toHaveAttribute(
+		'href',
+		/twitter\.com\/intent/
+	);
+	await summary.getByRole('link', { name: 'คลิกเพื่อดูต่อ' }).click();
+	await expect(page).toHaveURL(/#about$/);
+});
+
 test('the case card poll remembers the answer', async ({ page }) => {
 	await page.goto('/cases/karen/');
 	const answer = page.getByRole('button', { name: 'เคยเห็นกับตา' });

@@ -6,14 +6,15 @@
 	import ExploreSection from '#lib/components/sections/ExploreSection.svelte';
 	import IntroSection from '#lib/components/sections/IntroSection.svelte';
 	import SectionPlaceholder from '#lib/components/sections/SectionPlaceholder.svelte';
+	import SummarySection from '#lib/components/sections/SummarySection.svelte';
 	import { stages } from '#lib/stages.ts';
 	import { explore } from '#lib/state/explore.svelte.ts';
 	import { stageTracker } from '#lib/state/stage.svelte.ts';
 
 	onMount(() => stageTracker.watch());
 
-	// TODO: replace the placeholders with the real Result and About sections
-	const placeholders = stages.filter((s) => ['summary', 'about'].includes(s.id));
+	// TODO: replace the placeholder with the real About section
+	const placeholders = stages.filter((s) => s.id === 'about');
 </script>
 
 <svelte:head><title>Spot the Discrimination · ไม่เลือกปฏิบัติ</title></svelte:head>
@@ -23,6 +24,7 @@
 	<IntroSection />
 	<DefinitionSection />
 	<CausesSection />
+	<SummarySection />
 	{#each placeholders as stage (stage.id)}
 		<SectionPlaceholder id={stage.id} title={stage.label} />
 	{/each}

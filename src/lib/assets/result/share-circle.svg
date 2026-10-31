@@ -1,0 +1,8 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group">
+<mask id="stroke0_0_378" fill="white">
+<path d="M28 14C28 21.7326 21.7326 28 14 28C6.26744 28 0 21.7326 0 14C0 6.26744 6.26744 0 14 0C21.7326 0 28 6.26744 28 14Z" fill-rule="evenodd" clip-rule="evenodd"/>
+</mask>
+<path id="Vector" d="M28 14C28 21.7326 21.7326 28 14 28C6.26744 28 0 21.7326 0 14C0 6.26744 6.26744 0 14 0C21.7326 0 28 6.26744 28 14Z" stroke-width="2" stroke="#161616" mask="url(#stroke0_0_378)"/>
+</g>
+</svg>
