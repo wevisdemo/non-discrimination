@@ -274,6 +274,25 @@ test('the Result has share links and continues to About', async ({ page }) => {
 	await expect(page).toHaveURL(/#about$/);
 });
 
+test('About has the project goal, sources, credits and the WeVis footer', async ({ page }) => {
+	await page.goto('/#about');
+	const about = page.locator('#about');
+	await expect(about.getByRole('heading', { name: 'เกี่ยวกับโครงการ', level: 2 })).toBeVisible();
+	for (const h of [
+		'เป้าหมาย',
+		'ที่มาของข้อมูล',
+		'นโยบายการนำข้อมูลไปใช้ต่อ',
+		'อาสาสมัครร่วมพัฒนา'
+	]) {
+		await expect(about.getByRole('heading', { name: h })).toBeVisible();
+	}
+	await expect(about.getByRole('link', { name: 'team@wevis.info' })).toHaveAttribute(
+		'href',
+		'mailto:team@wevis.info'
+	);
+	await expect(about.locator('footer').getByRole('link', { name: 'GitHub' })).toBeVisible();
+});
+
 test('the case card poll remembers the answer', async ({ page }) => {
 	await page.goto('/cases/karen/');
 	const answer = page.getByRole('button', { name: 'เคยเห็นกับตา' });
