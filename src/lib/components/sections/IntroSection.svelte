@@ -56,7 +56,7 @@
 			<!-- Two Figma frames: the wash lifts to reveal the city, then comes back for the bubbles -->
 			<section data-step="city" {@attach track} aria-hidden="true">
 				<div
-					class="flex h-svh flex-col items-center gap-xs pt-xl text-b5 font-bold text-primary drop-shadow-[0_4px_2px_rgba(0,0,0,0.25)]"
+					class="flex h-svh flex-col items-center gap-xs pt-xl text-b5 font-bold text-primary drop-shadow-[0_4px_2px_rgba(0,0,0,0.25)] text-outline"
 				>
 					เลื่อนลงเพื่อดูเฉลย
 					<img src={scrollHint} alt="" width="13" height="24.4142" />

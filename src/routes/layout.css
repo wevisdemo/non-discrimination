@@ -147,6 +147,12 @@
  * }
  */
 
+/* Figma text stroke "2px outside": painted under the fill, so only the outer half of 4px shows */
+@utility text-outline {
+	-webkit-text-stroke: 4px white;
+	paint-order: stroke fill;
+}
+
 @layer base {
 	html {
 		scroll-behavior: smooth;
