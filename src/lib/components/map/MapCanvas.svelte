@@ -12,7 +12,7 @@
 		onselect
 	}: {
 		game: Game;
-		/** The case open in the card; the map follows it as the card pages ‹ › */
+		/** The case open in the card; the map follows it as the card pages ‹ ›, and zooms out after */
 		focus?: string;
 		onselect: (slug: string) => void;
 	} = $props();
@@ -49,8 +49,12 @@
 		setTimeout(() => onselect(slug), reduceMotion() ? 0 : ZOOM_MS);
 	}
 
+	// Closing the card zooms back out to the opening view
+	let focused = false;
 	$effect(() => {
 		if (focus) focusCase(focus);
+		else if (focused) pz?.reset({ animate: !reduceMotion(), duration: ZOOM_MS });
+		focused = !!focus;
 	});
 
 	function panzoom(node: HTMLElement) {
