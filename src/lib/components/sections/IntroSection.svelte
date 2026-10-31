@@ -44,7 +44,7 @@
 			<section
 				data-step="question"
 				{@attach track}
-				class="flex h-dvh items-center justify-center px-m"
+				class="flex h-svh items-center justify-center px-m"
 			>
 				<h1 class="text-center text-[36px] leading-[1.25] font-bold">
 					คุณเห็น<br />ความผิดปกติ<br />ในภาพนี้หรือไม่ ?
@@ -54,29 +54,29 @@
 			<!-- Two Figma frames: the wash lifts to reveal the city, then comes back for the bubbles -->
 			<section data-step="city" {@attach track} aria-hidden="true">
 				<div
-					class="flex h-dvh flex-col items-center gap-xs pt-xl text-b5 font-bold text-primary drop-shadow-[0_4px_2px_rgba(0,0,0,0.25)]"
+					class="flex h-svh flex-col items-center gap-xs pt-xl text-b5 font-bold text-primary drop-shadow-[0_4px_2px_rgba(0,0,0,0.25)]"
 				>
 					เลื่อนลงเพื่อดูเฉลย
 					<img src={scrollHint} alt="" width="13" height="24.4142" />
 				</div>
-				<div class="h-dvh"></div>
+				<div class="h-svh"></div>
 			</section>
 
 			<!-- One screen per case, then all three together -->
-			<section data-step="gender-promotion" {@attach track} class="h-dvh">
+			<section data-step="gender-promotion" {@attach track} class="h-svh">
 				<!-- The map bubbles are decorative; this list carries the same text for screen readers -->
 				<ul class="sr-only">
 					{#each introBubbles as bubble (bubble.slug)}<li>{bubble.text}</li>{/each}
 				</ul>
 			</section>
-			<section data-step="ex-con-job" {@attach track} class="h-dvh" aria-hidden="true"></section>
-			<section data-step="hiv-test-job" {@attach track} class="h-dvh" aria-hidden="true"></section>
-			<section data-step="bubbles-all" {@attach track} class="h-dvh" aria-hidden="true"></section>
+			<section data-step="ex-con-job" {@attach track} class="h-svh" aria-hidden="true"></section>
+			<section data-step="hiv-test-job" {@attach track} class="h-svh" aria-hidden="true"></section>
+			<section data-step="bubbles-all" {@attach track} class="h-svh" aria-hidden="true"></section>
 
 			<section
 				data-step="meaning"
 				{@attach track}
-				class="flex min-h-dvh flex-col items-center justify-center gap-l px-m py-xxl"
+				class="flex min-h-svh flex-col items-center justify-center gap-l px-m py-xxl"
 			>
 				<StoryCard>
 					<p>
@@ -96,7 +96,7 @@
 			<section
 				data-step="title"
 				{@attach track}
-				class="flex h-dvh flex-col items-center justify-center gap-m px-m text-center"
+				class="flex h-svh flex-col items-center justify-center gap-m px-m text-center"
 			>
 				<h2 class="sr-only">Spot the Discrimination</h2>
 				<SpotLogo />

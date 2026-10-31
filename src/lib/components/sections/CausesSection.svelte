@@ -126,7 +126,7 @@
 
 	<!-- Parliament Watch, over the parliament illustration -->
 	<div
-		class="relative flex min-h-dvh w-full flex-col items-center justify-center gap-l px-m py-xxl"
+		class="relative flex min-h-svh w-full flex-col items-center justify-center gap-l px-m py-xxl"
 	>
 		<enhanced:img
 			src={parliamentBg}
@@ -152,7 +152,7 @@
 	</div>
 
 	<!-- Figma "Poll" -->
-	<div class="flex min-h-dvh w-full items-center justify-center px-m py-xl">
+	<div class="flex min-h-svh w-full items-center justify-center px-m py-xl">
 		<section
 			class="flex w-full max-w-[768px] flex-col items-center gap-m rounded-card bg-ui-secondary px-m py-l lg:px-xxl"
 			aria-labelledby="law-poll"

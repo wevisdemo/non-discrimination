@@ -27,7 +27,7 @@
 	class="sr-only focus:not-sr-only focus:fixed focus:top-s focus:left-s focus:z-50 focus:bg-surface focus:p-s"
 	>ข้ามไปยังเนื้อหาหลัก</a
 >
-<div class="flex min-h-dvh flex-col">
+<div class="flex min-h-svh flex-col">
 	<Header />
 	<main id="main" class="flex flex-1 flex-col">
 		{@render children()}

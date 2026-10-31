@@ -25,9 +25,9 @@
 	const ty = $derived(clamp(vh / 2 - camera.y * h, vh - h, 0));
 </script>
 
-<svelte:window bind:innerWidth={vw} bind:innerHeight={vh} />
-
-<div class="absolute inset-0 overflow-hidden">
+<!-- Sized off this box, not the window: on phones innerHeight changes as the address bar slides
+     away mid-scroll, which re-zoomed the map and made it shake. -->
+<div class="absolute inset-0 overflow-hidden" bind:clientWidth={vw} bind:clientHeight={vh}>
 	<div
 		class="absolute top-0 left-0 origin-top-left transition-[transform,width] duration-1000 ease-in-out"
 		style="width:{w}px;transform:translate({tx}px,{ty}px)"

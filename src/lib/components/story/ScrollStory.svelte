@@ -46,40 +46,38 @@
 	/** A step becomes active while its section crosses the middle of the viewport. */
 	const hasWash = $derived(steps.some((s) => s.wash));
 	const flat = (a: number) => `linear-gradient(rgba(255,255,255,${a}),rgba(255,255,255,${a}))`;
-	// Empty until the first scroll measurement; the prerendered page uses the first step's flat wash.
+	// Empty until the story is first measured; the prerendered page uses the first step's flat wash.
 	let measured = $state('');
 	const washBg = $derived(measured || flat(steps[0].wash?.[0] ?? steps[0].dim));
 
-	/** Grades the wash down the screen from where each step's section sits as the page scrolls. */
+	/**
+	 * Lays the wash out in page space, from where each step's section sits in the story, so it
+	 * scrolls with the page on the compositor. (Recomputing a screen-space gradient on every scroll
+	 * event lagged a frame behind touch scrolling and shimmered on phones.)
+	 */
 	function watchWash(node: HTMLElement) {
 		if (!hasWash) return;
-		let frame = 0;
 		const update = () => {
-			frame = 0;
+			const origin = node.getBoundingClientRect().top;
 			const stops: string[] = [];
 			for (const el of node.querySelectorAll<HTMLElement>('[data-step]')) {
 				const s = steps.find((x) => x.id === el.dataset.step);
 				const alphas = s?.wash?.length ? s.wash : [s?.dim ?? 0];
-				const { top, height } = el.getBoundingClientRect();
+				const rect = el.getBoundingClientRect();
+				const top = rect.top - origin;
 				const last = Math.max(alphas.length - 1, 1);
 				for (const [i, a] of alphas.entries()) {
-					stops.push(`rgba(255,255,255,${a}) ${top + (height * i) / last}px`);
+					stops.push(`rgba(255,255,255,${a}) ${top + (rect.height * i) / last}px`);
 				}
-				if (alphas.length === 1) stops.push(`rgba(255,255,255,${alphas[0]}) ${top + height}px`);
+				if (alphas.length === 1)
+					stops.push(`rgba(255,255,255,${alphas[0]}) ${top + rect.height}px`);
 			}
 			if (stops.length) measured = `linear-gradient(to bottom,${stops.join(',')})`;
 		};
-		const schedule = () => {
-			if (!frame) frame = requestAnimationFrame(update);
-		};
-		update();
-		addEventListener('scroll', schedule, { passive: true });
-		addEventListener('resize', schedule);
-		return () => {
-			cancelAnimationFrame(frame);
-			removeEventListener('scroll', schedule);
-			removeEventListener('resize', schedule);
-		};
+		// Sections only move when the story's layout does, so resizes are all that need watching.
+		const ro = new ResizeObserver(update);
+		ro.observe(node);
+		return () => ro.disconnect();
 	}
 
 	const track: Track = (node) => {
@@ -97,25 +95,36 @@
 </script>
 
 <div class="relative" {@attach watchWash}>
-	<!-- The map stays put while the steps scroll over it -->
-	<div class="sticky top-0 h-dvh overflow-hidden" aria-hidden="true">
-		<MapCamera camera={step.camera}>
-			<MapScene dim={hasWash ? 0 : step.dim} {spotlight}>
-				{#if !hasWash}{@render mapOverlay?.(step.id)}{/if}
-			</MapScene>
-		</MapCamera>
-		{#if hasWash}
-			<!-- Screen-space wash, with the spotlit cases and overlays redrawn above it -->
-			<div class="pointer-events-none absolute inset-0" style="background:{washBg}"></div>
+	<!-- The map stays put while the steps scroll over it. lvh, not dvh, so the address bar sliding
+	     away on phones doesn't resize it mid-scroll. -->
+	<div class="absolute inset-0" aria-hidden="true">
+		<div class="sticky top-0 h-lvh overflow-hidden">
 			<MapCamera camera={step.camera}>
-				<MapScene only {spotlight}>
-					{@render mapOverlay?.(step.id)}
+				<MapScene dim={hasWash ? 0 : step.dim} {spotlight}>
+					{#if !hasWash}{@render mapOverlay?.(step.id)}{/if}
 				</MapScene>
 			</MapCamera>
-		{/if}
+		</div>
 	</div>
+	{#if hasWash}
+		<!-- Page-space wash, with the spotlit cases and overlays redrawn above it -->
+		<div
+			class="pointer-events-none absolute inset-0"
+			style="background:{washBg}"
+			aria-hidden="true"
+		></div>
+		<div class="pointer-events-none absolute inset-0" aria-hidden="true">
+			<div class="sticky top-0 h-lvh overflow-hidden">
+				<MapCamera camera={step.camera}>
+					<MapScene only {spotlight}>
+						{@render mapOverlay?.(step.id)}
+					</MapScene>
+				</MapCamera>
+			</div>
+		</div>
+	{/if}
 
-	<div class="relative -mt-[100dvh]">
+	<div class="relative">
 		{@render children(track)}
 	</div>
 </div>

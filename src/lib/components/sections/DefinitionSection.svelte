@@ -16,7 +16,7 @@
 			<section
 				data-step="stereotype"
 				{@attach track}
-				class="relative flex h-dvh items-center justify-center px-m"
+				class="relative flex h-svh items-center justify-center px-m"
 			>
 				<h2 class="sr-only">คำนิยามสั้น ๆ ของการเลือกปฏิบัติ</h2>
 				<Balloons items={stereotypeBalloons} />
@@ -31,7 +31,7 @@
 			<section
 				data-step="harm"
 				{@attach track}
-				class="relative flex h-dvh items-center justify-center px-m"
+				class="relative flex h-svh items-center justify-center px-m"
 			>
 				<Balloons items={harmBalloons} />
 				<ul class="sr-only">
@@ -45,7 +45,7 @@
 			<section
 				data-step="conclusion"
 				{@attach track}
-				class="flex h-dvh items-center justify-center px-m"
+				class="flex h-svh items-center justify-center px-m"
 			>
 				<StoryCard compact>
 					<p>นั่นคือ <strong>การเลือกปฏิบัติ</strong></p>
@@ -55,7 +55,7 @@
 			<section
 				data-step="mission"
 				{@attach track}
-				class="flex h-dvh flex-col items-center justify-center gap-l px-m py-xl"
+				class="flex h-svh flex-col items-center justify-center gap-l px-m py-xl"
 			>
 				<div
 					class="flex w-[400px] max-w-full flex-col items-center gap-m rounded-card bg-ui-secondary px-l py-m text-center text-primary"
