@@ -81,7 +81,7 @@
 		{@attach (node) => node.focus({ preventScroll: true })}
 	>
 		<h2 id="explore-title" class="sr-only">สืบหา 18 การเลือกปฏิบัติที่ซ่อนอยู่</h2>
-		<MapCanvas {game} onselect={openCase} />
+		<MapCanvas {game} focus={page.state.caseSlug} onselect={openCase} />
 		<!-- Figma "kp2-play": exit and reveal buttons top right, hints bottom left -->
 		<div class="pointer-events-none absolute inset-0 z-[2] *:pointer-events-auto">
 			<!-- Figma mobile has no counter; phones keep it for screen readers only -->

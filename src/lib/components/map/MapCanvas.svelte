@@ -6,11 +6,55 @@
 	import Hotspot from './Hotspot.svelte';
 	import MapScene from './MapScene.svelte';
 
-	let { game, onselect }: { game: Game; onselect: (slug: string) => void } = $props();
+	let {
+		game,
+		focus,
+		onselect
+	}: {
+		game: Game;
+		/** The case open in the card; the map follows it as the card pages ‹ › */
+		focus?: string;
+		onselect: (slug: string) => void;
+	} = $props();
 
 	let pz: PanzoomObject | undefined;
+	let map: HTMLElement | undefined;
+
+	const ZOOM_MS = 500;
+	const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const clamp = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v));
+
+	/**
+	 * Centres a case on screen, zoomed so it fills about half of it (Figma "Case info Animation").
+	 * Panzoom draws `scale(s) translate(x, y)` about the map's centre, hence the translate below.
+	 */
+	function focusCase(slug: string) {
+		const item = game.cases.find((c) => c.slug === slug);
+		if (!pz || !map || !item) return;
+		const { clientWidth: cw, clientHeight: ch } = map.parentElement!;
+		const { offsetWidth: w, offsetHeight: h } = map;
+		const k = w / MAP_SIZE.width;
+		const box = item.hotspot;
+		const s = clamp(Math.min((0.6 * cw) / (box.w * k), (0.5 * ch) / (box.h * k)), 1, 4);
+		const x = (cw / 2 - w / 2) / s - (box.x + box.w / 2) * k + w / 2;
+		const y = (ch / 2 - h / 2) / s - (box.y + box.h / 2) * k + h / 2;
+		const opts = { animate: !reduceMotion(), duration: ZOOM_MS, easing: 'ease-in-out' };
+		pz.zoom(s, opts);
+		pz.pan(x, y, opts);
+	}
+
+	/** Zoom into the tapped case first, then open its card */
+	function select(slug: string) {
+		focusCase(slug);
+		setTimeout(() => onselect(slug), reduceMotion() ? 0 : ZOOM_MS);
+	}
+
+	$effect(() => {
+		if (focus) focusCase(focus);
+	});
 
 	function panzoom(node: HTMLElement) {
+		map = node;
 		const parent = node.parentElement!;
 		// The map sits inside a scrolling page, so only zoom on Ctrl/⌘+wheel (trackpad pinch sends
 		// ctrlKey too); a plain wheel is left alone and scrolls the page past the map.
@@ -22,7 +66,6 @@
 		// Client-only and lazy: the package is CJS (breaks SSR) and the map works without it.
 		import('@panzoom/panzoom').then(({ default: Panzoom }) => {
 			if (destroyed) return;
-			const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 			// Open on the junction (the same view as KP1) rather than the map's top-left corner
 			const mapWidth = Math.max(parent.clientWidth, 1600);
 			pz = Panzoom(node, {
@@ -31,8 +74,10 @@
 				maxScale: 4,
 				minScale: 0.5,
 				contain: 'outside',
-				animate: !reduceMotion
+				animate: !reduceMotion()
 			});
+			// A shared /cases/<slug>/ link opens with its card up; start the map on that case
+			if (focus) focusCase(focus);
 			parent.addEventListener('wheel', onWheel, { passive: false });
 		});
 
@@ -49,7 +94,7 @@
 		<!-- Reveal / hint: wash the city so highlighted cases pop (design.md §2.4) -->
 		<MapScene dim={game.highlighted.size ? 0.8 : 0} spotlight={game.highlighted}>
 			{#each game.cases as item (item.slug)}
-				<Hotspot {item} found={game.found.has(item.slug)} {onselect} />
+				<Hotspot {item} found={game.found.has(item.slug)} onselect={select} />
 			{/each}
 			<!-- Reveal (Figma "ดูเฉลย"): each case's causes as tags below it -->
 			{#if game.mode === 'reveal'}
