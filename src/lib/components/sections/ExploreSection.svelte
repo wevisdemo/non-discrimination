@@ -95,7 +95,7 @@
 			<div class="absolute top-[79px] right-m lg:right-[34px]">
 				<ExploreNav {game} stepping={!!page.state.stepping} onstep={startStepping} />
 			</div>
-			<div class="absolute bottom-0 left-0"><HintDrawer {game} /></div>
+			<div class="absolute bottom-0 left-0 z-10"><HintDrawer {game} /></div>
 			<div class="absolute right-m bottom-m lg:right-[34px] lg:bottom-[30px]" data-tutorial="info">
 				<InfoButton onclick={() => (reading = true)} />
 			</div>
