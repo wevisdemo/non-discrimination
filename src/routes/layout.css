@@ -87,6 +87,46 @@
 
 	/* Proposed: not yet in Figma (design.md §5) */
 	--radius-card: 16px;
+
+	/*
+	 * KP1 clouds, from the Figma "Balloon_animate" variants: hold 0.8s, smart-animate 0.3s ease-out
+	 * to the faded variant, hold, and back (2.2s a loop). Use with motion-safe: the reduced-motion
+	 * rule below would otherwise spin an infinite loop at 0.01ms.
+	 */
+	--animate-balloon-fade: balloon-fade 2.2s infinite;
+	--animate-balloon-pulse: balloon-pulse 2.2s infinite;
+
+	@keyframes balloon-fade {
+		0%,
+		36.36% {
+			opacity: 0.8;
+			animation-timing-function: ease-out;
+		}
+		50%,
+		86.36% {
+			opacity: 0.2;
+			animation-timing-function: ease-out;
+		}
+		100% {
+			opacity: 0.8;
+		}
+	}
+	/* The spiky cloud also shrinks to --pulse of its size in the faded variant */
+	@keyframes balloon-pulse {
+		0%,
+		36.36% {
+			transform: scale(1);
+			animation-timing-function: ease-out;
+		}
+		50%,
+		86.36% {
+			transform: scale(var(--pulse, 1));
+			animation-timing-function: ease-out;
+		}
+		100% {
+			transform: scale(1);
+		}
+	}
 }
 
 /*

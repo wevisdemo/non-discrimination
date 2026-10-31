@@ -23,6 +23,7 @@ export const kp1Steps = [
 /**
  * A cloud around the centre card, placed in the prototype's 320×480 box ("Balloon_animate").
  * `x`/`y`/`w`/`h` place the cloud; `textX` is the centre of its text and `textY` its top.
+ * `pulse` shrinks the cloud (not its text) to that scale as it fades, as the prototype does.
  */
 export type Balloon = {
 	src: string;
@@ -33,6 +34,7 @@ export type Balloon = {
 	text: string;
 	textX: number;
 	textY: number;
+	pulse?: number;
 };
 
 /** Stereotypes around the "ภาพจำที่ลดคุณค่า" card, as worded in the prototype. */
@@ -55,7 +57,8 @@ export const stereotypeBalloons: readonly Balloon[] = [
 		h: 145,
 		text: 'คนเชื้อชาตินี้\nไว้ใจไม่ได้',
 		textX: 231.5,
-		textY: 139
+		textY: 139,
+		pulse: 0.75
 	},
 	{
 		src: cloud3,
