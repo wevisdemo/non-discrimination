@@ -22,7 +22,7 @@
 <div class="flex flex-col items-end gap-s">
 	<!-- eslint-disable svelte/no-navigation-without-resolve -- in-page anchor -->
 	<a
-		href="#causes"
+		href="#explore-intro"
 		data-tutorial="exit"
 		class="flex items-center justify-center gap-s rounded-lg bg-ui-secondary p-s text-b6 text-ink hover:bg-ui-secondary-hover"
 	>

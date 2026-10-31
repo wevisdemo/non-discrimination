@@ -52,7 +52,9 @@
 				</StoryCard>
 			</section>
 
+			<!-- ออกจากการสำรวจ returns here, to the card that opened the map -->
 			<section
+				id="explore-intro"
 				data-step="mission"
 				{@attach track}
 				class="flex h-svh flex-col items-center justify-center gap-l px-m py-xl"

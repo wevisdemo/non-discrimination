@@ -328,7 +328,8 @@ test('the map is a full-screen overlay opened by สำรวจเลย, not a
 
 	await page.getByRole('link', { name: 'ออกจากการสำรวจ' }).click();
 	await expect(map).toBeHidden();
-	await expect(page.locator('#causes')).toBeInViewport();
+	// Back on the card that opened the map
+	await expect(page.locator('#explore-intro').getByRole('heading', { level: 2 })).toBeInViewport();
 
 	await page.goBack();
 	await expect(map).toBeVisible();
@@ -351,7 +352,7 @@ test('map controls: reveal, hints drawer and exit', async ({ page }) => {
 	await expect(page.getByRole('button', { name: 'เปิดตัวช่วย' })).toBeVisible();
 
 	await page.getByRole('link', { name: 'ออกจากการสำรวจ' }).click();
-	await expect(page).toHaveURL(/#causes$/);
+	await expect(page).toHaveURL(/#explore-intro$/);
 });
 
 test('case and definition pages are prerendered', async ({ page }) => {
