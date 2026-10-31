@@ -58,16 +58,16 @@
 				หรือเรียนรู้เพิ่มเติมเรื่องสิทธิมนุษยชน<br />ที่เว็บไซต์อย่างเป็นทางการของสำนักงาน กสม.
 			</p>
 			<a
-				class="flex items-center gap-m rounded-sm border border-primary p-s text-b6"
+				class="flex flex-wrap items-center gap-s rounded-sm border border-primary p-s text-b6 sm:gap-m"
 				href={reportingChannels.website}
 				target="_blank"
 				rel="noopener external"
 			>
-				<span class="flex w-[200px] items-center gap-s text-primary">
+				<span class="flex w-full items-center gap-s text-primary sm:w-[200px]">
 					<img src={web} alt="" width="16" height="16" />website
 				</span>
 				<span class="flex flex-1 items-center justify-between text-ink">
-					<span class="underline">{reportingChannels.website}</span>
+					<span class="[overflow-wrap:anywhere] underline">{reportingChannels.website}</span>
 					<img src={launch} alt="(เปิดในแท็บใหม่)" width="16" height="16" />
 				</span>
 			</a>

@@ -9,7 +9,8 @@
 
 	const row =
 		'flex w-full flex-wrap items-center gap-s rounded-sm border border-primary p-s text-b6';
-	const label = 'flex w-[200px] items-center gap-xs text-primary';
+	// The label column is 200px on desktop and takes a full line on phones
+	const label = 'flex w-full items-center gap-xs text-primary sm:w-[200px]';
 	const link = 'flex min-w-0 flex-1 items-center justify-between gap-xs text-ink';
 </script>
 
@@ -26,7 +27,7 @@
 			<span class={label}><img src={facebook} alt="" width="16" height="16" />Facebook</span>
 			{#if c.facebookUrl}
 				<a class={link} href={c.facebookUrl} target="_blank" rel="noopener external">
-					<span class="underline">{c.facebook}</span>
+					<span class="[overflow-wrap:anywhere] underline">{c.facebook}</span>
 					<img src={launch} alt="(เปิดในแท็บใหม่)" width="16" height="16" />
 				</a>
 			{:else}
@@ -38,7 +39,7 @@
 				><img src={web} alt="" width="16" height="16" />ช่องทางรับเรื่องออนไลน์</span
 			>
 			<a class={link} href={c.complaintsUrl} target="_blank" rel="noopener external">
-				<span class="underline">{c.complaintsUrl}</span>
+				<span class="[overflow-wrap:anywhere] underline">{c.complaintsUrl}</span>
 				<img src={launch} alt="(เปิดในแท็บใหม่)" width="16" height="16" />
 			</a>
 		</li>

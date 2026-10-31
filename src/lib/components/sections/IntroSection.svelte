@@ -46,7 +46,7 @@
 				{@attach track}
 				class="flex h-dvh items-center justify-center px-m"
 			>
-				<h1 class="text-center text-h6-m leading-snug font-bold lg:text-h3">
+				<h1 class="text-center text-[36px] leading-[1.25] font-bold">
 					คุณเห็น<br />ความผิดปกติ<br />ในภาพนี้หรือไม่ ?
 				</h1>
 			</section>

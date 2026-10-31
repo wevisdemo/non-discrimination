@@ -14,7 +14,7 @@
 	}
 
 	// Figma "KP2_Nav": small rounded buttons, black 14px labels, 22px icons; the active one turns
-	// active-secondary pink
+	// active-secondary pink. On phones the labels go (still read out) and only the icons show.
 	const button =
 		'flex items-center justify-center gap-s rounded-lg p-s text-b6 text-ink bg-ui-primary hover:bg-ui-primary-hover aria-pressed:bg-accent';
 </script>
@@ -35,7 +35,7 @@
 				/>
 			</span>
 		</span>
-		ออกจากการสำรวจ
+		<span class="max-lg:sr-only">ออกจากการสำรวจ</span>
 	</a>
 	<!-- eslint-enable svelte/no-navigation-without-resolve -->
 	<!-- The exported icons carry a white square meant to be multiplied away -->
@@ -47,7 +47,7 @@
 		onclick={toggleReveal}
 	>
 		<img src={view} alt="" width="22" height="22" class="mix-blend-multiply" />
-		เฉลยตำแหน่งภาพ
+		<span class="max-lg:sr-only">เฉลยตำแหน่งภาพ</span>
 	</button>
 	<button
 		type="button"
@@ -57,6 +57,6 @@
 		onclick={onstep}
 	>
 		<img src={crossroads} alt="" width="22" height="22" class="mix-blend-multiply" />
-		เจาะดูทีละภาพ
+		<span class="max-lg:sr-only">เจาะดูทีละภาพ</span>
 	</button>
 </div>

@@ -67,9 +67,9 @@
 		</MapScene>
 	</div>
 
-	<!-- Above อ่านเนื้อหาเต็ม, which takes the bottom-right corner -->
+	<!-- Above อ่านเนื้อหาเต็ม, which takes the bottom-right corner; phones pinch to zoom instead -->
 	<div
-		class="absolute right-m bottom-[72px] flex flex-col gap-xs lg:right-[34px] lg:bottom-[86px]"
+		class="absolute right-[34px] bottom-[86px] hidden flex-col gap-xs lg:flex"
 		data-tutorial="zoom"
 	>
 		<button
