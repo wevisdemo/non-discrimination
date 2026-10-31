@@ -16,7 +16,7 @@ test('intro scrolls through its steps and can be skipped', async ({ page }) => {
 
 test('intro continues to KP1, which ends by starting the game', async ({ page }) => {
 	await page.goto('/');
-	await page.locator('#intro').getByRole('link', { name: 'คลิกเพื่อดูต่อ' }).click();
+	await page.locator('#intro').getByRole('link', { name: 'เลื่อนลงเพื่อดูต่อ' }).click();
 	await expect(page).toHaveURL(/#definition$/);
 	await expect(page.locator('#definition').getByText('ภาพจำที่ลดคุณค่า')).toBeVisible();
 
@@ -29,7 +29,7 @@ test('intro continues to KP1, which ends by starting the game', async ({ page })
 
 test('KP1 can continue on to the causes section', async ({ page }) => {
 	await page.goto('/#definition');
-	await page.locator('#definition').getByRole('link', { name: 'คลิกเพื่อดูต่อ' }).click();
+	await page.locator('#definition').getByRole('link', { name: 'เลื่อนลงเพื่อดูต่อ' }).click();
 	await expect(page).toHaveURL(/#causes$/);
 });
 
@@ -277,7 +277,7 @@ test('the Result has share links and continues to About', async ({ page }) => {
 		'href',
 		'https://move-d.org/lab/'
 	);
-	await summary.getByRole('link', { name: 'คลิกเพื่อดูต่อ' }).click();
+	await summary.getByRole('link', { name: 'เลื่อนลงเพื่อดูต่อ' }).click();
 	await expect(page).toHaveURL(/#about$/);
 });
 
