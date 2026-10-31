@@ -248,8 +248,11 @@ test('KP3 explains why discrimination persists and asks about a dedicated law', 
 test('the Result survey can be answered once', async ({ page }) => {
 	await page.goto('/#summary');
 	const survey = page.getByRole('form', { name: 'ขอบคุณที่อยู่ด้วยกันจนจบ !' });
-	await survey.getByLabel('อายุ').selectOption('18-35 ปี');
-	await survey.getByLabel('จังหวัด').selectOption('เชียงใหม่');
+	await survey.getByRole('button', { name: 'อายุ' }).click();
+	await page.getByRole('option', { name: '18-35 ปี' }).click();
+	await survey.getByRole('button', { name: 'จังหวัด' }).click();
+	await page.getByRole('option', { name: 'เชียงใหม่' }).click();
+	await expect(survey.getByRole('button', { name: 'จังหวัด' })).toHaveText('เชียงใหม่');
 	await survey.getByRole('button', { name: 'พอใจมาก', exact: true }).click();
 	await survey.getByRole('button', { name: 'ส่งคำตอบ' }).click();
 	await expect(survey.getByText('ขอบคุณสำหรับคำตอบ')).toBeVisible();

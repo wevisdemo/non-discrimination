@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { Select } from 'bits-ui';
 	import chevron from '#lib/assets/result/dropdown-chevron.svg';
 	import bad from '#lib/assets/result/face-bad.svg';
 	import good from '#lib/assets/result/face-good.svg';
@@ -34,7 +35,7 @@
 	}
 </script>
 
-<!-- Figma "Survey": states Default, Dropdown (native select here) and Submitted -->
+<!-- Figma "Survey": states Default, Dropdown and Submitted -->
 <form
 	class="flex w-full flex-col items-center gap-m text-center text-primary"
 	aria-labelledby="survey-title"
@@ -47,26 +48,38 @@
 	</p>
 	<div class="flex w-full max-w-[400px] flex-col gap-s text-left">
 		{#each fields as field (field.key)}
-			<label class="flex flex-col gap-s text-b6">
-				{field.label}
-				<span class="relative">
-					<select
-						class="w-full appearance-none rounded-card bg-ui-secondary py-s pr-xl pl-m text-b5 text-body disabled:opacity-60"
-						bind:value={answers[field.key]}
-						disabled={done}
+			<div class="flex flex-col gap-s text-b6">
+				<span id="survey-{field.key}">{field.label}</span>
+				<Select.Root
+					type="single"
+					bind:value={() => answers[field.key] ?? '', (v) => (answers[field.key] = v || undefined)}
+					disabled={done}
+				>
+					<Select.Trigger
+						aria-labelledby="survey-{field.key}"
+						class="flex w-full items-center justify-between gap-s rounded-card bg-ui-secondary py-s pr-m pl-m text-left text-b5 text-body disabled:opacity-60"
 					>
-						<option value={undefined}>{field.placeholder}</option>
-						{#each field.options as option (option)}<option value={option}>{option}</option>{/each}
-					</select>
-					<img
-						src={chevron}
-						alt=""
-						width="22"
-						height="22"
-						class="pointer-events-none absolute top-1/2 right-m -translate-y-1/2 mix-blend-multiply"
-					/>
-				</span>
-			</label>
+						{answers[field.key] ?? field.placeholder}
+						<img src={chevron} alt="" width="22" height="22" class="mix-blend-multiply" />
+					</Select.Trigger>
+					<Select.Portal>
+						<!-- Figma "Survey" Dropdown state: a white card of options split by blue rules -->
+						<Select.Content
+							sideOffset={4}
+							class="z-50 max-h-[min(320px,var(--bits-select-content-available-height))] w-[var(--bits-select-anchor-width)] overflow-y-auto rounded-card bg-surface px-m shadow"
+						>
+							{#each field.options as option (option)}
+								<Select.Item
+									value={option}
+									label={option}
+									class="cursor-pointer border-primary py-s text-b5 text-body not-last:border-b data-highlighted:text-primary data-selected:font-bold"
+									>{option}</Select.Item
+								>
+							{/each}
+						</Select.Content>
+					</Select.Portal>
+				</Select.Root>
+			</div>
 		{/each}
 	</div>
 	<fieldset class="flex flex-col gap-s" disabled={done}>
