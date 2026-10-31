@@ -84,8 +84,9 @@
 		<MapCanvas {game} onselect={openCase} />
 		<!-- Figma "kp2-play": exit and reveal buttons top right, hints bottom left -->
 		<div class="pointer-events-none absolute inset-0 z-[2] *:pointer-events-auto">
+			<!-- Figma mobile has no counter; phones keep it for screen readers only -->
 			<p
-				class="absolute top-[79px] left-m rounded-full bg-surface px-m py-s text-b6 text-ink lg:left-[34px]"
+				class="absolute top-[79px] left-m rounded-full bg-surface px-m py-s text-b6 text-ink max-lg:sr-only lg:left-[34px]"
 				aria-live="polite"
 				data-tutorial="counter"
 			>

@@ -36,8 +36,9 @@
 <header
 	class="pointer-events-none fixed inset-x-0 top-0 z-40 flex items-start justify-between px-m py-m lg:px-l"
 >
-	<a href={resolve('/')} class="pointer-events-auto">
-		<img src={wevisLogo} alt="WeVis" width="105" height="32" />
+	<!-- Figma mobile drops the logo over the map so the long game label fits -->
+	<a href={resolve('/')} class="pointer-events-auto {explore.open ? 'max-lg:invisible' : ''}">
+		<img src={wevisLogo} alt="WeVis" width="105" height="32" class="h-6 w-auto lg:h-8" />
 	</a>
 
 	<nav aria-label="เนื้อหา" class="pointer-events-auto relative" {@attach closeOnOutside}>
@@ -62,7 +63,12 @@
 					/>
 				</svg>
 			{:else}
-				<span class="max-w-[45vw] truncate">{current.label}</span>
+				<!-- Leave room for the logo on phones (Figma mobile truncates the label instead of overlapping) -->
+				<span
+					class="truncate {explore.open
+						? 'max-w-[min(45vw,calc(100vw-120px))]'
+						: 'max-w-[min(45vw,calc(100vw-210px))]'}">{current.label}</span
+				>
 				<img src={hamburger} alt="" width="24" height="24" />
 				<span class="sr-only">เมนู</span>
 			{/if}
