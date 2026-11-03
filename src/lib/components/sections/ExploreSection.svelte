@@ -41,8 +41,10 @@
 	}
 
 	// Tapping a case, ‹ › and เจาะดูทีละภาพ: the card fades out, the map moves to the case, and the
-	// card starts fading back in this long after the press (the map move itself takes 0.5s)
-	const SHOW_AT_MS = 1200;
+	// card starts fading back in this long after the press (the map move itself takes 0.5s).
+	// Opening a card from nothing is quicker than paging, which also counts the old card fading out.
+	const OPEN_AT_MS = 800;
+	const PAGE_AT_MS = 1200;
 	let following = $state<string>();
 	let cardHidden = $state(false);
 	let moving = false;
@@ -63,7 +65,11 @@
 		if (opening || activeCase) {
 			navigate();
 			following = slug;
-			await wait(reduceMotion() ? 0 : Math.max(0, SHOW_AT_MS - (performance.now() - pressed)));
+			await wait(
+				reduceMotion()
+					? 0
+					: Math.max(0, (opening ? OPEN_AT_MS : PAGE_AT_MS) - (performance.now() - pressed))
+			);
 		}
 		cardHidden = false;
 		moving = false;
