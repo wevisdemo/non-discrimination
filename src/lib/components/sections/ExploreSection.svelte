@@ -34,22 +34,14 @@
 
 	const activeCase = $derived(page.state.caseSlug ? getCase(page.state.caseSlug) : undefined);
 
-	function openCase(slug: string) {
-		if (!game.found.has(slug)) trackEvent({ name: 'case_found', slug });
-		game.markFound(slug);
-		trackEvent({ name: 'case_opened', slug });
-		// Shallow routing: URL becomes shareable /cases/<slug>/, back button closes the card.
-		pushState(resolve('/cases/[slug]', { slug }), { caseSlug: slug });
-	}
-
 	/** Leave the tutorial for the game itself; replaced, so Back still returns to KP1 */
 	function endTutorial() {
 		// eslint-disable-next-line svelte/no-navigation-without-resolve -- in-page hash
 		goto('#explore', { replace: true, reset: false });
 	}
 
-	// ‹ › and เจาะดูทีละภาพ: the card fades out, the map moves to the case, then after a beat to see
-	// the case the card fades back in
+	// Tapping a case, ‹ › and เจาะดูทีละภาพ: the card fades out, the map moves to the case, then
+	// after a beat to see the case the card fades back in
 	const HOLD_MS = 800;
 	let following = $state<string>();
 	let cardHidden = $state(false);
@@ -74,6 +66,15 @@
 		}
 		cardHidden = false;
 		moving = false;
+	}
+
+	/** Tapping a case: the map zooms in on it, then its card fades in */
+	function openCase(slug: string) {
+		if (!game.found.has(slug)) trackEvent({ name: 'case_found', slug });
+		game.markFound(slug);
+		trackEvent({ name: 'case_opened', slug });
+		// Shallow routing: URL becomes shareable /cases/<slug>/, back button closes the card.
+		moveTo(slug, () => pushState(resolve('/cases/[slug]', { slug }), { caseSlug: slug }), true);
 	}
 
 	/** เจาะดูทีละภาพ: open the first case and step through them with ‹ › */

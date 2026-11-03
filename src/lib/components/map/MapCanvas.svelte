@@ -48,8 +48,15 @@
 		pz.pan(x, y, opts);
 	}
 
+	// Closing the card zooms back out to the opening view; paging between cases never does
+	let focused = false;
 	$effect(() => {
 		if (follow) focusCase(follow);
+		else if (focused) {
+			const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+			pz?.reset({ animate: !reduceMotion, duration: PAN_MS });
+		}
+		focused = !!follow;
 	});
 
 	function panzoom(node: HTMLElement) {
