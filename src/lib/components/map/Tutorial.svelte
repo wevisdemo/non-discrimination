@@ -66,9 +66,11 @@
 							arrow: `left:${r.left + r.width / 2 - 11}px;top:${r.bottom + 6}px;transform:rotate(180deg)`
 						};
 		} else if (tip.place === 'above') {
+			// The arrow sits under the box's straight bottom edge, clear of its rounded corner
+			const boxLeft = Math.max(16, r.left + 22);
 			place = {
-				box: `left:${Math.max(16, r.left + 22)}px;bottom:${vh - r.top + 34}px`,
-				arrow: `left:${r.left + 20}px;top:${r.top - 30}px`
+				box: `left:${boxLeft}px;bottom:${vh - r.top + 34}px`,
+				arrow: `left:${boxLeft + 20}px;top:${r.top - 30}px`
 			};
 		} else {
 			place = {
