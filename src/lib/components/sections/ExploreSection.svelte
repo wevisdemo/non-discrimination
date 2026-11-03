@@ -41,8 +41,8 @@
 	}
 
 	// Tapping a case, ‹ › and เจาะดูทีละภาพ: the card fades out, the map moves to the case, and the
-	// card fades back in this long after the map starts moving (the move itself takes 0.5s)
-	const SHOW_AFTER_MS = 800;
+	// card starts fading back in this long after the press (the map move itself takes 0.5s)
+	const SHOW_AT_MS = 1200;
 	let following = $state<string>();
 	let cardHidden = $state(false);
 	let moving = false;
@@ -56,13 +56,14 @@
 	async function moveTo(slug: string, navigate: () => void, opening = false) {
 		if (moving) return;
 		moving = true;
+		const pressed = performance.now();
 		cardHidden = true;
 		if (activeCase) await wait(fadeMs());
 		// Closed while fading: don't reopen it
 		if (opening || activeCase) {
 			navigate();
 			following = slug;
-			await wait(reduceMotion() ? 0 : SHOW_AFTER_MS);
+			await wait(reduceMotion() ? 0 : Math.max(0, SHOW_AT_MS - (performance.now() - pressed)));
 		}
 		cardHidden = false;
 		moving = false;
