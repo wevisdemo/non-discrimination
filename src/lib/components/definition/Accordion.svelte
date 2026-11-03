@@ -23,7 +23,7 @@
 		aria-controls="{id}-body"
 		onclick={() => (open = !open)}
 	>
-		<span class="flex flex-1 flex-col text-ink">
+		<span class="flex flex-1 flex-col text-primary">
 			<span class="text-b5 font-bold">{title}</span>
 			{#if subtitle}<span class="text-b6">{@render subtitle()}</span>{/if}
 		</span>
