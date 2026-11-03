@@ -129,28 +129,18 @@
 	}
 }
 
-/*
- * Kondolar Thai is a licensed font. Once the .woff2 files are in static/fonts/,
- * uncomment these. Until then headings fall back to Noto Sans Thai.
- *
- * @font-face {
- * 	font-family: 'Kondolar Thai';
- * 	src: url('/fonts/KondolarThai-Regular.woff2') format('woff2');
- * 	font-weight: 400;
- * 	font-display: swap;
- * }
- * @font-face {
- * 	font-family: 'Kondolar Thai';
- * 	src: url('/fonts/KondolarThai-Bold.woff2') format('woff2');
- * 	font-weight: 700;
- * 	font-display: swap;
- * }
- */
-
-/* Figma text stroke "2px outside": painted under the fill, so only the outer half of 4px shows */
-@utility text-outline {
-	-webkit-text-stroke: 4px white;
-	paint-order: stroke fill;
+/* Kondolar Thai (headings). Imported by Vite so the URLs follow the deploy base path. */
+@font-face {
+	font-family: 'Kondolar Thai';
+	src: url('../lib/assets/fonts/KondolarThai-Regular.woff') format('woff');
+	font-weight: 400;
+	font-display: swap;
+}
+@font-face {
+	font-family: 'Kondolar Thai';
+	src: url('../lib/assets/fonts/KondolarThai-Bold.woff') format('woff');
+	font-weight: 700;
+	font-display: swap;
 }
 
 @layer base {

@@ -48,18 +48,18 @@ It ends with the "สืบหา 18…" CTA.
 
 ## 2. Stack
 
-| Concern       | Choice                                                                                   |
-| ------------- | ---------------------------------------------------------------------------------------- |
-| Framework     | SvelteKit 3 + Svelte 5 (runes) + TypeScript                                              |
-| Output        | `adapter-static`; every route prerendered; GitHub Pages                                  |
-| Styling       | Tailwind CSS v4. Tokens in `src/routes/layout.css` (`@theme`)                            |
-| Accessible UI | `bits-ui` (Dialog)                                                                       |
-| Pan / zoom    | `@panzoom/panzoom`                                                                       |
-| Images        | `@sveltejs/enhanced-img` (AVIF/WebP + `srcset` at build time)                            |
-| Content       | JSON + Markdown (`mdsvex`), validated with `zod` at build time                           |
-| Fonts         | IBM Plex Sans Thai Looped (`@fontsource`); Kondolar Thai self-hosted (licensed, pending) |
-| Tests         | Vitest (unit), Playwright + axe-core (e2e, accessibility)                                |
-| CI/CD         | GitHub Actions: `ci.yml` (lint/check/test), `deploy.yml` (Pages)                         |
+| Concern       | Choice                                                                                                          |
+| ------------- | --------------------------------------------------------------------------------------------------------------- |
+| Framework     | SvelteKit 3 + Svelte 5 (runes) + TypeScript                                                                     |
+| Output        | `adapter-static`; every route prerendered; GitHub Pages                                                         |
+| Styling       | Tailwind CSS v4. Tokens in `src/routes/layout.css` (`@theme`)                                                   |
+| Accessible UI | `bits-ui` (Dialog)                                                                                              |
+| Pan / zoom    | `@panzoom/panzoom`                                                                                              |
+| Images        | `@sveltejs/enhanced-img` (AVIF/WebP + `srcset` at build time)                                                   |
+| Content       | JSON + Markdown (`mdsvex`), validated with `zod` at build time                                                  |
+| Fonts         | IBM Plex Sans Thai Looped (`@fontsource`); Kondolar Thai self-hosted (`src/lib/assets/fonts`, Regular and Bold) |
+| Tests         | Vitest (unit), Playwright + axe-core (e2e, accessibility)                                                       |
+| CI/CD         | GitHub Actions: `ci.yml` (lint/check/test), `deploy.yml` (Pages)                                                |
 
 ### SvelteKit 3 conventions used here
 
@@ -171,7 +171,7 @@ Case {
 | #      | Scope                                                                                                           | Status        |
 | ------ | --------------------------------------------------------------------------------------------------------------- | ------------- |
 | **M0** | Scaffold, tokens, content schema + placeholders, component skeletons, tests, CI/CD                              | ✅ Done       |
-| **M1** | Final UI components against Figma; Kondolar Thai; logo; `/styleguide` dev page                                  | Next          |
+| **M1** | Final UI components against Figma; logo; `/styleguide` dev page                                                 | Next          |
 | **M2** | Real content for 18 cases and 8 definitions; confirm cause mapping and `kp`                                     | Needs content |
 | **M3** | ~~Master map art~~ (done: `scripts/extract-map-assets.js`); panzoom polish (bounds, initial view, keyboard pan) | In progress   |
 | **M4** | ~~Intro, KP1~~ (done); KP3, Result pages; case card art; Definition panel; KP2 animation                        | In progress   |
