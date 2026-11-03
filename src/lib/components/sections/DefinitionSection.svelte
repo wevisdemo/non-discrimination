@@ -68,9 +68,13 @@
 					<h2 class="text-b4 font-bold">
 						สืบหา {cases.length} การเลือกปฏิบัติ<span class="whitespace-nowrap">ที่ซ่อนอยู่</span>
 					</h2>
-					<p class="text-b6">
-						<strong>วิธีเล่น:</strong>
-						เลื่อนและขยายภาพเมืองเพื่อค้นหาการเลือกปฏิบัติที่ซ่อนอยู่ {cases.length} จุด ภาพการเลือกปฏิบัติจะสามารถกดเพื่ออ่านรายละเอียดได้
+					<!-- Line breaks as in Figma: three lines on tablet and up; phones wrap on their own -->
+					<p class="text-b6 sm:whitespace-nowrap">
+						<strong class="block">วิธีเล่น:</strong>
+						เลื่อนและขยายภาพเมืองเพื่อค้นหาการเลือกปฏิบัติที่ซ่อน<br class="max-sm:hidden" />อยู่ {cases.length}
+						จุด <br class="sm:hidden" />ภาพการเลือกปฏิบัติ<br
+							class="max-sm:hidden"
+						/>จะสามารถกดเพื่ออ่านรายละเอียดได้
 					</p>
 					<Button href="#explore">สำรวจเลย !</Button>
 					<!-- Opens the map with the tutorial over it (Figma "kp2-tutorial") -->
