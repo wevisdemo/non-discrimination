@@ -25,13 +25,14 @@
 	<Dialog.Portal>
 		<Dialog.Content
 			aria-label={item.titleTh}
-			class="fixed top-[57px] bottom-0 left-1/2 z-50 flex w-[600px] max-w-full -translate-x-1/2 flex-col gap-s overflow-y-auto rounded-t-card bg-surface p-m shadow-lg transition-opacity duration-250 {hidden
+			class="fixed top-[57px] bottom-0 left-1/2 z-50 flex w-[600px] max-w-full -translate-x-1/2 flex-col gap-s overflow-y-auto rounded-t-card bg-surface shadow-lg transition-opacity duration-250 {hidden
 				? 'opacity-0'
 				: ''}"
 		>
 			<!-- bits-ui forces pointer-events on the sheet itself, so the clicks are blocked one level down -->
-			<div class="flex flex-col gap-s {hidden ? 'pointer-events-none' : ''}">
-				<div class="flex justify-end">
+			<div class="flex flex-col gap-s px-m pb-m {hidden ? 'pointer-events-none' : ''}">
+				<!-- Stays at the top of the sheet while the card scrolls under it -->
+				<div class="sticky top-0 z-10 flex justify-end bg-surface pt-m">
 					<Dialog.Close aria-label="ปิด" class="rounded-sm hover:bg-ui-primary-hover">
 						<img src={close} alt="" width="24" height="24" class="mix-blend-multiply" />
 					</Dialog.Close>
