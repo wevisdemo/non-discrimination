@@ -43,7 +43,7 @@
 	let popover = $state<HTMLElement>();
 	let place = $state<{ box: string; arrow?: string }>({ box: '' });
 
-	/** Put the tip beside its control, with the arrow pointing at it (desktop), or under it (phone) */
+	/** Put the tip beside its control (desktop) or above/below it (phone), the arrow pointing at it */
 	function measure() {
 		if (!tip) return;
 		const el = document.querySelector<HTMLElement>(`#explore [data-tutorial="${tip.target}"]`);
@@ -53,12 +53,18 @@
 		const vh = innerHeight;
 		const mid = r.top + r.height / 2;
 		if (vw < 768) {
-			place = {
-				box:
-					tip.place === 'above'
-						? `left:16px;right:16px;bottom:${vh - r.top + 16}px`
-						: `left:16px;right:16px;top:${r.bottom + 16}px`
-			};
+			// Full width, with the arrow between the tip and its control: down for the hints button
+			// below it, up for the side buttons above it
+			place =
+				tip.place === 'above'
+					? {
+							box: `left:16px;right:16px;bottom:${vh - r.top + 34}px`,
+							arrow: `left:${r.left + 20}px;top:${r.top - 30}px`
+						}
+					: {
+							box: `left:16px;right:16px;top:${r.bottom + 34}px`,
+							arrow: `left:${r.left + r.width / 2 - 11}px;top:${r.bottom + 6}px;transform:rotate(180deg)`
+						};
 		} else if (tip.place === 'above') {
 			place = {
 				box: `left:${Math.max(16, r.left + 22)}px;bottom:${vh - r.top + 34}px`,
