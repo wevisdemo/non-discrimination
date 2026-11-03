@@ -1,6 +1,8 @@
 <script lang="ts" module>
-	/** How long the map takes to pan to a case, for callers that wait on it */
+	/** How long the map takes to move to a case, for callers that wait on it */
 	export const PAN_MS = 500;
+	/** A gentle zoom to focus on a case; kept as the card pages on, never zoomed back out */
+	const FOCUS_ZOOM = 1.6;
 </script>
 
 <script lang="ts">
@@ -17,7 +19,7 @@
 		onselect
 	}: {
 		game: Game;
-		/** The case the map pans to when the card pages ‹ › or เจาะดูทีละภาพ starts */
+		/** The case the map focuses when the card pages ‹ › or เจาะดูทีละภาพ starts */
 		follow?: string;
 		onselect: (slug: string) => void;
 	} = $props();
@@ -26,25 +28,28 @@
 	let map: HTMLElement | undefined;
 
 	/**
-	 * Pans a case to the centre of the screen at the current zoom (Figma "Case info Animation").
+	 * Centres a case on screen, zooming in a little if the map is further out (Figma "Case info
+	 * Animation").
 	 * Panzoom draws `scale(s) translate(x, y)` about the map's centre, hence the translate below.
 	 */
-	function panToCase(slug: string) {
+	function focusCase(slug: string) {
 		const item = game.cases.find((c) => c.slug === slug);
 		if (!pz || !map || !item) return;
 		const { clientWidth: cw, clientHeight: ch } = map.parentElement!;
 		const { offsetWidth: w, offsetHeight: h } = map;
 		const k = w / MAP_SIZE.width;
 		const box = item.hotspot;
-		const s = pz.getScale();
+		const s = Math.max(pz.getScale(), FOCUS_ZOOM);
 		const x = (cw / 2 - w / 2) / s - (box.x + box.w / 2) * k + w / 2;
 		const y = (ch / 2 - h / 2) / s - (box.y + box.h / 2) * k + h / 2;
 		const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-		pz.pan(x, y, { animate: !reduceMotion, duration: PAN_MS, easing: 'ease-in-out' });
+		const opts = { animate: !reduceMotion, duration: PAN_MS, easing: 'ease-in-out' };
+		pz.zoom(s, opts);
+		pz.pan(x, y, opts);
 	}
 
 	$effect(() => {
-		if (follow) panToCase(follow);
+		if (follow) focusCase(follow);
 	});
 
 	function panzoom(node: HTMLElement) {

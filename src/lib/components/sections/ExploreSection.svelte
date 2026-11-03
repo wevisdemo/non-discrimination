@@ -48,7 +48,9 @@
 		goto('#explore', { replace: true, reset: false });
 	}
 
-	// ‹ › and เจาะดูทีละภาพ: the card fades out, the map pans to the case, then the card fades back in
+	// ‹ › and เจาะดูทีละภาพ: the card fades out, the map moves to the case, then after a beat to see
+	// the case the card fades back in
+	const HOLD_MS = 800;
 	let following = $state<string>();
 	let cardHidden = $state(false);
 	let moving = false;
@@ -68,7 +70,7 @@
 		if (opening || activeCase) {
 			navigate();
 			following = slug;
-			await wait(reduceMotion() ? 0 : PAN_MS);
+			await wait(reduceMotion() ? 0 : PAN_MS + HOLD_MS);
 		}
 		cardHidden = false;
 		moving = false;

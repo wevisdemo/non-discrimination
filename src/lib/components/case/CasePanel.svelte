@@ -15,7 +15,7 @@
 		onclose: () => void;
 		onprev: () => void;
 		onnext: () => void;
-		/** Faded out while the map pans to the next case */
+		/** Faded out while the map moves to the next case */
 		hidden?: boolean;
 	} = $props();
 </script>
