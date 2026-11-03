@@ -6,8 +6,8 @@
 	import { trackEvent } from '#lib/analytics.ts';
 	import { LAW_CHOICES, LocalPollStore, type LawChoice } from '#lib/state/poll.ts';
 
-	// TODO(content): confirm the Parliament Watch page for the anti-discrimination bills
-	const PARLIAMENT_WATCH_URL = 'https://parliamentwatch.wevis.info/';
+	// Parliament Watch's bill search for the anti-discrimination bills
+	const PARLIAMENT_WATCH_URL = `https://parliamentwatch.wevis.info/bills/explore?q=${encodeURIComponent('ขจัดการเลือกปฏิบัติต่อบุคคล')}`;
 
 	const laws = [
 		'ปฏิญญาสากลว่าด้วยสิทธิมนุษยชน',

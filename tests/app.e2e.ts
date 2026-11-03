@@ -233,7 +233,8 @@ test('KP3 explains why discrimination persists and asks about a dedicated law', 
 	await expect(page.getByRole('button', { name: 'อ่านเนื้อหาเต็ม' })).toBeVisible();
 	await expect(kp3.getByRole('link', { name: /คลิกที่นี่/ })).toHaveAttribute(
 		'href',
-		/parliamentwatch/
+		'https://parliamentwatch.wevis.info/bills/explore?q=' +
+			encodeURIComponent('ขจัดการเลือกปฏิบัติต่อบุคคล')
 	);
 
 	const agree = kp3.getByRole('button', { name: /^ดีเลย/ });
