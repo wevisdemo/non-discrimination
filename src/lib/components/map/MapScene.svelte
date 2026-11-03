@@ -7,6 +7,7 @@
 	let {
 		dim = 0,
 		spotlight = new Set<string>(),
+		show,
 		only = false,
 		class: className = '',
 		children
@@ -15,6 +16,8 @@
 		dim?: number;
 		/** Cases drawn above the wash so they stand out */
 		spotlight?: ReadonlySet<string>;
+		/** When set, only these cases are drawn; the rest stay hidden */
+		show?: ReadonlySet<string>;
 		/** Draw only the spotlighted cases and the overlays, for a layer stacked above a wash */
 		only?: boolean;
 		class?: string;
@@ -39,7 +42,7 @@
 		/>
 	{/if}
 	{#each cases as item (item.slug)}
-		{#if !only || spotlight.has(item.slug)}
+		{#if (!only || spotlight.has(item.slug)) && (!show || show.has(item.slug))}
 			<enhanced:img
 				src={caseImage(item.slug)}
 				alt=""

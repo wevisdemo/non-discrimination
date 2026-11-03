@@ -7,7 +7,7 @@
 	import ScrollStory from '#lib/components/story/ScrollStory.svelte';
 	import StoryCard from '#lib/components/story/StoryCard.svelte';
 	import { getCase, MAP_SIZE } from '#lib/content/index.ts';
-	import { introBubbles, introSteps } from '#lib/content/intro.ts';
+	import { introBubbles, introSteps, storyCases } from '#lib/content/intro.ts';
 	import { explore } from '#lib/state/explore.svelte.ts';
 	import { stageTracker } from '#lib/state/stage.svelte.ts';
 
@@ -25,7 +25,7 @@
 
 <section id="intro">
 	<!-- Figma flow "DE-Intro" -->
-	<ScrollStory steps={introSteps} bind:active={step}>
+	<ScrollStory steps={introSteps} bind:active={step} show={storyCases}>
 		{#snippet mapOverlay(active)}
 			<!-- A size container, so bubbles and their text scale with the map as the camera zooms -->
 			<div class="[container-type:inline-size] absolute inset-0">

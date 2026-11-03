@@ -29,11 +29,14 @@
 	let {
 		steps,
 		active = $bindable(steps[0].id),
+		show,
 		mapOverlay,
 		children
 	}: {
 		steps: readonly StoryStep<Id>[];
 		active?: Id;
+		/** Slugs of the only cases to draw on the map; all of them when omitted */
+		show?: readonly string[];
 		/** Extra layers in map space (e.g. bubbles pinned to cases); gets the active step id */
 		mapOverlay?: Snippet<[Id]>;
 		/** The scrolling sections; give each `data-step` and `{@attach track}` */
@@ -42,6 +45,7 @@
 
 	const step = $derived(steps.find((s) => s.id === active) ?? steps[0]);
 	const spotlight = $derived(new Set(step.spotlight ?? []));
+	const shown = $derived(show && new Set(show));
 
 	/** A step becomes active while its section crosses the middle of the viewport. */
 	const hasWash = $derived(steps.some((s) => s.wash));
@@ -100,7 +104,7 @@
 	<div class="absolute inset-0" aria-hidden="true">
 		<div class="sticky top-0 h-lvh overflow-hidden">
 			<MapCamera camera={step.camera}>
-				<MapScene dim={hasWash ? 0 : step.dim} {spotlight}>
+				<MapScene dim={hasWash ? 0 : step.dim} {spotlight} show={shown}>
 					{#if !hasWash}{@render mapOverlay?.(step.id)}{/if}
 				</MapScene>
 			</MapCamera>
@@ -116,7 +120,7 @@
 		<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 			<div class="sticky top-0 h-lvh overflow-hidden">
 				<MapCamera camera={step.camera}>
-					<MapScene only {spotlight}>
+					<MapScene only {spotlight} show={shown}>
 						{@render mapOverlay?.(step.id)}
 					</MapScene>
 				</MapCamera>

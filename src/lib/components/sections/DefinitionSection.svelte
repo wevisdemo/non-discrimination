@@ -6,12 +6,13 @@
 	import StoryCard from '#lib/components/story/StoryCard.svelte';
 	import Button from '#lib/components/ui/Button.svelte';
 	import { cases } from '#lib/content/index.ts';
+	import { storyCases } from '#lib/content/intro.ts';
 	import { harmBalloons, kp1Steps, stereotypeBalloons } from '#lib/content/kp1.ts';
 </script>
 
 <section id="definition">
 	<!-- Figma flow "DE-KP1" -->
-	<ScrollStory steps={kp1Steps}>
+	<ScrollStory steps={kp1Steps} show={storyCases}>
 		{#snippet children(track)}
 			<section
 				data-step="stereotype"

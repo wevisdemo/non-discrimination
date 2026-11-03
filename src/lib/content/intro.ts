@@ -34,6 +34,9 @@ export const introBubbles: {
 	}
 ];
 
+/** The only cases drawn on the map in the Intro and KP1; the rest appear in the game (KP2). */
+export const storyCases = introBubbles.map((b) => b.slug);
+
 /**
  * Scroll steps of the Intro (Figma flow "DE-Intro", start node 571:8266). `wash` follows the
  * prototype's frame gradients: white fading to 80%, lifting to reveal the city, coming back for
@@ -57,7 +60,7 @@ export const introSteps = [
 		camera: introAllCases,
 		dim: 0.8,
 		wash: [0.8],
-		spotlight: introBubbles.map((b) => b.slug)
+		spotlight: storyCases
 	},
 	{ id: 'meaning', camera: cityOverview, dim: 0.8, wash: [0.8] },
 	{ id: 'title', camera: cityOverview, dim: 0.8, wash: [0.8, 1] }
