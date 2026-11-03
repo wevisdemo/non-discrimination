@@ -12,13 +12,13 @@ export const cityCentre: Camera = { x: 0.53, y: 0.53, zoom: ZOOM };
 /*
  * Intro "bubbles" frames (Figma "Intro Animation"): one close-up per case with its bubble, then a
  * wide shot of all three. Each centre is the middle of the case plus its bubble, in map units
- * divided by MAP_SIZE. The cases hug the map's left edge, so the camera clamps there and the
- * close-ups sit toward the left of the screen; the map always fills the frame.
+ * divided by MAP_SIZE, on the Intro canvas (`introPlacements`). The camera clamps at the map's
+ * edge, so the map always fills the frame.
  */
-export const introGender: Camera = { x: 0.2024, y: 0.1607, zoom: 1.95 };
-export const introExCon: Camera = { x: 0.0674, y: 0.3641, zoom: 2.3 };
-export const introHiv: Camera = { x: 0.1993, y: 0.343, zoom: 2.1 };
-export const introAllCases: Camera = { x: 0.1607, y: 0.2594, zoom: 1.25 };
+export const introGender: Camera = { x: 0.2005, y: 0.1592, zoom: 1.95 };
+export const introExCon: Camera = { x: 0.4253, y: 0.3188, zoom: 2.3 };
+export const introHiv: Camera = { x: 0.1978, y: 0.3393, zoom: 2.1 };
+export const introAllCases: Camera = { x: 0.268, y: 0.255, zoom: 1 };
 
 /** Centre the camera on a case so anything pinned to it is on screen, even on a narrow phone. */
 export function focusOn(slug: string): Camera {

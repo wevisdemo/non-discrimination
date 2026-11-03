@@ -108,6 +108,9 @@ src/
    │  ├─ layout/                Header, Footer
    │  ├─ sections/              IntroSection, DefinitionSection, ExploreSection, CausesSection, SummarySection, AboutSection
    │  ├─ map/                   MapScene, MapCamera, MapCanvas, Hotspot, ExploreNav, HintDrawer
+   │  │                          (the Intro and KP1 draw only the three Intro cases on their own canvas,
+   │  │                           `assets/map/bg-intro.png` from Figma "For Intro", with the cases placed by
+   │  │                           `introPlacements`; the game uses `bg-final.png` and the case hotspots)
    │  ├─ story/                 ScrollStory (sticky map + scroll steps), StoryCard, ThoughtBubble, ContinueLink, Balloons, GameThumbnail
    │  ├─ case/                  CaseCard, CasePanel, CasePoll, ReportingChannels, CaseList
    │  └─ definition/            DefinitionPanel, SearchCTA

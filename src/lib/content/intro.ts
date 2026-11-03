@@ -38,6 +38,16 @@ export const introBubbles: {
 export const storyCases = introBubbles.map((b) => b.slug);
 
 /**
+ * Where the three cases sit on the Intro's own canvas (Figma "For Intro"), top-left in map px.
+ * The ex-con case moves right so the three are not bunched up; the game keeps the case hotspots.
+ */
+export const introPlacements: Record<string, { x: number; y: number }> = {
+	'gender-promotion': { x: 292, y: 396 },
+	'hiv-test-job': { x: 292, y: 841 },
+	'ex-con-job': { x: 1247, y: 714 }
+};
+
+/**
  * Scroll steps of the Intro (Figma flow "DE-Intro", start node 571:8266). `wash` follows the
  * prototype's frame gradients: white fading to 80%, lifting to reveal the city, coming back for
  * the bubbles and cards, then fading to white for the title.

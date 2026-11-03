@@ -22,6 +22,7 @@
 </script>
 
 <script lang="ts" generics="Id extends string">
+	import type { Picture } from '@sveltejs/enhanced-img';
 	import type { Snippet } from 'svelte';
 	import MapCamera from '#lib/components/map/MapCamera.svelte';
 	import MapScene from '#lib/components/map/MapScene.svelte';
@@ -30,6 +31,8 @@
 		steps,
 		active = $bindable(steps[0].id),
 		show,
+		background,
+		placements,
 		mapOverlay,
 		children
 	}: {
@@ -37,6 +40,9 @@
 		active?: Id;
 		/** Slugs of the only cases to draw on the map; all of them when omitted */
 		show?: readonly string[];
+		/** A different city canvas, and where its cases sit (see MapScene) */
+		background?: Picture;
+		placements?: Record<string, { x: number; y: number }>;
 		/** Extra layers in map space (e.g. bubbles pinned to cases); gets the active step id */
 		mapOverlay?: Snippet<[Id]>;
 		/** The scrolling sections; give each `data-step` and `{@attach track}` */
@@ -104,7 +110,7 @@
 	<div class="absolute inset-0" aria-hidden="true">
 		<div class="sticky top-0 h-lvh overflow-hidden">
 			<MapCamera camera={step.camera}>
-				<MapScene dim={hasWash ? 0 : step.dim} {spotlight} show={shown}>
+				<MapScene dim={hasWash ? 0 : step.dim} {spotlight} show={shown} {background} {placements}>
 					{#if !hasWash}{@render mapOverlay?.(step.id)}{/if}
 				</MapScene>
 			</MapCamera>
@@ -120,7 +126,7 @@
 		<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 			<div class="sticky top-0 h-lvh overflow-hidden">
 				<MapCamera camera={step.camera}>
-					<MapScene only {spotlight} show={shown}>
+					<MapScene only {spotlight} show={shown} {background} {placements}>
 						{@render mapOverlay?.(step.id)}
 					</MapScene>
 				</MapCamera>

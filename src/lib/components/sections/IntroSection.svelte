@@ -6,8 +6,9 @@
 	import ContinueLink from '#lib/components/story/ContinueLink.svelte';
 	import ScrollStory from '#lib/components/story/ScrollStory.svelte';
 	import StoryCard from '#lib/components/story/StoryCard.svelte';
-	import { getCase, MAP_SIZE } from '#lib/content/index.ts';
-	import { introBubbles, introSteps, storyCases } from '#lib/content/intro.ts';
+	import { MAP_SIZE } from '#lib/content/index.ts';
+	import { introBubbles, introPlacements, introSteps, storyCases } from '#lib/content/intro.ts';
+	import { introMap } from '#lib/components/story/introMap.ts';
 	import { explore } from '#lib/state/explore.svelte.ts';
 	import { stageTracker } from '#lib/state/stage.svelte.ts';
 
@@ -18,14 +19,14 @@
 	 * converted to a share of the map width (1651 Figma px) so it scales with the camera.
 	 */
 	function pinTo(slug: string, offset: { x: number; y: number }) {
-		const { hotspot: h } = getCase(slug)!;
-		return `left:calc(${(h.x / MAP_SIZE.width) * 100}% + ${(offset.x / 1651) * 100}cqw);top:calc(${(h.y / MAP_SIZE.height) * 100}% + ${(offset.y / 1651) * 100}cqw)`;
+		const at = introPlacements[slug];
+		return `left:calc(${(at.x / MAP_SIZE.width) * 100}% + ${(offset.x / 1651) * 100}cqw);top:calc(${(at.y / MAP_SIZE.height) * 100}% + ${(offset.y / 1651) * 100}cqw)`;
 	}
 </script>
 
 <section id="intro">
 	<!-- Figma flow "DE-Intro" -->
-	<ScrollStory steps={introSteps} bind:active={step} show={storyCases}>
+	<ScrollStory steps={introSteps} bind:active={step} show={storyCases} {...introMap}>
 		{#snippet mapOverlay(active)}
 			<!-- A size container, so bubbles and their text scale with the map as the camera zooms -->
 			<div class="[container-type:inline-size] absolute inset-0">
