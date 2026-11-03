@@ -129,7 +129,7 @@
 			<button
 				type="button"
 				data-primary
-				class="rounded-full bg-ui-primary px-m py-s text-b5 font-bold text-ink hover:bg-ui-primary-hover"
+				class="rounded-full bg-ui-primary px-m py-s text-b5 font-bold text-primary hover:bg-ui-primary-hover"
 				onclick={() => (step === last ? onfinish() : go(step + 1))}>{nextLabel}</button
 			>
 		</div>
