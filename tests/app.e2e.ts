@@ -304,8 +304,11 @@ test('About has the project goal, sources, credits and the WeVis footer', async 
 test('the case card poll remembers the answer', async ({ page }) => {
 	await page.goto('/cases/karen/');
 	const answer = page.getByRole('button', { name: 'เคยเห็นกับตา' });
+	// Shares appear only once an option is picked (mock values until the poll backend)
+	await expect(page.getByText('27.6%')).toHaveCount(0);
 	await answer.click();
 	await expect(answer).toHaveAttribute('aria-pressed', 'true');
+	await expect(page.getByText('27.6%')).toBeVisible();
 	await page.reload();
 	await expect(page.getByRole('button', { name: 'เคยเห็นกับตา' })).toHaveAttribute(
 		'aria-pressed',

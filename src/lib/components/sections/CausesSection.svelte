@@ -3,6 +3,7 @@
 	import parliamentBg from '#lib/assets/kp3/parliament-bg.png?enhanced';
 	import parliamentWatch from '#lib/assets/kp3/parliament-watch.svg';
 	import ruleCancelled from '#lib/assets/kp3/rule-cancelled.svg';
+	import PollBar from '#lib/components/ui/PollBar.svelte';
 	import { trackEvent } from '#lib/analytics.ts';
 	import { LAW_CHOICES, LocalPollStore, type LawChoice } from '#lib/state/poll.ts';
 
@@ -178,16 +179,7 @@
 							><strong>{option.lead}</strong> {option.rest}</span
 						>
 						{#if answer}
-							<span class="relative mt-xs block h-4 w-full bg-[#d9d9d9]">
-								<span class="block h-full bg-primary" style="width:{percent[option.id]}%"></span>
-								<span
-									class="absolute inset-y-0 right-xs flex items-center text-b6 font-bold {percent[
-										option.id
-									] > 80
-										? 'text-white'
-										: 'text-ink'}">{percent[option.id].toFixed(1)}%</span
-								>
-							</span>
+							<PollBar percent={percent[option.id]} />
 						{/if}
 					</button>
 				{/each}
