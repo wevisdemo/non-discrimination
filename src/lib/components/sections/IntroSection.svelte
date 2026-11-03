@@ -106,7 +106,7 @@
 				<p class="font-header text-h7 font-bold text-primary">
 					ตระหนัก เข้าใจ<br />ไม่เลือกปฏิบัติ
 				</p>
-				<div class="mt-l"><ContinueLink href="#definition" /></div>
+				<div class="mt-l"><ContinueLink /></div>
 			</section>
 		{/snippet}
 	</ScrollStory>

@@ -15,10 +15,12 @@ test('intro scrolls through its steps and can be skipped to the title', async ({
 	await expect(page.getByRole('link', { name: 'ข้ามส่วนเกริ่น' })).toBeHidden();
 });
 
-test('intro continues to KP1, which ends by starting the game', async ({ page }) => {
+test('the scroll hints are plain text, and KP1 ends by starting the game', async ({ page }) => {
 	await page.goto('/');
-	await page.locator('#intro').getByRole('link', { name: 'เลื่อนลงเพื่อดูต่อ' }).click();
-	await expect(page).toHaveURL(/#definition$/);
+	await expect(page.locator('#intro').getByText('เลื่อนลงเพื่อดูต่อ')).toHaveCount(1);
+	// Scrolling moves on by itself, so the hint is not something to click
+	await expect(page.getByRole('link', { name: 'เลื่อนลงเพื่อดูต่อ' })).toHaveCount(0);
+	await page.locator('#definition').getByText('ภาพจำที่ลดคุณค่า').scrollIntoViewIfNeeded();
 	await expect(page.locator('#definition').getByText('ภาพจำที่ลดคุณค่า')).toBeVisible();
 
 	const mission = page.getByRole('heading', { name: /สืบหา 18 การเลือกปฏิบัติ/ }).first();
@@ -26,12 +28,6 @@ test('intro continues to KP1, which ends by starting the game', async ({ page })
 	await expect(mission).toBeVisible();
 	await page.getByRole('link', { name: 'สำรวจเลย !' }).click();
 	await expect(page).toHaveURL(/#explore$/);
-});
-
-test('KP1 can continue on to the causes section', async ({ page }) => {
-	await page.goto('/#definition');
-	await page.locator('#definition').getByRole('link', { name: 'เลื่อนลงเพื่อดูต่อ' }).click();
-	await expect(page).toHaveURL(/#causes$/);
 });
 
 const menuLabels = [
@@ -268,7 +264,7 @@ test('the Result survey can be answered once', async ({ page }) => {
 	await expect(page.getByRole('button', { name: 'ส่งคำตอบ' })).toHaveCount(0);
 });
 
-test('the Result has share links and continues to About', async ({ page }) => {
+test('the Result has share links and the E-Learning link', async ({ page }) => {
 	await page.goto('/#summary');
 	const summary = page.locator('#summary');
 	await expect(summary.getByRole('link', { name: 'แชร์ทาง Facebook' })).toHaveAttribute(
@@ -283,8 +279,7 @@ test('the Result has share links and continues to About', async ({ page }) => {
 		'href',
 		'https://move-d.org/lab/'
 	);
-	await summary.getByRole('link', { name: 'เลื่อนลงเพื่อดูต่อ' }).click();
-	await expect(page).toHaveURL(/#about$/);
+	await expect(summary.getByText('เลื่อนลงเพื่อดูต่อ')).toBeVisible();
 });
 
 test('About has the project goal, sources, credits and the WeVis footer', async ({ page }) => {

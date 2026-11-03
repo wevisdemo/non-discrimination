@@ -77,7 +77,7 @@
 						>แนะนำการสำรวจ</a
 					>
 				</div>
-				<ContinueLink href="#causes" />
+				<ContinueLink />
 			</section>
 		{/snippet}
 	</ScrollStory>

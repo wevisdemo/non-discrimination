@@ -72,6 +72,6 @@
 				</span>
 			</a>
 		</div>
-		<ContinueLink href="#about" />
+		<ContinueLink />
 	</div>
 </section>
