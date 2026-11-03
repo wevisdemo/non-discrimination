@@ -1,3 +1,8 @@
+<script lang="ts" module>
+	/** How long the map takes to pan to a case, for callers that wait on it */
+	export const PAN_MS = 500;
+</script>
+
 <script lang="ts">
 	import type { PanzoomObject } from '@panzoom/panzoom';
 	import type { Game } from '#lib/state/game.svelte.ts';
@@ -12,7 +17,7 @@
 		onselect
 	}: {
 		game: Game;
-		/** The case the map pans to, for เจาะดูทีละภาพ as the card pages ‹ › */
+		/** The case the map pans to when the card pages ‹ › or เจาะดูทีละภาพ starts */
 		follow?: string;
 		onselect: (slug: string) => void;
 	} = $props();
@@ -35,7 +40,7 @@
 		const x = (cw / 2 - w / 2) / s - (box.x + box.w / 2) * k + w / 2;
 		const y = (ch / 2 - h / 2) / s - (box.y + box.h / 2) * k + h / 2;
 		const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-		pz.pan(x, y, { animate: !reduceMotion, duration: 500, easing: 'ease-in-out' });
+		pz.pan(x, y, { animate: !reduceMotion, duration: PAN_MS, easing: 'ease-in-out' });
 	}
 
 	$effect(() => {

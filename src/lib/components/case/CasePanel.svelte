@@ -8,8 +8,16 @@
 		item,
 		onclose,
 		onprev,
-		onnext
-	}: { item: Case; onclose: () => void; onprev: () => void; onnext: () => void } = $props();
+		onnext,
+		hidden = false
+	}: {
+		item: Case;
+		onclose: () => void;
+		onprev: () => void;
+		onnext: () => void;
+		/** Faded out while the map pans to the next case */
+		hidden?: boolean;
+	} = $props();
 </script>
 
 <!-- Figma "kp2-info-desktop": a white sheet over the map, below the header; no scrim -->
@@ -17,14 +25,19 @@
 	<Dialog.Portal>
 		<Dialog.Content
 			aria-label={item.titleTh}
-			class="fixed top-[57px] bottom-0 left-1/2 z-50 flex w-[600px] max-w-full -translate-x-1/2 flex-col gap-s overflow-y-auto rounded-t-card bg-surface p-m shadow-lg"
+			class="fixed top-[57px] bottom-0 left-1/2 z-50 flex w-[600px] max-w-full -translate-x-1/2 flex-col gap-s overflow-y-auto rounded-t-card bg-surface p-m shadow-lg transition-opacity duration-250 {hidden
+				? 'opacity-0'
+				: ''}"
 		>
-			<div class="flex justify-end">
-				<Dialog.Close aria-label="ปิด" class="rounded-sm hover:bg-ui-primary-hover">
-					<img src={close} alt="" width="24" height="24" class="mix-blend-multiply" />
-				</Dialog.Close>
+			<!-- bits-ui forces pointer-events on the sheet itself, so the clicks are blocked one level down -->
+			<div class="flex flex-col gap-s {hidden ? 'pointer-events-none' : ''}">
+				<div class="flex justify-end">
+					<Dialog.Close aria-label="ปิด" class="rounded-sm hover:bg-ui-primary-hover">
+						<img src={close} alt="" width="24" height="24" class="mix-blend-multiply" />
+					</Dialog.Close>
+				</div>
+				<CaseCard {item} {onprev} {onnext} />
 			</div>
-			<CaseCard {item} {onprev} {onnext} />
 		</Dialog.Content>
 	</Dialog.Portal>
 </Dialog.Root>

@@ -8,7 +8,7 @@
 	import CasePanel from '#lib/components/case/CasePanel.svelte';
 	import FullContentPanel from '#lib/components/definition/FullContentPanel.svelte';
 	import InfoButton from '#lib/components/definition/InfoButton.svelte';
-	import MapCanvas from '#lib/components/map/MapCanvas.svelte';
+	import MapCanvas, { PAN_MS } from '#lib/components/map/MapCanvas.svelte';
 	import ExploreNav from '#lib/components/map/ExploreNav.svelte';
 	import HintDrawer from '#lib/components/map/HintDrawer.svelte';
 	import Tutorial from '#lib/components/map/Tutorial.svelte';
@@ -48,11 +48,41 @@
 		goto('#explore', { replace: true, reset: false });
 	}
 
+	// ‹ › and เจาะดูทีละภาพ: the card fades out, the map pans to the case, then the card fades back in
+	let following = $state<string>();
+	let cardHidden = $state(false);
+	let moving = false;
+	const wait = (ms: number) => new Promise((done) => setTimeout(done, ms));
+	const reduceMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+	$effect(() => {
+		if (!activeCase) following = undefined;
+	});
+
+	async function moveTo(slug: string, navigate: () => void, opening = false) {
+		if (moving) return;
+		moving = true;
+		cardHidden = true;
+		if (activeCase) await wait(fadeMs());
+		// Closed while fading: don't reopen it
+		if (opening || activeCase) {
+			navigate();
+			following = slug;
+			await wait(reduceMotion() ? 0 : PAN_MS);
+		}
+		cardHidden = false;
+		moving = false;
+	}
+
 	/** เจาะดูทีละภาพ: open the first case and step through them with ‹ › */
 	function startStepping() {
 		const slug = cases[0].slug;
 		trackEvent({ name: 'mode_changed', mode: 'stepping' });
-		pushState(resolve('/cases/[slug]', { slug }), { caseSlug: slug, stepping: true });
+		moveTo(
+			slug,
+			() => pushState(resolve('/cases/[slug]', { slug }), { caseSlug: slug, stepping: true }),
+			true
+		);
 	}
 
 	/** ‹ › replace the open card, so Back still closes the panel in one step */
@@ -61,10 +91,12 @@
 		const next = cases[cases.indexOf(activeCase) + by];
 		if (!next) return;
 		trackEvent({ name: 'case_opened', slug: next.slug });
-		replaceState(resolve('/cases/[slug]', { slug: next.slug }), {
-			...page.state,
-			caseSlug: next.slug
-		});
+		moveTo(next.slug, () =>
+			replaceState(resolve('/cases/[slug]', { slug: next.slug }), {
+				...page.state,
+				caseSlug: next.slug
+			})
+		);
 	}
 </script>
 
@@ -81,11 +113,7 @@
 		{@attach (node) => node.focus({ preventScroll: true })}
 	>
 		<h2 id="explore-title" class="sr-only">สืบหา 18 การเลือกปฏิบัติที่ซ่อนอยู่</h2>
-		<MapCanvas
-			{game}
-			follow={page.state.stepping ? page.state.caseSlug : undefined}
-			onselect={openCase}
-		/>
+		<MapCanvas {game} follow={following} onselect={openCase} />
 		<!-- Figma "kp2-play": exit and reveal buttons top right, hints bottom left -->
 		<div class="pointer-events-none absolute inset-0 z-[2] *:pointer-events-auto">
 			<!-- Figma mobile has no counter; phones keep it for screen readers only -->
@@ -119,6 +147,7 @@
 	<CasePanel
 		item={activeCase}
 		onclose={() => history.back()}
+		hidden={cardHidden}
 		onprev={() => step(-1)}
 		onnext={() => step(1)}
 	/>
