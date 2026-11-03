@@ -46,8 +46,13 @@
 			</h3>
 			<ul class="flex gap-[10px] overflow-x-auto pb-xs">
 				{#each game.cases as item (item.slug)}
+					<!-- Figma "Hints_item" State=Completed: opened cases go grey -->
 					<li
-						class="flex w-[166px] shrink-0 items-center justify-center rounded-lg bg-ui-primary p-s text-center text-b6 text-ink"
+						class="flex w-[166px] shrink-0 items-center justify-center rounded-lg p-s text-center text-b6 {game.found.has(
+							item.slug
+						)
+							? 'bg-[#c8c8c8] text-[#727272]'
+							: 'bg-ui-primary text-ink'}"
 					>
 						{item.titleTh}{#if game.found.has(item.slug)}<span class="sr-only"> (พบแล้ว)</span>{/if}
 					</li>
