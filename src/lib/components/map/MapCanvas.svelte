@@ -1,6 +1,5 @@
 <script lang="ts" module>
-	/** How long the map takes to move to a case, for callers that wait on it */
-	export const PAN_MS = 500;
+	const PAN_MS = 500;
 	/** A gentle zoom to focus on a case; kept as the card pages on, never zoomed back out */
 	const FOCUS_ZOOM = 1.6;
 </script>

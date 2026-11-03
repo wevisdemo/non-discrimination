@@ -8,7 +8,7 @@
 	import CasePanel from '#lib/components/case/CasePanel.svelte';
 	import FullContentPanel from '#lib/components/definition/FullContentPanel.svelte';
 	import InfoButton from '#lib/components/definition/InfoButton.svelte';
-	import MapCanvas, { PAN_MS } from '#lib/components/map/MapCanvas.svelte';
+	import MapCanvas from '#lib/components/map/MapCanvas.svelte';
 	import ExploreNav from '#lib/components/map/ExploreNav.svelte';
 	import HintDrawer from '#lib/components/map/HintDrawer.svelte';
 	import Tutorial from '#lib/components/map/Tutorial.svelte';
@@ -40,9 +40,9 @@
 		goto('#explore', { replace: true, reset: false });
 	}
 
-	// Tapping a case, ‹ › and เจาะดูทีละภาพ: the card fades out, the map moves to the case, then
-	// after a beat to see the case the card fades back in
-	const HOLD_MS = 800;
+	// Tapping a case, ‹ › and เจาะดูทีละภาพ: the card fades out, the map moves to the case, and the
+	// card fades back in this long after the map starts moving (the move itself takes 0.5s)
+	const SHOW_AFTER_MS = 800;
 	let following = $state<string>();
 	let cardHidden = $state(false);
 	let moving = false;
@@ -62,7 +62,7 @@
 		if (opening || activeCase) {
 			navigate();
 			following = slug;
-			await wait(reduceMotion() ? 0 : PAN_MS + HOLD_MS);
+			await wait(reduceMotion() ? 0 : SHOW_AFTER_MS);
 		}
 		cardHidden = false;
 		moving = false;
