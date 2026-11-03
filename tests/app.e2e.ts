@@ -337,11 +337,11 @@ test('the map is a full-screen overlay opened by สำรวจเลย, not a
 
 test('map controls: reveal, hints drawer and exit', async ({ page }) => {
 	await page.goto('/#explore');
-	const reveal = page.getByRole('button', { name: 'เฉลยตำแหน่งภาพ' });
-	await reveal.click();
-	await expect(reveal).toHaveAttribute('aria-pressed', 'true');
-	await reveal.click();
-	await expect(reveal).toHaveAttribute('aria-pressed', 'false');
+	// Like เปิดตัวช่วย, the button renames itself while the reveal is on
+	await page.getByRole('button', { name: 'เฉลยตำแหน่งภาพ' }).click();
+	await expect(page.getByRole('button', { name: 'เฉลยตำแหน่งภาพ' })).toHaveCount(0);
+	await page.getByRole('button', { name: 'ปิดเฉลย' }).click();
+	await expect(page.getByRole('button', { name: 'เฉลยตำแหน่งภาพ' })).toBeVisible();
 
 	await page.getByRole('button', { name: 'เปิดตัวช่วย' }).click();
 	await expect(page.getByRole('button', { name: 'ปิดตัวช่วย' })).toHaveAttribute(

@@ -3,12 +3,15 @@
 	import crossroads from '#lib/assets/kp2/crossroads.svg';
 	import pedestrian from '#lib/assets/kp2/pedestrian.svg';
 	import view from '#lib/assets/kp2/view.svg';
+	import viewOff from '#lib/assets/kp2/view-off.svg';
 	import type { Game } from '#lib/state/game.svelte.ts';
 
 	let { game, stepping, onstep }: { game: Game; stepping: boolean; onstep: () => void } = $props();
 
+	const revealing = $derived(game.mode === 'reveal');
+
 	function toggleReveal() {
-		const next = game.mode === 'reveal' ? 'default' : 'reveal';
+		const next = revealing ? 'default' : 'reveal';
 		game.setMode(next);
 		trackEvent({ name: 'mode_changed', mode: next });
 	}
@@ -39,15 +42,21 @@
 	</a>
 	<!-- eslint-enable svelte/no-navigation-without-resolve -->
 	<!-- The exported icons carry a white square meant to be multiplied away -->
+	<!-- Like เปิดตัวช่วย, the label flips while it is on so it is clear this button turns it off -->
 	<button
 		type="button"
-		class={button}
+		class="{button} {revealing ? 'bg-accent' : ''}"
 		data-tutorial="reveal"
-		aria-pressed={game.mode === 'reveal'}
 		onclick={toggleReveal}
 	>
-		<img src={view} alt="" width="22" height="22" class="mix-blend-multiply" />
-		<span class="max-lg:sr-only">เฉลยตำแหน่งภาพ</span>
+		<img
+			src={revealing ? viewOff : view}
+			alt=""
+			width="22"
+			height="22"
+			class="mix-blend-multiply"
+		/>
+		<span class="max-lg:sr-only">{revealing ? 'ปิดเฉลย' : 'เฉลยตำแหน่งภาพ'}</span>
 	</button>
 	<button
 		type="button"
