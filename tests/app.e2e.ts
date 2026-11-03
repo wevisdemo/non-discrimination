@@ -238,8 +238,12 @@ test('KP3 explains why discrimination persists and asks about a dedicated law', 
 	);
 
 	const agree = kp3.getByRole('button', { name: /^ดีเลย/ });
+	// Percentages only appear once an option is picked (mock values until the poll backend)
+	await expect(kp3.getByText('71.8%')).toHaveCount(0);
 	await agree.click();
 	await expect(agree).toHaveAttribute('aria-pressed', 'true');
+	await expect(kp3.getByText('71.8%')).toBeVisible();
+	await expect(kp3.getByText('ขอบคุณสำหรับความเห็น')).toBeVisible();
 	await page.reload();
 	await expect(page.locator('#causes').getByRole('button', { name: /^ดีเลย/ })).toHaveAttribute(
 		'aria-pressed',

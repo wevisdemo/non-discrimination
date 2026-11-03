@@ -29,6 +29,9 @@
 		}
 	];
 
+	// MOCKUP: placeholder shares (sum 100) until the poll backend can return every voter's votes
+	const percent: Record<LawChoice, number> = { agree: 71.8, unnecessary: 17.5, disagree: 10.7 };
+
 	const store = new LocalPollStore('non-discrimination:law-poll', LAW_CHOICES);
 	// Not $derived: the saved answer must be read after hydration, so the prerendered page matches
 	// eslint-disable-next-line svelte/prefer-writable-derived
@@ -162,17 +165,35 @@
 			</h3>
 			<div class="flex w-full flex-col gap-s">
 				{#each options as option (option.id)}
+					<!-- Figma "Poll": white buttons first; once answered, pink rows with the share of votes -->
 					<button
 						type="button"
-						class="w-full rounded-lg border-2 border-transparent bg-surface px-m py-s text-b6 whitespace-pre-line text-ink drop-shadow-[0_4px_2px_rgba(0,0,0,0.25)] hover:bg-ui-primary-hover aria-pressed:border-primary"
+						class="w-full rounded-lg border-4 border-transparent px-m py-s text-b6 text-ink aria-pressed:border-primary {answer
+							? 'bg-ui-primary'
+							: 'bg-surface drop-shadow-[0_4px_2px_rgba(0,0,0,0.25)] hover:bg-ui-primary-hover'}"
 						aria-pressed={answer === option.id}
-						onclick={() => vote(option.id)}><strong>{option.lead}</strong> {option.rest}</button
+						onclick={() => vote(option.id)}
 					>
+						<span class="block whitespace-pre-line"
+							><strong>{option.lead}</strong> {option.rest}</span
+						>
+						{#if answer}
+							<span class="relative mt-xs block h-4 w-full bg-[#d9d9d9]">
+								<span class="block h-full bg-primary" style="width:{percent[option.id]}%"></span>
+								<span
+									class="absolute inset-y-0 right-xs flex items-center text-b6 font-bold {percent[
+										option.id
+									] > 80
+										? 'text-white'
+										: 'text-ink'}">{percent[option.id].toFixed(1)}%</span
+								>
+							</span>
+						{/if}
+					</button>
 				{/each}
 			</div>
 			{#if answer}
-				<!-- TODO(backend): every voter's percentages, as in Figma 897:5333 -->
-				<p class="text-b6" aria-live="polite">ขอบคุณที่ร่วมแสดงความเห็น</p>
+				<p class="text-b6" aria-live="polite">ขอบคุณสำหรับความเห็น</p>
 			{/if}
 			<p
 				class="flex w-full items-center justify-center gap-s rounded-card bg-surface-tint p-s text-b6"
