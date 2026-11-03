@@ -56,7 +56,7 @@
 				type="button"
 				class="w-full rounded-lg border-4 border-transparent px-l py-s text-b6 font-bold text-ink aria-pressed:border-primary {answer
 					? 'bg-ui-primary'
-					: 'bg-surface drop-shadow-[0_4px_2px_rgba(0,0,0,0.25)] hover:bg-ui-primary-hover'}"
+					: 'bg-surface shadow-[0_4px_2px_rgba(0,0,0,0.25)] hover:bg-ui-primary-hover'}"
 				aria-pressed={answer === option.id}
 				onclick={() => vote(option.id)}
 			>
