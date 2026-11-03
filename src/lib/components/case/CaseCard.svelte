@@ -98,14 +98,6 @@
 					<dt class="text-[#767676]">รูปแบบของการเลือกปฏิบัติ</dt>
 					<dd class="font-bold text-ink">{item.formsTh.join(', ')}</dd>
 				</div>
-				<div class="flex flex-col gap-xs">
-					<dt class="text-[#767676]">ผู้กระทำ</dt>
-					<dd class="font-bold text-ink">{item.perpetratorTh}</dd>
-				</div>
-				<div class="flex flex-col gap-xs">
-					<dt class="text-[#767676]">ผู้ได้รับผลกระทบ</dt>
-					<dd class="font-bold text-ink">{item.affectedTh}</dd>
-				</div>
 			</dl>
 
 			{#if item.noteTh}
