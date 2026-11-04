@@ -29,34 +29,74 @@
 	/** The zoom the map had before a case was focused, to go back to when its card closes */
 	let scaleBefore: number | undefined;
 
+	let frame = 0;
+
 	/**
 	 * Shows the map point (px, py), in map px, at the centre of the screen at zoom `s`.
 	 * Panzoom draws `scale(s) translate(x, y)` about the map's centre, hence the translate below.
 	 */
 	function showAt(px: number, py: number, s: number) {
 		if (!pz || !map) return;
+		const panzoom = pz;
 		const { clientWidth: cw, clientHeight: ch } = map.parentElement!;
 		const { offsetWidth: w, offsetHeight: h } = map;
 		// Keep the map covering the screen (what contain:'outside' does), worked out here for the
 		// final zoom: Panzoom measures a map mid-transition, so zooming out first then tapping a case
-		// made it clamp against the wrong size and land off the case.
-		const clamp = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v));
-		const x = clamp(
+		// made it clamp against the wrong size and land off the case. It overshoots the screen edge
+		// by a pixel so rounding can never leave a hairline of white, unless the map is only just
+		// big enough to cover the screen, when it is centred instead.
+		const fit = (v: number, min: number, max: number, bleed: number) =>
+			min + bleed > max - bleed ? (min + max) / 2 : Math.min(max - bleed, Math.max(min + bleed, v));
+		const x = fit(
 			(cw / 2 - w / 2) / s - px + w / 2,
 			(cw - w / 2) / s - w / 2,
-			w / 2 - w / (2 * s)
+			w / 2 - w / (2 * s),
+			1 / s
 		);
-		const y = clamp(
+		const y = fit(
 			(ch / 2 - h / 2) / s - py + h / 2,
 			(ch - h / 2) / s - h / 2,
-			h / 2 - h / (2 * s)
+			h / 2 - h / (2 * s),
+			1 / s
 		);
-		const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-		const opts = { animate: !reduceMotion, duration: PAN_MS, easing: 'ease-in-out' };
-		pz.setOptions({ contain: undefined });
-		pz.zoom(s, opts);
-		pz.pan(x, y, opts);
-		pz.setOptions({ contain: 'outside' });
+
+		// Panzoom's own transition tweens scale and translate separately, so partway through the map
+		// can stop covering the screen and show white. Tween the screen position of the map's corner
+		// and its zoom instead: both are linear, so if the start and end cover the screen, every
+		// frame in between does too.
+		const s0 = panzoom.getScale();
+		const { x: x0, y: y0 } = panzoom.getPan();
+		const corner = (zoom: number, t: number, size: number) => size / 2 + zoom * (t - size / 2);
+		const [l0, t0, l1, t1] = [
+			corner(s0, x0, w),
+			corner(s0, y0, h),
+			corner(s, x, w),
+			corner(s, y, h)
+		];
+		const lerp = (a: number, b: number, k: number) => a + (b - a) * k;
+		const frameAt = (k: number) => {
+			const z = lerp(s0, s, k);
+			panzoom.zoom(z, { animate: false });
+			panzoom.pan((lerp(l0, l1, k) - w / 2) / z + w / 2, (lerp(t0, t1, k) - h / 2) / z + h / 2, {
+				animate: false
+			});
+		};
+
+		cancelAnimationFrame(frame);
+		panzoom.setOptions({ contain: undefined });
+		const done = () => {
+			frameAt(1);
+			panzoom.setOptions({ contain: 'outside' });
+		};
+		if (matchMedia('(prefers-reduced-motion: reduce)').matches) return done();
+		const start = performance.now();
+		const tick = (now: number) => {
+			const k = Math.min(1, (now - start) / PAN_MS);
+			if (k >= 1) return done();
+			frameAt(k < 0.5 ? 2 * k * k : 1 - (-2 * k + 2) ** 2 / 2);
+			frame = requestAnimationFrame(tick);
+		};
+		frame = requestAnimationFrame(tick);
 	}
 
 	/** Centres a case on screen, zooming in a little if the map is further out (Figma "Case info Animation") */
@@ -119,6 +159,7 @@
 
 		return () => {
 			destroyed = true;
+			cancelAnimationFrame(frame);
 			parent.removeEventListener('wheel', onWheel);
 			pz?.destroy();
 		};
