@@ -26,30 +26,28 @@
 	let pz: PanzoomObject | undefined;
 	let map: HTMLElement | undefined;
 
+	/** The zoom the map had before a case was focused, to go back to when its card closes */
+	let scaleBefore: number | undefined;
+
 	/**
-	 * Centres a case on screen, zooming in a little if the map is further out (Figma "Case info
-	 * Animation").
+	 * Shows the map point (px, py), in map px, at the centre of the screen at zoom `s`.
 	 * Panzoom draws `scale(s) translate(x, y)` about the map's centre, hence the translate below.
 	 */
-	function focusCase(slug: string) {
-		const item = game.cases.find((c) => c.slug === slug);
-		if (!pz || !map || !item) return;
+	function showAt(px: number, py: number, s: number) {
+		if (!pz || !map) return;
 		const { clientWidth: cw, clientHeight: ch } = map.parentElement!;
 		const { offsetWidth: w, offsetHeight: h } = map;
-		const k = w / MAP_SIZE.width;
-		const box = item.hotspot;
-		const s = Math.max(pz.getScale(), FOCUS_ZOOM);
 		// Keep the map covering the screen (what contain:'outside' does), worked out here for the
 		// final zoom: Panzoom measures a map mid-transition, so zooming out first then tapping a case
 		// made it clamp against the wrong size and land off the case.
 		const clamp = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v));
 		const x = clamp(
-			(cw / 2 - w / 2) / s - (box.x + box.w / 2) * k + w / 2,
+			(cw / 2 - w / 2) / s - px + w / 2,
 			(cw - w / 2) / s - w / 2,
 			w / 2 - w / (2 * s)
 		);
 		const y = clamp(
-			(ch / 2 - h / 2) / s - (box.y + box.h / 2) * k + h / 2,
+			(ch / 2 - h / 2) / s - py + h / 2,
 			(ch - h / 2) / s - h / 2,
 			h / 2 - h / (2 * s)
 		);
@@ -61,9 +59,35 @@
 		pz.setOptions({ contain: 'outside' });
 	}
 
-	// Closing the card leaves the map where it is, so exploring carries on from that case
+	/** Centres a case on screen, zooming in a little if the map is further out (Figma "Case info Animation") */
+	function focusCase(slug: string) {
+		const item = game.cases.find((c) => c.slug === slug);
+		if (!pz || !map || !item) return;
+		const k = map.offsetWidth / MAP_SIZE.width;
+		const box = item.hotspot;
+		const scale = pz.getScale();
+		scaleBefore ??= scale;
+		showAt((box.x + box.w / 2) * k, (box.y + box.h / 2) * k, Math.max(scale, FOCUS_ZOOM));
+	}
+
+	/** Zooms back to where it was before the case, around the same spot, without re-centring */
+	function zoomBack() {
+		if (!pz || !map || scaleBefore === undefined) return;
+		const { clientWidth: cw, clientHeight: ch } = map.parentElement!;
+		const { offsetWidth: w, offsetHeight: h } = map;
+		const s = pz.getScale();
+		const { x, y } = pz.getPan();
+		// The map point under the screen centre now, so it stays there at the old zoom
+		showAt((cw / 2 - w / 2) / s + w / 2 - x, (ch / 2 - h / 2) / s + h / 2 - y, scaleBefore);
+		scaleBefore = undefined;
+	}
+
+	// Paging between cases keeps the zoom; closing the card zooms back out on the spot
+	let focused = false;
 	$effect(() => {
 		if (follow) focusCase(follow);
+		else if (focused) zoomBack();
+		focused = !!follow;
 	});
 
 	function panzoom(node: HTMLElement) {
