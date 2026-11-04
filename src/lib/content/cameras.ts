@@ -6,6 +6,12 @@ const ZOOM = 1.2;
 /** Prototype "Intro" opening frame: pink office, police car, red car and blue car in view. */
 export const cityOverview: Camera = { x: 0.42, y: 0.26, zoom: ZOOM };
 
+/**
+ * The Intro's opening frame on phones (Figma "Android Compact - 2"): the pink office top left and
+ * the temple gate below it. Phones show a tall slice, so it is closer to the map's left and top.
+ */
+export const introPhoneStart: Camera = { x: 0.256, y: 0.3, zoom: 1.1 };
+
 /** Prototype "KP1" frame: the junction with the red car, temple gate and police station. */
 export const cityCentre: Camera = { x: 0.53, y: 0.53, zoom: ZOOM };
 

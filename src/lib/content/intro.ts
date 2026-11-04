@@ -1,6 +1,13 @@
 import type { StoryStep } from '#lib/components/story/ScrollStory.svelte';
 import type { BubbleVariant } from '#lib/components/intro/IntroBubble.svelte';
-import { cityOverview, introAllCases, introExCon, introGender, introHiv } from './cameras.ts';
+import {
+	cityOverview,
+	introAllCases,
+	introExCon,
+	introGender,
+	introHiv,
+	introPhoneStart
+} from './cameras.ts';
 
 /**
  * Thought bubbles (Figma frame "m-2"), in the order the Intro reveals them; each is pinned to a
@@ -53,8 +60,8 @@ export const introPlacements: Record<string, { x: number; y: number }> = {
  * the bubbles and cards, then fading to white for the title.
  */
 export const introSteps = [
-	{ id: 'question', camera: cityOverview, dim: 0.8, wash: [1, 0.8] },
-	{ id: 'city', camera: cityOverview, dim: 0, wash: [0.8, 0, 0.8] },
+	{ id: 'question', camera: cityOverview, phoneCamera: introPhoneStart, dim: 0.8, wash: [1, 0.8] },
+	{ id: 'city', camera: cityOverview, phoneCamera: introPhoneStart, dim: 0, wash: [0.8, 0, 0.8] },
 	// One close-up per case and bubble ("Intro Animation"), then a wide shot of all three
 	{
 		id: 'gender-promotion',
@@ -72,6 +79,6 @@ export const introSteps = [
 		wash: [0.8],
 		spotlight: storyCases
 	},
-	{ id: 'meaning', camera: cityOverview, dim: 0.8, wash: [0.8] },
-	{ id: 'title', camera: cityOverview, dim: 0.8, wash: [0.8, 1] }
+	{ id: 'meaning', camera: cityOverview, phoneCamera: introPhoneStart, dim: 0.8, wash: [0.8] },
+	{ id: 'title', camera: cityOverview, phoneCamera: introPhoneStart, dim: 0.8, wash: [0.8, 1] }
 ] as const satisfies readonly StoryStep[];

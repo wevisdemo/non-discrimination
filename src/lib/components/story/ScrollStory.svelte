@@ -5,6 +5,8 @@
 	export type StoryStep<Id extends string = string> = {
 		id: Id;
 		camera: Camera;
+		/** Used instead of `camera` on phones, where the screen is a tall slice of the map */
+		phoneCamera?: Camera;
 		/** White wash over the map, 0–1 */
 		dim: number;
 		/**
@@ -109,7 +111,7 @@
 	     away on phones doesn't resize it mid-scroll. -->
 	<div class="absolute inset-0" aria-hidden="true">
 		<div class="sticky top-0 h-lvh overflow-hidden">
-			<MapCamera camera={step.camera}>
+			<MapCamera camera={step.camera} phone={step.phoneCamera}>
 				<MapScene dim={hasWash ? 0 : step.dim} {spotlight} show={shown} {background} {placements}>
 					{#if !hasWash}{@render mapOverlay?.(step.id)}{/if}
 				</MapScene>
@@ -125,7 +127,7 @@
 		></div>
 		<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 			<div class="sticky top-0 h-lvh overflow-hidden">
-				<MapCamera camera={step.camera}>
+				<MapCamera camera={step.camera} phone={step.phoneCamera}>
 					<MapScene only {spotlight} show={shown} {background} {placements}>
 						{@render mapOverlay?.(step.id)}
 					</MapScene>
