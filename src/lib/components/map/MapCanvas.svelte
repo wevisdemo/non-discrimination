@@ -39,12 +39,26 @@
 		const k = w / MAP_SIZE.width;
 		const box = item.hotspot;
 		const s = Math.max(pz.getScale(), FOCUS_ZOOM);
-		const x = (cw / 2 - w / 2) / s - (box.x + box.w / 2) * k + w / 2;
-		const y = (ch / 2 - h / 2) / s - (box.y + box.h / 2) * k + h / 2;
+		// Keep the map covering the screen (what contain:'outside' does), worked out here for the
+		// final zoom: Panzoom measures a map mid-transition, so zooming out first then tapping a case
+		// made it clamp against the wrong size and land off the case.
+		const clamp = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v));
+		const x = clamp(
+			(cw / 2 - w / 2) / s - (box.x + box.w / 2) * k + w / 2,
+			(cw - w / 2) / s - w / 2,
+			w / 2 - w / (2 * s)
+		);
+		const y = clamp(
+			(ch / 2 - h / 2) / s - (box.y + box.h / 2) * k + h / 2,
+			(ch - h / 2) / s - h / 2,
+			h / 2 - h / (2 * s)
+		);
 		const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 		const opts = { animate: !reduceMotion, duration: PAN_MS, easing: 'ease-in-out' };
+		pz.setOptions({ contain: undefined });
 		pz.zoom(s, opts);
 		pz.pan(x, y, opts);
+		pz.setOptions({ contain: 'outside' });
 	}
 
 	// Closing the card zooms back out to the opening view; paging between cases never does
