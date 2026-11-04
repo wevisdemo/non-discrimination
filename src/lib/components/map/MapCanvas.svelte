@@ -15,9 +15,12 @@
 	let {
 		game,
 		follow,
+		active,
 		onselect
 	}: {
 		game: Game;
+		/** The case whose card is open; it gets a blue glow on the map */
+		active?: string;
 		/** The case the map focuses when the card pages ‹ › or เจาะดูทีละภาพ starts */
 		follow?: string;
 		onselect: (slug: string) => void;
@@ -169,7 +172,7 @@
 <div class="relative h-full w-full overflow-hidden bg-surface">
 	<div {@attach panzoom} class="w-[max(100%,1600px)]">
 		<!-- Reveal / hint: wash the city so highlighted cases pop (design.md §2.4) -->
-		<MapScene dim={game.highlighted.size ? 0.8 : 0} spotlight={game.highlighted}>
+		<MapScene dim={game.highlighted.size ? 0.8 : 0} spotlight={game.highlighted} glow={active}>
 			{#each game.cases as item (item.slug)}
 				<Hotspot {item} found={game.found.has(item.slug)} {onselect} />
 			{/each}

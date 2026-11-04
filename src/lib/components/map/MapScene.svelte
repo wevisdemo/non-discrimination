@@ -9,6 +9,7 @@
 		dim = 0,
 		spotlight = new Set<string>(),
 		show,
+		glow,
 		background = defaultBackground,
 		placements,
 		only = false,
@@ -21,6 +22,8 @@
 		spotlight?: ReadonlySet<string>;
 		/** When set, only these cases are drawn; the rest stay hidden */
 		show?: ReadonlySet<string>;
+		/** The case with a blue outer glow, for the one being looked at */
+		glow?: string;
 		/** The city drawn under the cases */
 		background?: Picture;
 		/** Top-left to draw a case at, in map px, instead of its hotspot */
@@ -59,7 +62,11 @@
 				alt=""
 				sizes="25vw"
 				loading="lazy"
-				class="absolute select-none {spotlight.has(item.slug) ? 'z-20' : 'z-0'}"
+				class="absolute transition-[filter] duration-300 select-none {spotlight.has(item.slug)
+					? 'z-20'
+					: 'z-0'} {glow === item.slug
+					? '[filter:drop-shadow(0_0_3px_#7aa2ff)_drop-shadow(0_0_9px_rgba(100,145,255,0.8))]'
+					: ''}"
 				style={box(item)}
 				draggable="false"
 			/>

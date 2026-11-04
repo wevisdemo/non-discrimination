@@ -123,7 +123,7 @@
 		{@attach (node) => node.focus({ preventScroll: true })}
 	>
 		<h2 id="explore-title" class="sr-only">สืบหา 18 การเลือกปฏิบัติที่ซ่อนอยู่</h2>
-		<MapCanvas {game} follow={following} onselect={openCase} />
+		<MapCanvas {game} follow={following} active={page.state.caseSlug} onselect={openCase} />
 		<!-- Figma "kp2-play": exit and reveal buttons top right, hints bottom left -->
 		<div class="pointer-events-none absolute inset-0 z-[2] *:pointer-events-auto">
 			<p
