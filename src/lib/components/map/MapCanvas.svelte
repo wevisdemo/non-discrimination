@@ -61,15 +61,9 @@
 		pz.setOptions({ contain: 'outside' });
 	}
 
-	// Closing the card zooms back out to the opening view; paging between cases never does
-	let focused = false;
+	// Closing the card leaves the map where it is, so exploring carries on from that case
 	$effect(() => {
 		if (follow) focusCase(follow);
-		else if (focused) {
-			const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-			pz?.reset({ animate: !reduceMotion, duration: PAN_MS });
-		}
-		focused = !!follow;
 	});
 
 	function panzoom(node: HTMLElement) {
