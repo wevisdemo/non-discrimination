@@ -118,8 +118,8 @@
 	<div class="w-full max-w-[768px] px-m py-xl">
 		<div class="flex flex-col gap-m rounded-card bg-surface px-m py-l">
 			<p class="font-header text-h7-m leading-normal lg:text-h7">
-				สัญญาณที่ดีคือ รัฐสภากำลังพิจารณา<br /><strong
-					>พ.ร.บ. ขจัดการ<br />เลือกปฏิบัติต่อบุคคล</strong
+				สัญญาณที่ดีคือ รัฐสภากำลังพิจารณา<br /><strong class="min-[390px]:whitespace-nowrap"
+					>พ.ร.บ. ขจัดการ<br class="min-[390px]:hidden" />เลือกปฏิบัติต่อบุคคล</strong
 				>
 			</p>
 			<p class="text-b5">
