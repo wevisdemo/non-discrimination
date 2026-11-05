@@ -63,17 +63,18 @@
 						<img src={chevron} alt="" width="22" height="22" class="mix-blend-multiply" />
 					</Select.Trigger>
 					<Select.Portal>
-						<!-- Figma "Survey" Dropdown state: a white card of options split by blue rules -->
+						<!-- Figma "Survey" Dropdown state and "Dropdown_item": a white card of options split by blue
+					     rules inset from the sides; the hovered option is pink edge to edge -->
 						<Select.Content
 							sideOffset={4}
-							class="z-50 max-h-[min(320px,var(--bits-select-content-available-height))] w-[var(--bits-select-anchor-width)] overflow-y-auto rounded-card bg-surface px-m shadow"
+							class="z-50 max-h-[min(320px,var(--bits-select-content-available-height))] w-[var(--bits-select-anchor-width)] overflow-y-auto rounded-card bg-surface shadow"
 						>
 							{#each field.options as option (option)}
 								<Select.Item
 									value={option}
 									label={option}
-									class="cursor-pointer border-primary py-s text-b5 text-body not-last:border-b data-highlighted:text-primary data-selected:font-bold"
-									>{option}</Select.Item
+									class="cursor-pointer px-m text-b5 text-body data-highlighted:bg-ui-primary-hover data-selected:font-bold [&:not(:last-child)>span]:border-b"
+									><span class="block border-primary py-s">{option}</span></Select.Item
 								>
 							{/each}
 						</Select.Content>
