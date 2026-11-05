@@ -7,9 +7,13 @@
 </script>
 
 <!-- Figma "E-Learning": in the full-content panel and at the end of the Result -->
-<section class="flex flex-col items-center gap-l bg-ui-primary text-center text-ink {className}">
+<!-- Blue on pink, as accepted for the story cards (tests/app.e2e.ts) -->
+<section
+	data-story-card
+	class="flex flex-col items-center gap-l bg-ui-primary text-center text-primary {className}"
+>
 	<div class="flex flex-col gap-xs">
-		<h2 class="font-header text-h7-m leading-normal font-bold text-ink lg:text-h7">
+		<h2 class="font-header text-h7-m leading-normal font-bold text-primary lg:text-h7">
 			อยากเข้าใจการเลือกปฏิบัติแบบละเอียดยิ่งขึ้น ?
 		</h2>
 		<p class="text-b5">คำนิยาม รูปแบบ การแยกแยะ วิธีรับมือ และอื่น ๆ</p>
@@ -33,7 +37,7 @@
 		href="https://move-d.org/lab/"
 		target="_blank"
 		rel="noopener external"
-		class="rounded-full border-2 border-ink bg-ui-primary px-m py-s text-b5 hover:bg-ui-primary-hover"
+		class="rounded-full border-2 border-ink bg-ui-primary px-m py-s text-b5 text-ink hover:bg-ui-primary-hover"
 		>คลิกที่นี่<span class="sr-only"> (E-Learning The Inclusion Lab, เปิดในแท็บใหม่)</span></a
 	>
 </section>
