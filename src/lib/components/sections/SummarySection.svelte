@@ -16,32 +16,49 @@
 
 <!-- Figma "Result" (1069:5176) -->
 <section id="summary" class="flex flex-col">
-	<!-- "Conclusion": the closing cards over the washed-out city -->
-	<div class="relative flex flex-col items-center gap-xl overflow-clip px-m py-xl">
-		<enhanced:img src={bg} alt="" sizes="100vw" class="absolute inset-0 size-full object-cover" />
-		<div class="absolute inset-0 bg-white/80"></div>
+	<!-- "Conclusion": the closing cards over the washed-out city, one per screen. The city stays
+	     put (sticky inside a box as tall as the cards) while each card scrolls past, and the box
+	     ends with the cards, so it never covers the survey below. -->
+	<div class="relative">
+		<div aria-hidden="true" class="pointer-events-none absolute inset-0">
+			<div class="sticky top-0 h-svh overflow-clip">
+				<enhanced:img
+					src={bg}
+					alt=""
+					sizes="100vw"
+					class="absolute inset-0 size-full object-cover"
+				/>
+				<div class="absolute inset-0 bg-white/80"></div>
+			</div>
+		</div>
 		<h2 class="sr-only">บทสรุป</h2>
-		<div data-story-card class="relative {card}">
-			<p class="text-b4 font-bold">
-				การอุดช่องว่างกฎหมาย<br />ต้องมาพร้อมกับ<br />การทลายภาพจำที่ตัดสิน<br />คุณค่าของคน
-			</p>
-			<p class="text-b5">
-				นี่คือสิ่งที่คุณทำได้เลย <strong>วันนี้ ตอนนี้</strong><br />ไม่ว่าเราจะมีกฎหมายเป็นการ<br
-				/>เฉพาะแล้วหรือไม่
-			</p>
+		<div class="relative flex min-h-svh items-center justify-center px-m">
+			<div data-story-card class={card}>
+				<p class="text-b4 font-bold">
+					การอุดช่องว่างกฎหมาย<br />ต้องมาพร้อมกับ<br />การทลายภาพจำที่ตัดสิน<br />คุณค่าของคน
+				</p>
+				<p class="text-b5">
+					นี่คือสิ่งที่คุณทำได้เลย <strong>วันนี้ ตอนนี้</strong><br />ไม่ว่าเราจะมีกฎหมายเป็นการ<br
+					/>เฉพาะแล้วหรือไม่
+				</p>
+			</div>
 		</div>
-		<div data-story-card class="relative {card}">
-			<p class="text-b4">
-				ร่วมตระหนัก รู้จัก และเข้าใจ<br /><strong>สิทธิที่จะไม่ถูกเลือกปฏิบัติ</strong>
-			</p>
-			<p class="text-b5">
-				เพราะนั่นคือการเคารพศักดิ์ศรีความเป็นมนุษย์ ยอมรับในความหลากหลาย ทลายกำแพงอคติ
-			</p>
+		<div class="relative flex min-h-svh items-center justify-center px-m">
+			<div data-story-card class={card}>
+				<p class="text-b4">
+					ร่วมตระหนัก รู้จัก และเข้าใจ<br /><strong>สิทธิที่จะไม่ถูกเลือกปฏิบัติ</strong>
+				</p>
+				<p class="text-b5">
+					เพราะนั่นคือการเคารพศักดิ์ศรีความเป็นมนุษย์ ยอมรับในความหลากหลาย ทลายกำแพงอคติ
+				</p>
+			</div>
 		</div>
-		<div data-story-card class="relative {card}">
-			<p class="text-b5">
-				เพื่อให้ <strong>คนทุกคน</strong> ได้พัฒนาชีวิตของตนอย่างเต็มที่ ในสังคมที่เป็นธรรม ร่วมกันอย่างเท่าเทียม
-			</p>
+		<div class="relative flex min-h-svh items-center justify-center px-m">
+			<div data-story-card class={card}>
+				<p class="text-b5">
+					เพื่อให้ <strong>คนทุกคน</strong> ได้พัฒนาชีวิตของตนอย่างเต็มที่ ในสังคมที่เป็นธรรม ร่วมกันอย่างเท่าเทียม
+				</p>
+			</div>
 		</div>
 	</div>
 
