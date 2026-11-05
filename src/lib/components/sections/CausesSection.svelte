@@ -162,14 +162,18 @@
 			aria-labelledby="law-poll"
 		>
 			<h3 id="law-poll" class="text-b4 font-bold text-primary">
-				แล้วคุณคิดยังไง กับการมีกฎหมายขจัด<br />การเลือกปฏิบัติต่อบุคคล ‘เป็นการเฉพาะ’ ?
+				<!-- Phrases stay whole, so a phone breaks between them as in Figma, never inside one -->
+				<span class="inline-block">แล้วคุณคิดยังไง</span>
+				<span class="inline-block">กับการมีกฎหมายขจัด</span><br />
+				<span class="inline-block">การเลือกปฏิบัติต่อบุคคล</span>
+				<span class="inline-block">‘เป็นการเฉพาะ’ ?</span>
 			</h3>
 			<div class="flex w-full flex-col gap-s">
 				{#each options as option (option.id)}
 					<!-- Figma "Poll": white buttons first; once answered, pink rows with the share of votes -->
 					<button
 						type="button"
-						class="w-full rounded-lg border-4 border-transparent px-m py-s text-b6 text-ink aria-pressed:border-primary {answer
+						class="flex min-h-[88px] w-full flex-col justify-center rounded-lg border-4 border-transparent px-m py-s text-center text-b6 text-ink aria-pressed:border-primary {answer
 							? 'bg-ui-primary'
 							: 'bg-surface shadow-[0_4px_2px_rgba(0,0,0,0.25)] hover:bg-ui-primary-hover'}"
 						aria-pressed={answer === option.id}
