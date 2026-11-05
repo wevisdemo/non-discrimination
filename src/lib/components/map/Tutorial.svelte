@@ -157,7 +157,7 @@
 	{:else if tip}
 		<p class="text-b6 text-[#767676]">{step}/{tips.length}</p>
 		<div class="flex flex-col gap-xs text-b5 text-primary">
-			<h3 id="tutorial-title" class="font-bold text-primary">{tip.title}</h3>
+			<h3 id="tutorial-title" class="font-body font-bold text-primary">{tip.title}</h3>
 			<p>{tip.body}</p>
 		</div>
 		{@render nav(true, 'ถัดไป')}

@@ -41,7 +41,7 @@
 			class="flex w-screen flex-col gap-[5px] rounded-t-card bg-surface p-m"
 			aria-labelledby="hint-title"
 		>
-			<h3 id="hint-title" class="text-b5 font-bold text-ink">
+			<h3 id="hint-title" class="font-body text-b5 font-bold text-ink">
 				{game.cases.length} การเลือกปฏิบัติมีอะไรบ้าง ?
 			</h3>
 			<ul class="flex gap-[10px] overflow-x-auto pb-xs">

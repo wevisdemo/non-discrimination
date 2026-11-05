@@ -86,7 +86,7 @@
 							class="flex size-[38px] items-center justify-center rounded-full bg-primary text-b4 font-bold text-white"
 							aria-hidden="true">{n}</span
 						>
-						<h3 class="text-b5 font-bold text-body">{title}</h3>
+						<h3 class="font-body text-b5 font-bold text-body">{title}</h3>
 						{@render body()}
 					</li>
 				{/snippet}
@@ -165,7 +165,7 @@
 			class="flex w-full max-w-[768px] flex-col items-center gap-m rounded-card bg-ui-secondary px-m py-l lg:px-xxl"
 			aria-labelledby="law-poll"
 		>
-			<h3 id="law-poll" class="text-b4 font-bold text-primary">
+			<h3 id="law-poll" class="font-body text-b4 font-bold text-primary">
 				<!-- Phrases stay whole, so a phone breaks between them as in Figma, never inside one -->
 				<span class="inline-block">แล้วคุณคิดยังไง</span>
 				<span class="inline-block">กับการมีกฎหมายขจัด</span><br />

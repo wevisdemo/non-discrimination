@@ -189,14 +189,14 @@
 			<h3 class={h}>อาสาสมัครร่วมพัฒนา</h3>
 			{#each credits as [role, names] (role)}
 				<div class="flex flex-col gap-[10px]">
-					<h4 class="text-b4 leading-normal font-bold text-ink">{role}</h4>
+					<h4 class="font-body text-b4 leading-normal font-bold text-ink">{role}</h4>
 					<p>
 						{#each names as name, i (name)}{#if i}<br />{/if}{name}{/each}
 					</p>
 				</div>
 			{/each}
 			<div class="flex flex-col gap-[10px]">
-				<h4 class="text-b4 leading-normal font-bold text-ink">ประสานงานและจัดการอื่นๆ</h4>
+				<h4 class="font-body text-b4 leading-normal font-bold text-ink">ประสานงานและจัดการอื่นๆ</h4>
 				<p>
 					<a class={link} href="https://wevis.info/" target="_blank" rel="noopener external"
 						>WeVis</a

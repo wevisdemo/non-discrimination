@@ -65,7 +65,7 @@
 					class="flex w-[400px] max-w-full flex-col items-center gap-m rounded-card bg-ui-secondary px-l py-m text-center text-primary"
 				>
 					<GameThumbnail />
-					<h2 class="text-b4 font-bold">
+					<h2 class="font-body text-b4 font-bold">
 						สืบหา {cases.length} การเลือกปฏิบัติ<span class="whitespace-nowrap">ที่ซ่อนอยู่</span>
 					</h2>
 					<!-- Line breaks as in Figma: three lines on tablet and up; phones wrap on their own -->

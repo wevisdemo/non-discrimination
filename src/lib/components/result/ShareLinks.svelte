@@ -22,7 +22,7 @@
 
 <!-- Figma "แชร์เว็บไซต์นี้": copy link, Facebook, X -->
 <div class="flex flex-col items-center gap-s">
-	<h2 class="text-b4 font-bold text-primary">แชร์เว็บไซต์นี้</h2>
+	<h2 class="font-body text-b4 font-bold text-primary">แชร์เว็บไซต์นี้</h2>
 	<div class="flex items-center gap-s">
 		<button type="button" class="relative size-7" aria-label="คัดลอกลิงก์" onclick={copy}>
 			<img src={circle} alt="" width="28" height="28" />
