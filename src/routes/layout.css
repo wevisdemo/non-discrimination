@@ -143,6 +143,14 @@
 	font-display: swap;
 }
 
+/* Figma's white stroke around text laid straight on the map; paint-order keeps it outside the
+   glyphs, so the letters stay as thick as the design's. */
+@utility text-outline {
+	-webkit-text-stroke: 6px #fff;
+	paint-order: stroke fill;
+	stroke-linejoin: round;
+}
+
 @layer base {
 	html {
 		scroll-behavior: smooth;
