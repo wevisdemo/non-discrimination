@@ -71,7 +71,11 @@
 		</div>
 
 		<div class="flex w-full max-w-[600px] flex-col items-center gap-m">
-			<h2 class={h}>แต่ทำไมการเลือกปฏิบัติจึงยังมีให้เห็นอยู่ ?</h2>
+			<!-- Two unbreakable halves, so a narrow screen splits between them, not inside "เห็นอยู่ ?" -->
+			<h2 class={h}>
+				<span class="inline-block">แต่ทำไมการเลือกปฏิบัติ</span>
+				<span class="inline-block">จึงยังมีให้เห็นอยู่ ?</span>
+			</h2>
 			<!-- Blue on pink, as accepted for the story cards (tests/app.e2e.ts) -->
 			<p data-story-card class="w-full rounded-card bg-ui-primary p-m text-b5 text-primary">
 				นั่นเพราะเรายังติดอยู่กับ<br /><strong>ภาพจำต่อคนบางกลุ่ม</strong> และ
