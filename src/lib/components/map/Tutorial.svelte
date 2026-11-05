@@ -53,24 +53,24 @@
 		const vh = innerHeight;
 		const mid = r.top + r.height / 2;
 		if (vw < 768) {
-			// Full width, with the arrow between the tip and its control: down for the hints button
-			// below it, up for the side buttons above it
+			// Full width, with the arrow between the tip and its control and touching the tip's edge:
+			// down for the hints button below it, up for the side buttons above it
 			place =
 				tip.place === 'above'
 					? {
 							box: `left:16px;right:16px;bottom:${vh - r.top + 34}px`,
-							arrow: `left:${r.left + 20}px;top:${r.top - 30}px`
+							arrow: `left:${r.left + 20}px;top:${r.top - 35}px`
 						}
 					: {
 							box: `left:16px;right:16px;top:${r.bottom + 34}px`,
-							arrow: `left:${r.left + r.width / 2 - 11}px;top:${r.bottom + 6}px;transform:rotate(180deg)`
+							arrow: `left:${r.left + r.width / 2 - 11}px;top:${r.bottom + 12}px;transform:rotate(180deg)`
 						};
 		} else if (tip.place === 'above') {
 			// The arrow sits under the box's straight bottom edge, clear of its rounded corner
 			const boxLeft = Math.max(16, r.left + 22);
 			place = {
 				box: `left:${boxLeft}px;bottom:${vh - r.top + 34}px`,
-				arrow: `left:${boxLeft + 20}px;top:${r.top - 30}px`
+				arrow: `left:${boxLeft + 20}px;top:${r.top - 35}px`
 			};
 		} else {
 			place = {
