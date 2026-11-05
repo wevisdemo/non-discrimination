@@ -246,7 +246,7 @@
 								<p class="text-center text-b5 text-primary">
 									การเลือกปฏิบัติเกิดขึ้นได้กับทุกคน<br />ในทุก <strong>“มิติ”</strong> ของชีวิต
 								</p>
-								<Accordion title="มิติแห่งการเลือกปฏิบัติ" open>
+								<Accordion title="มิติแห่งการเลือกปฏิบัติ">
 									{#snippet subtitle()}<strong>เหตุการณ์แวดล้อม</strong
 										>ที่เกิดการเลือกปฏิบัติขึ้น{/snippet}
 									<div class="flex justify-center"><SpotArt kind="dimension" /></div>
