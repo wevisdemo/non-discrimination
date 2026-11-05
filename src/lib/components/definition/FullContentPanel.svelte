@@ -176,13 +176,14 @@
 <Dialog.Root {open} onOpenChange={(next) => !next && onclose()}>
 	<Dialog.Portal>
 		<Dialog.Overlay class="fixed inset-0 z-40 bg-white/70" />
-		<!-- Figma "Definition" (Device=Desktop): a 600px-wide sheet, 80% of the screen tall, sitting on the bottom edge; tabs
-		     stick to its top as it scrolls. dvh is vh on desktop and fits under phone address bars. -->
+		<!-- Figma "Definition" (Device=Desktop): a 600px-wide sheet, 83% of the screen tall, sitting on
+		     the bottom edge with the 30px close button above it; tabs stick to its top as it scrolls.
+		     dvh is vh on desktop and fits under phone address bars. -->
 		<Dialog.Content
 			aria-label="อ่านเนื้อหาเต็ม"
-			class="fixed bottom-0 left-1/2 z-50 h-[80dvh] w-[600px] max-w-[calc(100vw-32px)] -translate-x-1/2 outline-none"
+			class="fixed bottom-0 left-1/2 z-50 h-[calc(83dvh+30px)] w-[600px] max-w-[calc(100vw-32px)] -translate-x-1/2 outline-none"
 		>
-			<div class="flex h-full flex-col pt-m">
+			<div class="flex h-full flex-col">
 				<!-- The close button stays put; only the sheet below it scrolls, under the sticky tabs -->
 				<div class="flex justify-end">
 					<Dialog.Close aria-label="ปิด" class="rounded-sm bg-surface hover:bg-ui-primary-hover">
