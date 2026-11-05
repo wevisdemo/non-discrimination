@@ -6,7 +6,6 @@
 	import ELearning from '#lib/components/result/ELearning.svelte';
 	import ShareLinks from '#lib/components/result/ShareLinks.svelte';
 	import Survey from '#lib/components/result/Survey.svelte';
-	import ContinueLink from '#lib/components/story/ContinueLink.svelte';
 	import { reportingChannels } from '#lib/content/index.ts';
 
 	// Pink cards with blue text, as accepted for the story cards (tests/app.e2e.ts)
@@ -89,6 +88,5 @@
 				</span>
 			</a>
 		</div>
-		<ContinueLink />
 	</div>
 </section>

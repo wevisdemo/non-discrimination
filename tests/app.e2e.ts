@@ -286,7 +286,8 @@ test('the Result has share links and the E-Learning link', async ({ page }) => {
 		'href',
 		'https://move-d.org/lab/'
 	);
-	await expect(summary.getByText('เลื่อนลงเพื่อดูต่อ')).toBeVisible();
+	// The Result is followed by About, so it has no scroll hint of its own
+	await expect(summary.getByText('เลื่อนลงเพื่อดูต่อ')).toHaveCount(0);
 });
 
 test('About has the project goal, sources, credits and the WeVis footer', async ({ page }) => {
