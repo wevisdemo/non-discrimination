@@ -1,5 +1,4 @@
 <script lang="ts">
-	import chevronMuted from '#lib/assets/kp2/chevron-muted.svg';
 	import chevron from '#lib/assets/kp2/chevron.svg';
 	import { cases, type Case } from '#lib/content/index.ts';
 	import CauseChip from '#lib/components/ui/CauseChip.svelte';
@@ -21,8 +20,6 @@
 	} = $props();
 
 	const sub = $derived(headingLevel === 1 ? 2 : 3);
-	const isFirst = $derived(item.order === 1);
-	const isLast = $derived(item.order === cases.length);
 </script>
 
 <!-- Figma "kp2-info": the case card, in the map's side panel and on /cases/<slug>/ -->
@@ -39,20 +36,8 @@
 
 	<div class="flex items-center gap-s">
 		{#if onprev}
-			<button
-				type="button"
-				class="shrink-0 disabled:cursor-not-allowed"
-				aria-label="เคสก่อนหน้า"
-				disabled={isFirst}
-				onclick={onprev}
-			>
-				<img
-					src={isFirst ? chevronMuted : chevron}
-					alt=""
-					width="32"
-					height="32"
-					class="rotate-180"
-				/>
+			<button type="button" class="shrink-0" aria-label="เคสก่อนหน้า" onclick={onprev}>
+				<img src={chevron} alt="" width="32" height="32" class="rotate-180" />
 			</button>
 		{/if}
 		<svelte:element
@@ -62,14 +47,8 @@
 			{item.titleTh}
 		</svelte:element>
 		{#if onnext}
-			<button
-				type="button"
-				class="shrink-0 disabled:cursor-not-allowed"
-				aria-label="เคสถัดไป"
-				disabled={isLast}
-				onclick={onnext}
-			>
-				<img src={isLast ? chevronMuted : chevron} alt="" width="32" height="32" />
+			<button type="button" class="shrink-0" aria-label="เคสถัดไป" onclick={onnext}>
+				<img src={chevron} alt="" width="32" height="32" />
 			</button>
 		{/if}
 	</div>

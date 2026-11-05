@@ -140,7 +140,6 @@ test('เจาะดูทีละภาพ steps through the cases in datashe
 		'กลุ่มอินฟลูเอนเซอร์ทำร้ายชาวกะเหรี่ยง'
 	);
 	await expect(card.getByText('1/18')).toBeVisible();
-	await expect(card.getByRole('button', { name: 'เคสก่อนหน้า' })).toBeDisabled();
 	await expect(page.getByRole('button', { name: 'เจาะดูทีละภาพ' })).toHaveAttribute(
 		'aria-pressed',
 		'true'
@@ -149,6 +148,14 @@ test('เจาะดูทีละภาพ steps through the cases in datashe
 	await card.getByRole('button', { name: 'เคสถัดไป' }).click();
 	await expect(card.getByText('2/18')).toBeVisible();
 	await expect(page).toHaveURL(/\/cases\/social-security\/?$/);
+
+	// ‹ › loop: before the first case comes the last, after the last the first
+	await card.getByRole('button', { name: 'เคสก่อนหน้า' }).click();
+	await expect(card.getByText('1/18')).toBeVisible();
+	await card.getByRole('button', { name: 'เคสก่อนหน้า' }).click();
+	await expect(card.getByText('18/18')).toBeVisible();
+	await card.getByRole('button', { name: 'เคสถัดไป' }).click();
+	await expect(card.getByText('1/18')).toBeVisible();
 
 	// ‹ › replace the card, so one Back closes the panel
 	await page.goBack();

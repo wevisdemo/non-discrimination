@@ -95,11 +95,11 @@
 		);
 	}
 
-	/** ‹ › replace the open card, so Back still closes the panel in one step */
+	/** ‹ › replace the open card, so Back still closes the panel in one step. They loop: after
+	 *  the 18th case comes the 1st, and before the 1st the 18th. */
 	function step(by: number) {
 		if (!activeCase) return;
-		const next = cases[cases.indexOf(activeCase) + by];
-		if (!next) return;
+		const next = cases[(cases.indexOf(activeCase) + by + cases.length) % cases.length];
 		trackEvent({ name: 'case_opened', slug: next.slug });
 		moveTo(next.slug, () =>
 			replaceState(resolve('/cases/[slug]', { slug: next.slug }), {
