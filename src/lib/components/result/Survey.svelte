@@ -42,7 +42,7 @@
 	onsubmit={submit}
 >
 	<h2 id="survey-title" class="text-b5 font-bold text-primary">ขอบคุณที่อยู่ด้วยกันจนจบ !</h2>
-	<p class="text-b6">
+	<p class="text-b5">
 		เราขอรู้จักคุณเพิ่มอีกนิด<br />เพื่อพัฒนาสื่อการเรียนรู้เรื่อง<br />สิทธิมนุษยชน<br
 		/>ที่ตอบโจทย์ยิ่งขึ้นต่อไป
 	</p>
