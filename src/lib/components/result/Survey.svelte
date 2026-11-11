@@ -13,11 +13,19 @@
 	const store = new CookieSurveyStore();
 	const answers = $state<SurveyAnswers>({});
 	// Read after hydration so the prerendered form matches
-	// eslint-disable-next-line svelte/prefer-writable-derived
 	let done = $state(false);
 	$effect(() => {
 		done = store.submitted();
+		// What was chosen before a refresh, whether or not it was sent
+		Object.assign(answers, store.answers());
+		provinceText = answers.province ?? '';
 	});
+
+	/** Every choice is kept in a cookie as soon as it is made */
+	function choose(key: 'age' | 'gender' | 'occupation' | 'province', value: string | undefined) {
+		answers[key] = value;
+		store.saveAnswers($state.snapshot(answers));
+	}
 
 	// The province list is long, so it can be searched: typing narrows it to the provinces that
 	// contain what was typed
@@ -78,7 +86,7 @@
 					<Combobox.Root
 						type="single"
 						items={PROVINCES.map((p) => ({ value: p, label: p }))}
-						bind:value={() => answers.province ?? '', (v) => (answers.province = v || undefined)}
+						bind:value={() => answers.province ?? '', (v) => choose('province', v || undefined)}
 						bind:open={provinceOpen}
 						inputValue={provinceText}
 						onOpenChange={(open) => {
@@ -165,7 +173,7 @@
 		{/each}
 	</div>
 	<fieldset class="flex flex-col gap-s" disabled={done}>
-		<legend class="mb-s w-full text-left text-b6">ระดับพึงพอใจต่อเว็บไซต์นี้</legend>
+		<legend class="mb-s w-full text-center text-b6">ระดับพึงพอใจต่อเว็บไซต์นี้</legend>
 		<div class="flex gap-s">
 			{#each SATISFACTION as level, i (level.score)}
 				<button
@@ -173,7 +181,10 @@
 					class="size-10 rounded-full not-aria-pressed:hover:bg-ui-primary-hover aria-pressed:bg-accent"
 					aria-pressed={answers.satisfaction === level.score}
 					aria-label={level.label}
-					onclick={() => (answers.satisfaction = level.score)}
+					onclick={() => {
+						answers.satisfaction = level.score;
+						store.saveAnswers($state.snapshot(answers));
+					}}
 				>
 					<img src={faces[i]} alt="" width="40" height="40" />
 				</button>

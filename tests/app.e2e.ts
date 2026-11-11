@@ -285,6 +285,32 @@ test('the Result survey can be answered once', async ({ page }) => {
 	await page.reload();
 	await expect(page.getByText('ขอบคุณสำหรับคำตอบ')).toBeVisible();
 	await expect(page.getByRole('button', { name: 'ส่งคำตอบ' })).toHaveCount(0);
+	// What was chosen is still shown, locked
+	await expect(survey.getByRole('button', { name: 'อายุ' })).toHaveText('18-35 ปี');
+	await expect(survey.getByRole('combobox', { name: 'จังหวัด' })).toHaveValue('เชียงใหม่');
+	await expect(survey.getByRole('button', { name: 'พอใจมาก', exact: true })).toHaveAttribute(
+		'aria-pressed',
+		'true'
+	);
+	await expect(survey.getByRole('combobox', { name: 'จังหวัด' })).toBeDisabled();
+});
+
+test('the survey keeps the choices made so far through a refresh', async ({ page }) => {
+	await page.goto('/#summary');
+	const survey = page.getByRole('form', { name: 'ขอบคุณที่อยู่ด้วยกันจนจบ !' });
+	await survey.getByRole('button', { name: 'เพศ' }).click();
+	await page.getByRole('option', { name: 'หญิง' }).click();
+	await survey.getByRole('button', { name: 'พอใจ', exact: true }).click();
+
+	await page.reload();
+	await expect(survey.getByRole('button', { name: 'เพศ' })).toHaveText('หญิง');
+	await expect(survey.getByRole('button', { name: 'พอใจ', exact: true })).toHaveAttribute(
+		'aria-pressed',
+		'true'
+	);
+	// Untouched fields stay empty, and it can still be sent
+	await expect(survey.getByRole('button', { name: 'อายุ' })).toHaveText('เลือกอายุ');
+	await expect(survey.getByRole('button', { name: 'ส่งคำตอบ' })).toBeVisible();
 });
 
 test("the survey's province field can be searched by typing", async ({ page }) => {

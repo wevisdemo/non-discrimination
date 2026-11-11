@@ -108,4 +108,58 @@ describe('CookieSurveyStore', () => {
 		expect(jar.get('nd-survey')).toBe('1');
 		expect(new CookieSurveyStore().submitted()).toBe(true);
 	});
+
+	it('keeps the choices made so far, so a refresh shows them again', async () => {
+		const { jar } = fakeBrowser();
+		const { CookieSurveyStore } = await import('./survey.ts');
+		const store = new CookieSurveyStore();
+		expect(store.answers()).toEqual({});
+		store.saveAnswers({ age: '18-35 ปี', province: 'เชียงใหม่', satisfaction: 4 });
+		expect(jar.has('nd-survey-answers')).toBe(true);
+		expect(new CookieSurveyStore().answers()).toEqual({
+			age: '18-35 ปี',
+			province: 'เชียงใหม่',
+			satisfaction: 4
+		});
+		// Choosing again replaces, and an emptied field is dropped
+		store.saveAnswers({ age: '36-60 ปี', province: undefined });
+		expect(store.answers()).toEqual({ age: '36-60 ปี' });
+	});
+
+	it('keeps the choices after the survey is sent too', async () => {
+		fakeBrowser();
+		const { CookieSurveyStore } = await import('./survey.ts');
+		const store = new CookieSurveyStore();
+		const answers = { gender: 'หญิง', satisfaction: 5 };
+		store.saveAnswers(answers);
+		await store.submit(answers);
+		expect(store.submitted()).toBe(true);
+		expect(store.answers()).toEqual(answers);
+	});
+
+	it('ignores anything in the cookie that is not one of the options', async () => {
+		const { jar } = fakeBrowser();
+		const { CookieSurveyStore } = await import('./survey.ts');
+		const tampered = { age: '999 ปี', gender: 'หญิง', province: 7, satisfaction: 9, extra: 'x' };
+		jar.set('nd-survey-answers', encodeURIComponent(JSON.stringify(tampered)));
+		expect(new CookieSurveyStore().answers()).toEqual({ gender: 'หญิง' });
+		jar.set('nd-survey-answers', encodeURIComponent('not json{'));
+		expect(new CookieSurveyStore().answers()).toEqual({});
+	});
+
+	it('fits in one cookie even with the longest options chosen', async () => {
+		const { written } = fakeBrowser();
+		const { CookieSurveyStore } = await import('./survey.ts');
+		const { AGES, GENDERS, OCCUPATIONS, PROVINCES } = await import('#lib/content/survey.ts');
+		const longest = (list: readonly string[]) => [...list].sort((a, b) => b.length - a.length)[0];
+		new CookieSurveyStore().saveAnswers({
+			age: longest(AGES),
+			gender: longest(GENDERS),
+			occupation: longest(OCCUPATIONS),
+			province: longest(PROVINCES),
+			satisfaction: 5
+		});
+		// Browsers keep about 4096 bytes per cookie
+		expect(written.at(-1)!.length).toBeLessThan(2000);
+	});
 });
