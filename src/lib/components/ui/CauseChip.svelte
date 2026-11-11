@@ -12,6 +12,7 @@
 	const bg: Record<CauseId, string> = {
 		race: 'bg-cause-race',
 		gender: 'bg-cause-gender',
+		'gender-identity': 'bg-cause-gender-identity',
 		age: 'bg-cause-age',
 		religion: 'bg-cause-religion',
 		health: 'bg-cause-health',

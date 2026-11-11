@@ -34,6 +34,7 @@
 	/* Discrimination causes (Causes/*): always pair with black text + a text label */
 	--color-cause-race: #ff8080; /* เชื้อชาติ */
 	--color-cause-gender: #f6c9e8; /* เพศ */
+	--color-cause-gender-identity: #ba86ff; /* อัตลักษณ์ทางเพศและวิถีทางเพศ */
 	--color-cause-age: #93ffdd; /* อายุ */
 	--color-cause-religion: #fafd56; /* ความเชื่อทางศาสนา */
 	--color-cause-health: #edd165; /* สภาพทางกายหรือสุขภาพ */

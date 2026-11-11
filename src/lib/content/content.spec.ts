@@ -31,6 +31,8 @@ describe('content', () => {
 		);
 		// An intersex applicant: both a health and a gender ground
 		expect(getCase('katoey-police')?.causes).toEqual(['health', 'gender']);
+		// A trans woman refused entry: gender identity, a ground of its own rather than "sex"
+		expect(getCase('transgender-bar')?.causes).toEqual(['gender-identity']);
 		expect(getCase('gender-promotion')?.formsTh).toEqual(['ทางตรง', 'เชิงโครงสร้าง']);
 	});
 

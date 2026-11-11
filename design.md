@@ -523,6 +523,7 @@ See §3.3 (spacing) and §3.2 (`Screen = 1280`).
 	/* Discrimination causes */
 	--color-cause-race: #ff8080; /* เชื้อชาติ */
 	--color-cause-gender: #f6c9e8; /* เพศ */
+	--color-cause-gender-identity: #ba86ff; /* อัตลักษณ์ทางเพศและวิถีทางเพศ */
 	--color-cause-age: #93ffdd; /* อายุ */
 	--color-cause-religion: #fafd56; /* ความเชื่อทางศาสนา */
 	--color-cause-health: #edd165; /* สภาพทางกายหรือสุขภาพ */
@@ -598,6 +599,7 @@ module.exports = {
 				cause: {
 					race: '#FF8080',
 					gender: '#F6C9E8',
+					'gender-identity': '#BA86FF',
 					age: '#93FFDD',
 					religion: '#FAFD56',
 					health: '#EDD165',

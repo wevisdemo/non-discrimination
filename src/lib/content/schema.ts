@@ -6,6 +6,7 @@ export const MAP_SIZE = { width: 3241, height: 3242 } as const;
 export const CAUSE_IDS = [
 	'race',
 	'gender',
+	'gender-identity',
 	'age',
 	'religion',
 	'health',

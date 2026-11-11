@@ -1,6 +1,11 @@
 [
 	{ "id": "race", "labelTh": "เชื้อชาติ", "labelEn": "Race" },
 	{ "id": "gender", "labelTh": "เพศ", "labelEn": "Sex / Gender" },
+	{
+		"id": "gender-identity",
+		"labelTh": "อัตลักษณ์ทางเพศและวิถีทางเพศ",
+		"labelEn": "Gender identity and sexual orientation"
+	},
 	{ "id": "age", "labelTh": "อายุ", "labelEn": "Age" },
 	{ "id": "religion", "labelTh": "ความเชื่อทางศาสนา", "labelEn": "Religious belief" },
 	{ "id": "health", "labelTh": "สภาพทางกายหรือสุขภาพ", "labelEn": "Physical condition / Health" },
