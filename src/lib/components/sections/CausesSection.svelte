@@ -6,6 +6,7 @@
 	import { backendConfigured, loadLawResults, sendLawVote, type Results } from '#lib/api/client.ts';
 	import PollBar from '#lib/components/ui/PollBar.svelte';
 	import { trackEvent } from '#lib/analytics.ts';
+	import { COOKIES } from '#lib/state/cookie.ts';
 	import { CookiePollStore, LAW_CHOICES, type LawChoice } from '#lib/state/poll.ts';
 
 	// Parliament Watch's bill search for the anti-discrimination bills
@@ -38,7 +39,7 @@
 		percent: { ดีเลย: 71.8, ไม่เห็นจำเป็น: 17.5, ไม่เห็นด้วย: 10.7 }
 	};
 
-	const store = new CookiePollStore('nd-law-poll', LAW_CHOICES);
+	const store = new CookiePollStore(COOKIES.lawVote, LAW_CHOICES);
 	// Not $derived: the saved answer must be read after hydration, so the prerendered page matches
 	let answer = $state<LawChoice | undefined>();
 	let results = $state<Results | undefined>();

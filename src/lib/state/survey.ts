@@ -1,6 +1,6 @@
 import { backendConfigured, sendSurvey } from '#lib/api/client.ts';
 import { AGES, GENDERS, OCCUPATIONS, PROVINCES, SATISFACTION } from '#lib/content/survey.ts';
-import { readCookie, writeCookie } from './cookie.ts';
+import { COOKIES, readCookie, writeCookie } from './cookie.ts';
 
 /** One visitor's answers to the Result survey (every field optional, as in the design). */
 export type SurveyAnswers = {
@@ -25,8 +25,8 @@ export interface SurveyStore {
 	submit(answers: SurveyAnswers): Promise<boolean>;
 }
 
-const COOKIE = 'nd-survey';
-const ANSWERS = 'nd-survey-answers';
+const COOKIE = COOKIES.surveySent;
+const ANSWERS = COOKIES.surveyAnswers;
 
 const OPTIONS = {
 	age: AGES,

@@ -2,9 +2,13 @@
 	import { onMount } from 'svelte';
 	import '@fontsource/ibm-plex-sans-thai-looped/400.css';
 	import '@fontsource/ibm-plex-sans-thai-looped/700.css';
+	import '@wevisdemo/ui/styles/cookie-consent.css';
 	import './layout.css';
 	import favicon from '#lib/assets/favicon.svg';
+	import WvCookieConsent from '@wevisdemo/ui/svelte/cookie-consent.svelte';
 	import Header from '#lib/components/layout/Header.svelte';
+	import { COOKIE_OPTIONS } from '#lib/state/consent.ts';
+	import { applyConsent } from '#lib/state/cookie.ts';
 	import { explore } from '#lib/state/explore.svelte.ts';
 	import type { LayoutProps } from './$types';
 
@@ -33,3 +37,11 @@
 		{@render children()}
 	</main>
 </div>
+
+<!-- WeVis's cookie banner: asks once, remembers the answer (30 days) and tells applyConsent what it is.
+     The site's cookies are the Functionality ones. -->
+<WvCookieConsent
+	policyUrl="https://wevis.info/cookies_1-2-3-4/"
+	cookieOptions={COOKIE_OPTIONS}
+	onAccept={applyConsent}
+/>

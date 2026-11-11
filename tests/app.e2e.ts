@@ -1,6 +1,15 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 
+// The cookie banner has been answered (yes) in advance, as by a returning visitor; consent.e2e.ts
+// is the first visit
+test.beforeEach(async ({ page }) => {
+	await page.addInitScript(() => {
+		localStorage.setItem('cookieSetting', '{"Functionality":true}');
+		localStorage.setItem('cookieSettingExpireAt', String(Date.now() + 30 * 24 * 3600 * 1000));
+	});
+});
+
 test('intro scrolls through its steps and can be skipped to the title', async ({ page }) => {
 	await page.goto('/');
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText(

@@ -23,6 +23,7 @@
 	"dependencies": {
 		"@fontsource/ibm-plex-sans-thai-looped": "^5.3.0",
 		"@panzoom/panzoom": "^4.6.2",
+		"@wevisdemo/ui": "^8.1.0",
 		"bits-ui": "^2.19.5",
 		"zod": "^4.6.5"
 	},

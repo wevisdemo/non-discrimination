@@ -15,11 +15,16 @@ function fakeBrowser(protocol = 'https:') {
 			written.push(line);
 			const [pair] = line.split(';');
 			const eq = pair.indexOf('=');
-			jar.set(pair.slice(0, eq), pair.slice(eq + 1));
+			// Max-Age=0 expires the cookie, as in a browser
+			if (line.includes('Max-Age=0')) jar.delete(pair.slice(0, eq));
+			else jar.set(pair.slice(0, eq), pair.slice(eq + 1));
 		}
 	});
 	return { jar, written };
 }
+
+/** The site only writes cookies once the banner has been answered with yes */
+const allowCookies = async () => (await import('./consent.ts')).setFunctionality(true);
 
 beforeEach(() => vi.resetModules());
 afterEach(() => vi.unstubAllGlobals());
@@ -27,6 +32,7 @@ afterEach(() => vi.unstubAllGlobals());
 describe('the cookie helpers', () => {
 	it('scope the cookie to the site path, for a year, SameSite=Lax and Secure on https', async () => {
 		const { written } = fakeBrowser('https:');
+		await allowCookies();
 		const { writeCookie, readCookie } = await import('./cookie.ts');
 		writeCookie('nd-test', 'a b:c');
 		expect(written[0]).toBe(
@@ -38,6 +44,7 @@ describe('the cookie helpers', () => {
 
 	it('leave Secure off on http (local development)', async () => {
 		const { written } = fakeBrowser('http:');
+		await allowCookies();
 		const { writeCookie } = await import('./cookie.ts');
 		writeCookie('nd-test', '1');
 		expect(written[0]).not.toContain('Secure');
@@ -53,6 +60,7 @@ describe('the cookie helpers', () => {
 				throw new Error('blocked');
 			}
 		});
+		await allowCookies();
 		const { readCookie, writeCookie } = await import('./cookie.ts');
 		expect(readCookie('nd-test')).toBeUndefined();
 		expect(() => writeCookie('nd-test', '1')).not.toThrow();
@@ -64,6 +72,7 @@ describe('CookiePollStore', () => {
 
 	it('remembers one answer per poll in a single cookie', async () => {
 		const { jar } = fakeBrowser();
+		await allowCookies();
 		const { CookiePollStore } = await import('./poll.ts');
 		const store = new CookiePollStore('nd-poll', CHOICES);
 		expect(store.load('karen')).toBeUndefined();
@@ -79,6 +88,7 @@ describe('CookiePollStore', () => {
 
 	it('keeps the KP3 poll apart from the case polls', async () => {
 		fakeBrowser();
+		await allowCookies();
 		const { CookiePollStore } = await import('./poll.ts');
 		const cases = new CookiePollStore('nd-poll', CHOICES);
 		const law = new CookiePollStore('nd-law-poll', ['agree', 'unnecessary', 'disagree'] as const);
@@ -89,6 +99,7 @@ describe('CookiePollStore', () => {
 
 	it('ignores choices it does not know, as a tampered cookie might hold', async () => {
 		const { jar } = fakeBrowser();
+		await allowCookies();
 		jar.set('nd-poll', encodeURIComponent('karen:heard|hijab-school:bogus|:witnessed|junk'));
 		const { CookiePollStore } = await import('./poll.ts');
 		const store = new CookiePollStore('nd-poll', CHOICES);
@@ -100,6 +111,7 @@ describe('CookiePollStore', () => {
 describe('CookieSurveyStore', () => {
 	it('knows the survey was answered once the cookie is set, without a backend', async () => {
 		const { jar } = fakeBrowser();
+		await allowCookies();
 		const { CookieSurveyStore } = await import('./survey.ts');
 		const store = new CookieSurveyStore();
 		expect(store.submitted()).toBe(false);
@@ -111,6 +123,7 @@ describe('CookieSurveyStore', () => {
 
 	it('keeps the choices made so far, so a refresh shows them again', async () => {
 		const { jar } = fakeBrowser();
+		await allowCookies();
 		const { CookieSurveyStore } = await import('./survey.ts');
 		const store = new CookieSurveyStore();
 		expect(store.answers()).toEqual({});
@@ -128,6 +141,7 @@ describe('CookieSurveyStore', () => {
 
 	it('keeps the choices after the survey is sent too', async () => {
 		fakeBrowser();
+		await allowCookies();
 		const { CookieSurveyStore } = await import('./survey.ts');
 		const store = new CookieSurveyStore();
 		const answers = { gender: 'หญิง', satisfaction: 5 };
@@ -139,6 +153,7 @@ describe('CookieSurveyStore', () => {
 
 	it('ignores anything in the cookie that is not one of the options', async () => {
 		const { jar } = fakeBrowser();
+		await allowCookies();
 		const { CookieSurveyStore } = await import('./survey.ts');
 		const tampered = { age: '999 ปี', gender: 'หญิง', province: 7, satisfaction: 9, extra: 'x' };
 		jar.set('nd-survey-answers', encodeURIComponent(JSON.stringify(tampered)));
@@ -149,6 +164,7 @@ describe('CookieSurveyStore', () => {
 
 	it('fits in one cookie even with the longest options chosen', async () => {
 		const { written } = fakeBrowser();
+		await allowCookies();
 		const { CookieSurveyStore } = await import('./survey.ts');
 		const { AGES, GENDERS, OCCUPATIONS, PROVINCES } = await import('#lib/content/survey.ts');
 		const longest = (list: readonly string[]) => [...list].sort((a, b) => b.length - a.length)[0];
@@ -161,5 +177,45 @@ describe('CookieSurveyStore', () => {
 		});
 		// Browsers keep about 4096 bytes per cookie
 		expect(written.at(-1)!.length).toBeLessThan(2000);
+	});
+});
+
+describe("the cookie banner's choice", () => {
+	it('writes nothing until the visitor has said yes', async () => {
+		const { jar } = fakeBrowser();
+		const { writeCookie, applyConsent } = await import('./cookie.ts');
+		writeCookie('nd-test', '1');
+		expect(jar.size).toBe(0);
+		applyConsent({ Functionality: true });
+		writeCookie('nd-test', '1');
+		expect(jar.size).toBe(1);
+	});
+
+	it('counts only an explicit Functionality yes', async () => {
+		const { jar } = fakeBrowser();
+		const { writeCookie, applyConsent } = await import('./cookie.ts');
+		for (const chosen of [{}, { Functionality: false }, { Performance: true }]) {
+			applyConsent(chosen);
+			writeCookie('nd-test', '1');
+		}
+		expect(jar.size).toBe(0);
+	});
+
+	it("removes the site's cookies, and only those, once the answer is no", async () => {
+		const { written } = fakeBrowser();
+		const { applyConsent, COOKIES } = await import('./cookie.ts');
+		applyConsent({ Functionality: false });
+		const expired = written
+			.filter((line) => line.includes('Max-Age=0'))
+			.map((l) => l.split('=')[0]);
+		expect(expired.sort()).toEqual(Object.values(COOKIES).sort());
+		expect(written.every((line) => line.includes('Path=/non-discrimination'))).toBe(true);
+	});
+
+	it('keeps them when the answer is yes', async () => {
+		const { written } = fakeBrowser();
+		const { applyConsent } = await import('./cookie.ts');
+		applyConsent({ Functionality: true });
+		expect(written).toEqual([]);
 	});
 });

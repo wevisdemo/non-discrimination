@@ -152,6 +152,36 @@
 	stroke-linejoin: round;
 }
 
+/*
+ * The text classes the WeVis cookie banner (@wevisdemo/ui) puts on its markup, as the design
+ * system's typography.css defines them. That stylesheet is not imported because it also loads the
+ * fonts from design-systems.wevis.info, and the site already has them.
+ */
+.wv-ibmplex {
+	font-family: var(--font-body);
+}
+.wv-kondolar {
+	font-family: var(--font-header);
+}
+.wv-bold {
+	font-weight: 700;
+}
+.wv-b3 {
+	font-size: 18px;
+	line-height: 1.5;
+}
+.wv-b5 {
+	font-size: 14px;
+	line-height: 1.5;
+}
+.wv-b7 {
+	font-size: 10px;
+	line-height: 1.5;
+}
+.wv-u2 {
+	line-height: 1.25;
+}
+
 @layer base {
 	html {
 		scroll-behavior: smooth;

@@ -7,11 +7,12 @@
 	import { backendConfigured, loadResults, sendVote, type Results } from '#lib/api/client.ts';
 	import { trackEvent } from '#lib/analytics.ts';
 	import { getCase } from '#lib/content/index.ts';
+	import { COOKIES } from '#lib/state/cookie.ts';
 	import { CookiePollStore, POLL_CHOICES, type PollChoice } from '#lib/state/poll.ts';
 
 	let { slug, headingLevel = 3 }: { slug: string; headingLevel?: 2 | 3 } = $props();
 
-	const store = new CookiePollStore('nd-poll', POLL_CHOICES);
+	const store = new CookiePollStore(COOKIES.caseVotes, POLL_CHOICES);
 	// Not $derived: the saved answer must be read after hydration, so the prerendered card matches
 	let answer = $state<PollChoice | undefined>();
 	let results = $state<Results | undefined>();
