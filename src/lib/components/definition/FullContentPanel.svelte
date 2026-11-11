@@ -176,12 +176,13 @@
 <Dialog.Root {open} onOpenChange={(next) => !next && onclose()}>
 	<Dialog.Portal>
 		<Dialog.Overlay class="fixed inset-0 z-40 bg-white/70" />
-		<!-- Figma "Definition" (Device=Desktop): a 600px-wide sheet, 83% of the screen tall, sitting on
-		     the bottom edge with the 30px close button above it; tabs stick to its top as it scrolls.
-		     dvh is vh on desktop and fits under phone address bars. -->
+		<!-- Figma "Popup Desktop size": from 1024px wide the popup is 60vw by 80vh (the 30px close button
+		     included) and centred; below that, a 600px sheet 83% of the screen tall sitting on the bottom
+		     edge. Tabs stick to the top of the sheet as it scrolls. dvh is vh on desktop and fits under
+		     phone address bars. -->
 		<Dialog.Content
 			aria-label="อ่านเนื้อหาเต็ม"
-			class="fixed bottom-0 left-1/2 z-50 h-[calc(83dvh+30px)] w-[600px] max-w-[calc(100vw-32px)] -translate-x-1/2 outline-none"
+			class="fixed bottom-0 left-1/2 z-50 h-[calc(83dvh+30px)] w-[600px] max-w-[calc(100vw-32px)] -translate-x-1/2 outline-none lg:top-1/2 lg:bottom-auto lg:h-[80dvh] lg:w-[60vw] lg:-translate-y-1/2"
 		>
 			<div class="flex h-full flex-col">
 				<!-- The close button stays put; only the sheet below it scrolls, under the sticky tabs -->
@@ -217,7 +218,7 @@
 						class="flex flex-col items-center gap-l bg-surface px-m py-l"
 					>
 						{#if tab === 'definition'}
-							<div class="flex w-full max-w-[400px] flex-col gap-m">
+							<div class="flex w-full max-w-[400px] flex-col gap-m lg:max-w-[83%]">
 								<h2 class={h}>การเลือกปฏิบัติ (Discrimination)</h2>
 								<p class="text-center text-b5 text-primary">คือการอ้าง <strong>“เหตุ”</strong></p>
 								<Accordion title="เหตุแห่งการเลือกปฏิบัติ" open>
@@ -238,7 +239,7 @@
 								</Accordion>
 							</div>
 
-							<div class="flex w-full max-w-[400px] flex-col gap-m">
+							<div class="flex w-full max-w-[400px] flex-col gap-m lg:max-w-[83%]">
 								<p class="text-center text-b5 text-primary">
 									เพื่อ <strong>แบ่งแยก กีดกัน จำกัด</strong><br />ให้คนคนหนึ่งหรือกลุ่มหนึ่ง<br
 									/>ได้รับสิทธิประโยชน์น้อยลง หรือ ให้ไม่ได้รับสิทธินั้นเลย
@@ -263,7 +264,7 @@
 								</Accordion>
 							</div>
 
-							<div class="flex w-full max-w-[400px] flex-col gap-m">
+							<div class="flex w-full max-w-[400px] flex-col gap-m lg:max-w-[83%]">
 								<p class="text-center text-b5 text-primary">
 									ทั้งใน <strong>“รูปแบบ”</strong> ที่โจ่งแจ้งไปจนถึงแนบเนียน
 								</p>
@@ -285,7 +286,7 @@
 								body: import('svelte').Snippet
 							)}
 								<section
-									class="flex w-full max-w-[400px] flex-col items-center gap-m bg-surface-tint p-m text-b6 text-primary"
+									class="flex w-full max-w-[400px] flex-col items-center gap-m bg-surface-tint p-m text-b6 text-primary lg:max-w-[83%]"
 								>
 									<h2 class={h}>{title}</h2>
 									<SpotArt kind={art} />
@@ -329,7 +330,7 @@
 							{@render box('ผู้ถูกเลือกปฏิบัติ', 'victim', victimBody)}
 							{@render box('ส่วนผู้เลือกปฏิบัติ', 'offender', offenderBody)}
 						{:else}
-							<div class="flex w-full max-w-[400px] flex-col gap-s">
+							<div class="flex w-full max-w-[400px] flex-col gap-s lg:max-w-[83%]">
 								<h2 class={h}>การเลือกปฏิบัติที่พบบ่อย<br />ในสังคมไทย</h2>
 								{#each frequent as topic, i (topic.title)}
 									<Accordion title={topic.title} open={i === 0}>
