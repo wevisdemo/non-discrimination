@@ -27,9 +27,20 @@
 		{ key: 'province', label: 'จังหวัด', placeholder: 'เลือกจังหวัด', options: PROVINCES }
 	] as const;
 
+	let sending = $state(false);
+	let failed = $state(false);
+
 	async function submit(e: SubmitEvent) {
 		e.preventDefault();
-		await store.submit($state.snapshot(answers));
+		if (sending) return;
+		sending = true;
+		failed = false;
+		const sent = await store.submit($state.snapshot(answers));
+		sending = false;
+		if (!sent) {
+			failed = true;
+			return;
+		}
 		trackEvent({ name: 'survey_submitted' });
 		done = true;
 	}
@@ -108,9 +119,13 @@
 	{:else}
 		<button
 			type="submit"
-			class="rounded-full bg-ui-primary px-m py-s text-b5 text-ink hover:bg-ui-primary-hover"
+			disabled={sending}
+			class="rounded-full bg-ui-primary px-m py-s text-b5 text-ink hover:bg-ui-primary-hover disabled:opacity-60"
 			>ส่งคำตอบ</button
 		>
+		{#if failed}
+			<p class="text-b6 text-ink" role="alert">ส่งคำตอบไม่สำเร็จ กรุณาลองอีกครั้ง</p>
+		{/if}
 	{/if}
 	<p class="text-[12px] leading-normal text-body">
 		แบบสอบถามนี้ไม่มีการเก็บข้อมูลที่ระบุตัวบุคคล<br

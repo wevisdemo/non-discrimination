@@ -28,6 +28,8 @@ jobs:
       - run: pnpm build
         env:
           BASE_PATH: /${{ github.event.repository.name }}
+          # Address of the polls/survey API (worker/); empty means placeholder polls, nothing sent
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: build

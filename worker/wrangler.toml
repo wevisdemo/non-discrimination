@@ -1,0 +1,21 @@
+name = "non-discrimination-api"
+main = "src/index.ts"
+compatibility_date = "2026-11-01"
+
+[vars]
+NOCODB_URL = "https://sheets.wevis.info"
+NOCODB_BASE = "pjcgtwxsuwfob3r"
+# Origins that may call the API from a browser (the site, and local dev / preview)
+ALLOWED_ORIGINS = "https://wevisdemo.github.io,http://localhost:5173,http://localhost:4173"
+
+# 10 writes a minute per IP at each Cloudflare location (needs Wrangler 4.36 or later).
+# Without this binding the Worker falls back to a per-instance limit of the same size.
+[[ratelimits]]
+name = "RATE_LIMITER"
+namespace_id = "1001"
+
+  [ratelimits.simple]
+  limit = 10
+  period = 60
+
+# NOCODB_TOKEN is a secret, set once with:  npx wrangler secret put NOCODB_TOKEN

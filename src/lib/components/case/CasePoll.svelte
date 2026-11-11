@@ -4,6 +4,7 @@
 	import person from '#lib/assets/kp2/poll-person.svg';
 	import cross from '#lib/assets/kp2/poll-x.svg';
 	import PollBar from '#lib/components/ui/PollBar.svelte';
+	import { backendConfigured, loadResults, sendVote, type Results } from '#lib/api/client.ts';
 	import { trackEvent } from '#lib/analytics.ts';
 	import { LocalPollStore, POLL_CHOICES, type PollChoice } from '#lib/state/poll.ts';
 
@@ -11,11 +12,14 @@
 
 	const store = new LocalPollStore('non-discrimination:poll', POLL_CHOICES);
 	// Not $derived: the saved answer must be read after hydration, so the prerendered card matches
-	// eslint-disable-next-line svelte/prefer-writable-derived
 	let answer = $state<PollChoice | undefined>();
+	let results = $state<Results | undefined>();
 	// Client-only (it reads localStorage), and reruns as ‹ › moves the panel to another case
 	$effect(() => {
-		answer = store.load(slug);
+		const saved = store.load(slug);
+		answer = saved;
+		results = undefined;
+		if (saved) void showResults(slug);
 	});
 
 	// Icons sit in a 20px box at the insets Figma exports them with
@@ -26,18 +30,26 @@
 		{ id: 'never', label: 'ไม่เคยเจอ/เห็น/ได้ยิน', icon: cross, inset: '15% 15% 15% 15%' }
 	];
 
-	// MOCKUP: placeholder shares (sum 100) until the poll backend can return every voter's votes
-	const percent: Record<PollChoice, number> = {
-		experienced: 41.2,
-		witnessed: 27.6,
-		heard: 18.5,
-		never: 12.7
+	// MOCKUP: placeholder shares (sum 100), shown only while there is no backend (VITE_API_URL)
+	const mock: Results = {
+		total: 0,
+		percent: { experienced: 41.2, witnessed: 27.6, heard: 18.5, never: 12.7 }
 	};
 
-	function vote(choice: PollChoice) {
+	/** The shares of every voter; if the API is down the bars are left out rather than faked */
+	async function showResults(forSlug: string) {
+		const loaded = backendConfigured ? await loadResults(forSlug) : mock;
+		if (forSlug === slug) results = loaded;
+	}
+
+	/** One vote per visitor: the shares count votes, so an answer is not changed afterwards */
+	async function vote(choice: PollChoice) {
+		if (answer) return;
 		answer = choice;
 		store.save(slug, choice);
 		trackEvent({ name: 'poll_answered', slug, choice });
+		if (backendConfigured) await sendVote(slug, choice);
+		await showResults(slug);
 	}
 </script>
 
@@ -58,6 +70,7 @@
 					? 'bg-ui-primary'
 					: 'bg-surface shadow-[0_4px_2px_rgba(0,0,0,0.25)] hover:bg-ui-primary-hover'}"
 				aria-pressed={answer === option.id}
+				disabled={!!answer}
 				onclick={() => vote(option.id)}
 			>
 				<span class="flex items-center justify-center gap-s">
@@ -66,8 +79,8 @@
 					</span>
 					{option.label}
 				</span>
-				{#if answer}
-					<PollBar percent={percent[option.id]} />
+				{#if answer && results}
+					<PollBar percent={results.percent[option.id] ?? 0} />
 				{/if}
 			</button>
 		{/each}

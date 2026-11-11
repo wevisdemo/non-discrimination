@@ -3,6 +3,7 @@
 	import parliamentBg from '#lib/assets/kp3/parliament-bg.png?enhanced';
 	import parliamentWatch from '#lib/assets/kp3/parliament-watch.svg';
 	import ruleCancelled from '#lib/assets/kp3/rule-cancelled.svg';
+	import { backendConfigured, loadResults, sendVote, type Results } from '#lib/api/client.ts';
 	import PollBar from '#lib/components/ui/PollBar.svelte';
 	import { trackEvent } from '#lib/analytics.ts';
 	import { LAW_CHOICES, LocalPollStore, type LawChoice } from '#lib/state/poll.ts';
@@ -30,21 +31,31 @@
 		}
 	];
 
-	// MOCKUP: placeholder shares (sum 100) until the poll backend can return every voter's votes
-	const percent: Record<LawChoice, number> = { agree: 71.8, unnecessary: 17.5, disagree: 10.7 };
+	// MOCKUP: placeholder shares (sum 100), shown only while there is no backend (VITE_API_URL)
+	const mock: Results = { total: 0, percent: { agree: 71.8, unnecessary: 17.5, disagree: 10.7 } };
 
 	const store = new LocalPollStore('non-discrimination:law-poll', LAW_CHOICES);
 	// Not $derived: the saved answer must be read after hydration, so the prerendered page matches
-	// eslint-disable-next-line svelte/prefer-writable-derived
 	let answer = $state<LawChoice | undefined>();
+	let results = $state<Results | undefined>();
 	$effect(() => {
 		answer = store.load('law');
+		if (answer) void showResults();
 	});
 
-	function vote(choice: LawChoice) {
+	/** The shares of every voter; if the API is down the bars are left out rather than faked */
+	async function showResults() {
+		results = backendConfigured ? await loadResults('law') : mock;
+	}
+
+	/** One vote per visitor: the shares count votes, so an answer is not changed afterwards */
+	async function vote(choice: LawChoice) {
+		if (answer) return;
 		answer = choice;
 		store.save('law', choice);
 		trackEvent({ name: 'poll_answered', slug: 'law', choice });
+		if (backendConfigured) await sendVote('law', choice);
+		await showResults();
 	}
 
 	const h = 'font-header text-h7-m leading-normal font-bold text-primary lg:text-h7';
@@ -181,13 +192,14 @@
 							? 'bg-ui-primary'
 							: 'bg-surface shadow-[0_4px_2px_rgba(0,0,0,0.25)] hover:bg-ui-primary-hover'}"
 						aria-pressed={answer === option.id}
+						disabled={!!answer}
 						onclick={() => vote(option.id)}
 					>
 						<span class="block whitespace-pre-line"
 							><strong>{option.lead}</strong> {option.rest}</span
 						>
-						{#if answer}
-							<PollBar percent={percent[option.id]} />
+						{#if answer && results}
+							<PollBar percent={results.percent[option.id] ?? 0} />
 						{/if}
 					</button>
 				{/each}

@@ -1,3 +1,5 @@
+import { backendConfigured, sendSurvey } from '#lib/api/client.ts';
+
 /** One visitor's answers to the Result survey (every field optional, as in the design). */
 export type SurveyAnswers = {
 	age?: string;
@@ -8,12 +10,14 @@ export type SurveyAnswers = {
 };
 
 /**
- * Where survey answers go. The design sends them to สำนักงาน กสม. (architecture.md §9, "Backend for
- * polls and the survey"); until that exists the browser only remembers that this visitor answered.
+ * Where survey answers go: the API in /worker when VITE_API_URL is set (then NocoDB, for สำนักงาน
+ * กสม.), otherwise nowhere, and the browser only remembers that this visitor answered. Either way
+ * the answers are sent once.
  */
 export interface SurveyStore {
 	submitted(): boolean;
-	submit(answers: SurveyAnswers): Promise<void>;
+	/** False if they could not be sent, so the visitor can try again */
+	submit(answers: SurveyAnswers): Promise<boolean>;
 }
 
 const KEY = 'non-discrimination:survey';
@@ -28,11 +32,14 @@ export class LocalSurveyStore implements SurveyStore {
 	}
 
 	async submit(answers: SurveyAnswers) {
-		// TODO(backend): send `answers` to the กสม. endpoint once there is one
+		// Nothing to send when every field was left empty, as the design allows
+		const empty = Object.values(answers).every((v) => v === undefined);
+		if (backendConfigured && !empty && !(await sendSurvey(answers))) return false;
 		try {
 			localStorage.setItem(KEY, JSON.stringify(answers));
 		} catch {
 			// Remembering is a nicety; blocked storage must not break the form.
 		}
+		return true;
 	}
 }

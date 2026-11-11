@@ -188,7 +188,7 @@ Case {
 3. **Kondolar Thai** `.woff2` files and web license. Drop them in `static/fonts/` and uncomment `@font-face` in `layout.css`.
 4. ~~**KP1 / KP2 / KP3 / Result**~~: resolved from the prototype (see §1 Story flow).
    Cases are all part of KP2, so `kp` on `Case` is no longer needed.
-5. **Backend for polls and the survey.** The case poll and the KP3 poll show aggregated percentages, and the Result survey submits data for กสม. All three need shared storage, which conflicts with the "no backend" decision in M0.
+5. **Backend for polls and the survey.** Built, waiting for deployment. The site stays static; the case polls, the KP3 poll and the Result survey call a small Cloudflare Worker (`worker/`, see its README) that writes to NocoDB (`sheets.wevis.info`, tables `poll_votes` and `survey_responses`) and keeps the token out of the browser. `src/lib/api/client.ts` is the site's side: it reads `VITE_API_URL` at build time. **Without it the polls show placeholder percentages and the survey only remembers the answer in the browser; with it, one vote per visitor is sent, the shares come from `GET /results`, a survey that cannot be sent keeps its form open, and if the API is down the poll bars are left out rather than faked.** To go live: deploy the Worker (`worker/README.md`), then set the repository variable `VITE_API_URL`.
 6. **Gaps between the M0 scaffold and the prototype:**
    - `Case` needs `dimension` and `form` fields.
    - Definitions should be one tabbed panel, not 8 per-cause pages.
