@@ -6,6 +6,7 @@
 	import PollBar from '#lib/components/ui/PollBar.svelte';
 	import { backendConfigured, loadResults, sendVote, type Results } from '#lib/api/client.ts';
 	import { trackEvent } from '#lib/analytics.ts';
+	import { getCase } from '#lib/content/index.ts';
 	import { CookiePollStore, POLL_CHOICES, type PollChoice } from '#lib/state/poll.ts';
 
 	let { slug, headingLevel = 3 }: { slug: string; headingLevel?: 2 | 3 } = $props();
@@ -33,7 +34,13 @@
 	// MOCKUP: placeholder shares (sum 100), shown only while there is no NocoDB token (VITE_NOCODB_TOKEN)
 	const mock: Results = {
 		total: 0,
-		percent: { experienced: 41.2, witnessed: 27.6, heard: 18.5, never: 12.7 }
+		// Keyed by the label of each option, as the real results are
+		percent: {
+			เคยโดนกับตัว: 41.2,
+			เคยเห็นกับตา: 27.6,
+			เคยได้ยินมา: 18.5,
+			'ไม่เคยเจอ/เห็น/ได้ยิน': 12.7
+		}
 	};
 
 	/** The shares of every voter; if the API is down the bars are left out rather than faked */
@@ -48,7 +55,11 @@
 		answer = choice;
 		store.save(slug, choice);
 		trackEvent({ name: 'poll_answered', slug, choice });
-		if (backendConfigured) await sendVote(slug, choice);
+		if (backendConfigured) {
+			// The table holds the case's Thai name and the Thai label that was clicked
+			const label = options.find((o) => o.id === choice)?.label ?? choice;
+			await sendVote({ id: slug, name: getCase(slug)?.titleTh ?? slug }, label);
+		}
 		await showResults(slug);
 	}
 </script>
@@ -80,7 +91,7 @@
 					{option.label}
 				</span>
 				{#if answer && results}
-					<PollBar percent={results.percent[option.id] ?? 0} />
+					<PollBar percent={results.percent[option.label] ?? 0} />
 				{/if}
 			</button>
 		{/each}

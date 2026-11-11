@@ -17,6 +17,9 @@
 		'รัฐธรรมนูญ 2560 มาตรา 4 และ 27'
 	];
 
+	/** What the poll is called in the NocoDB table */
+	const LAW_POLL_NAME = 'การมีกฎหมายขจัดการเลือกปฏิบัติต่อบุคคล ‘เป็นการเฉพาะ’';
+
 	const options: { id: LawChoice; lead: string; rest: string }[] = [
 		{ id: 'agree', lead: 'ดีเลย', rest: 'จะได้มีมาตรฐาน\nป้องกันการละเมิดสิทธิได้มากขึ้น' },
 		{
@@ -32,7 +35,11 @@
 	];
 
 	// MOCKUP: placeholder shares (sum 100), shown only while there is no NocoDB token (VITE_NOCODB_TOKEN)
-	const mock: Results = { total: 0, percent: { agree: 71.8, unnecessary: 17.5, disagree: 10.7 } };
+	// Keyed by the label of each option, as the real results are
+	const mock: Results = {
+		total: 0,
+		percent: { ดีเลย: 71.8, ไม่เห็นจำเป็น: 17.5, ไม่เห็นด้วย: 10.7 }
+	};
 
 	const store = new CookiePollStore('nd-law-poll', LAW_CHOICES);
 	// Not $derived: the saved answer must be read after hydration, so the prerendered page matches
@@ -54,7 +61,10 @@
 		answer = choice;
 		store.save('law', choice);
 		trackEvent({ name: 'poll_answered', slug: 'law', choice });
-		if (backendConfigured) await sendVote('law', choice);
+		if (backendConfigured) {
+			const label = options.find((o) => o.id === choice)?.lead ?? choice;
+			await sendVote({ id: 'law', name: LAW_POLL_NAME }, label);
+		}
 		await showResults();
 	}
 
@@ -199,7 +209,7 @@
 							><strong>{option.lead}</strong> {option.rest}</span
 						>
 						{#if answer && results}
-							<PollBar percent={results.percent[option.id] ?? 0} />
+							<PollBar percent={results.percent[option.lead] ?? 0} />
 						{/if}
 					</button>
 				{/each}

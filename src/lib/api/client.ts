@@ -39,15 +39,27 @@ async function call(table: string, suffix = '', init: RequestInit = {}) {
 	}
 }
 
+/** Rows carry the time they were made, which NocoDB does not fill in for rows added over its API */
 const insert = (table: string, row: Record<string, unknown>) =>
-	call(table, '', { method: 'POST', body: JSON.stringify(row) });
+	call(table, '', {
+		method: 'POST',
+		body: JSON.stringify({ ...row, CreatedAt: new Date().toISOString() })
+	});
 
-export async function sendVote(poll: string, choice: string): Promise<boolean> {
-	return (await insert('poll_votes', { poll, choice })) !== undefined;
+/**
+ * A poll as the tables hold it: `id` (the case slug, or `law`) is what results are filtered on,
+ * `name` the readable title (the case's Thai name) that lets a person read the table.
+ */
+export type PollRef = { id: string; name: string };
+
+/** `choice` is the Thai label the visitor clicked, e.g. เคยโดนกับตัว, so the table reads on its own */
+export async function sendVote(poll: PollRef, choice: string): Promise<boolean> {
+	return (await insert('poll_votes', { poll: poll.name, poll_id: poll.id, choice })) !== undefined;
 }
 
-export async function loadResults(poll: string): Promise<Results | undefined> {
-	const where = encodeURIComponent(`(poll,eq,${poll})`);
+/** Shares keyed by the same Thai choice labels that `sendVote` stores */
+export async function loadResults(pollId: string): Promise<Results | undefined> {
+	const where = encodeURIComponent(`(poll_id,eq,${pollId})`);
 	const res = await call('poll_votes', `/groupby?column_name=choice&where=${where}&limit=50`);
 	if (!res) return undefined;
 	try {
