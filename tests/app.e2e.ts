@@ -317,11 +317,18 @@ test('the case card poll remembers the answer', async ({ page }) => {
 	await answer.click();
 	await expect(answer).toHaveAttribute('aria-pressed', 'true');
 	await expect(page.getByText('27.6%')).toBeVisible();
+	// One vote per browser: the answer is locked, and a year-long cookie remembers it
+	await expect(page.getByRole('button', { name: 'เคยโดนกับตัว' })).toBeDisabled();
+	const cookie = (await page.context().cookies()).find((c) => c.name === 'nd-poll');
+	expect(cookie?.value).toContain('karen');
+	expect(cookie?.sameSite).toBe('Lax');
+	expect(cookie?.expires ?? 0).toBeGreaterThan(Date.now() / 1000 + 300 * 24 * 3600);
 	await page.reload();
 	await expect(page.getByRole('button', { name: 'เคยเห็นกับตา' })).toHaveAttribute(
 		'aria-pressed',
 		'true'
 	);
+	await expect(page.getByRole('button', { name: 'เคยเห็นกับตา' })).toBeDisabled();
 });
 
 test('the map is a full-screen overlay opened by สำรวจเลย, not a section of the page', async ({

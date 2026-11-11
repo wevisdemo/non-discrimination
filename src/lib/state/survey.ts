@@ -1,4 +1,5 @@
 import { backendConfigured, sendSurvey } from '#lib/api/client.ts';
+import { readCookie, writeCookie } from './cookie.ts';
 
 /** One visitor's answers to the Result survey (every field optional, as in the design). */
 export type SurveyAnswers = {
@@ -20,26 +21,19 @@ export interface SurveyStore {
 	submit(answers: SurveyAnswers): Promise<boolean>;
 }
 
-const KEY = 'non-discrimination:survey';
+const COOKIE = 'nd-survey';
 
-export class LocalSurveyStore implements SurveyStore {
+/** A cookie remembers that this browser has answered, so the survey is sent once */
+export class CookieSurveyStore implements SurveyStore {
 	submitted() {
-		try {
-			return localStorage.getItem(KEY) !== null;
-		} catch {
-			return false;
-		}
+		return readCookie(COOKIE) === '1';
 	}
 
 	async submit(answers: SurveyAnswers) {
 		// Nothing to send when every field was left empty, as the design allows
 		const empty = Object.values(answers).every((v) => v === undefined);
 		if (backendConfigured && !empty && !(await sendSurvey(answers))) return false;
-		try {
-			localStorage.setItem(KEY, JSON.stringify(answers));
-		} catch {
-			// Remembering is a nicety; blocked storage must not break the form.
-		}
+		writeCookie(COOKIE, '1');
 		return true;
 	}
 }

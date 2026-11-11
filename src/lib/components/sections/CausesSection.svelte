@@ -6,7 +6,7 @@
 	import { backendConfigured, loadResults, sendVote, type Results } from '#lib/api/client.ts';
 	import PollBar from '#lib/components/ui/PollBar.svelte';
 	import { trackEvent } from '#lib/analytics.ts';
-	import { LAW_CHOICES, LocalPollStore, type LawChoice } from '#lib/state/poll.ts';
+	import { CookiePollStore, LAW_CHOICES, type LawChoice } from '#lib/state/poll.ts';
 
 	// Parliament Watch's bill search for the anti-discrimination bills
 	const PARLIAMENT_WATCH_URL = `https://parliamentwatch.wevis.info/bills/explore?q=${encodeURIComponent('ขจัดการเลือกปฏิบัติต่อบุคคล')}`;
@@ -34,7 +34,7 @@
 	// MOCKUP: placeholder shares (sum 100), shown only while there is no NocoDB token (VITE_NOCODB_TOKEN)
 	const mock: Results = { total: 0, percent: { agree: 71.8, unnecessary: 17.5, disagree: 10.7 } };
 
-	const store = new LocalPollStore('non-discrimination:law-poll', LAW_CHOICES);
+	const store = new CookiePollStore('nd-law-poll', LAW_CHOICES);
 	// Not $derived: the saved answer must be read after hydration, so the prerendered page matches
 	let answer = $state<LawChoice | undefined>();
 	let results = $state<Results | undefined>();

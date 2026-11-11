@@ -6,15 +6,15 @@
 	import PollBar from '#lib/components/ui/PollBar.svelte';
 	import { backendConfigured, loadResults, sendVote, type Results } from '#lib/api/client.ts';
 	import { trackEvent } from '#lib/analytics.ts';
-	import { LocalPollStore, POLL_CHOICES, type PollChoice } from '#lib/state/poll.ts';
+	import { CookiePollStore, POLL_CHOICES, type PollChoice } from '#lib/state/poll.ts';
 
 	let { slug, headingLevel = 3 }: { slug: string; headingLevel?: 2 | 3 } = $props();
 
-	const store = new LocalPollStore('non-discrimination:poll', POLL_CHOICES);
+	const store = new CookiePollStore('nd-poll', POLL_CHOICES);
 	// Not $derived: the saved answer must be read after hydration, so the prerendered card matches
 	let answer = $state<PollChoice | undefined>();
 	let results = $state<Results | undefined>();
-	// Client-only (it reads localStorage), and reruns as ‹ › moves the panel to another case
+	// Client-only (it reads a cookie), and reruns as ‹ › moves the panel to another case
 	$effect(() => {
 		const saved = store.load(slug);
 		answer = saved;

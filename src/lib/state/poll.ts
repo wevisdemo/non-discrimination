@@ -1,3 +1,5 @@
+import { readCookie, writeCookie } from './cookie.ts';
+
 /** The ชวนคุย answers on a case card (Figma "Poll"). */
 export const POLL_CHOICES = ['experienced', 'witnessed', 'heard', 'never'] as const;
 export type PollChoice = (typeof POLL_CHOICES)[number];
@@ -7,45 +9,40 @@ export const LAW_CHOICES = ['agree', 'unnecessary', 'disagree'] as const;
 export type LawChoice = (typeof LAW_CHOICES)[number];
 
 /**
- * Where a visitor's own poll answers are kept, one per poll id (a case slug, or `law`). The design
- * shows every voter's percentages, which needs shared storage (architecture.md §9, "Backend for
- * polls"); until then only the visitor's own answer is remembered, in the browser.
+ * Where a visitor's own poll answers are kept, one per poll id (a case slug, or `law`). A cookie
+ * remembers it, so each browser votes once per poll; clearing cookies or using another browser
+ * votes again, which a site without sign-in cannot prevent.
  */
 export interface PollStore<T extends string> {
 	load(id: string): T | undefined;
 	save(id: string, choice: T): void;
 }
 
-export class LocalPollStore<T extends string> implements PollStore<T> {
-	readonly #key: string;
+/** One cookie per poll family, holding `id:choice` pairs: `karen:heard|law:agree` */
+export class CookiePollStore<T extends string> implements PollStore<T> {
+	readonly #name: string;
 	readonly #choices: readonly T[];
 
-	constructor(key: string, choices: readonly T[]) {
-		this.#key = key;
+	constructor(name: string, choices: readonly T[]) {
+		this.#name = name;
 		this.#choices = choices;
 	}
 
-	#read(): Record<string, T> {
-		try {
-			const parsed: unknown = JSON.parse(localStorage.getItem(this.#key) ?? '{}');
-			if (!parsed || typeof parsed !== 'object') return {};
-			return Object.fromEntries(
-				Object.entries(parsed).filter(([, v]) => this.#choices.includes(v as T))
-			) as Record<string, T>;
-		} catch {
-			return {};
+	#read(): Map<string, T> {
+		const answers = new Map<string, T>();
+		for (const pair of (readCookie(this.#name) ?? '').split('|')) {
+			const [id, choice] = pair.split(':');
+			if (id && this.#choices.includes(choice as T)) answers.set(id, choice as T);
 		}
+		return answers;
 	}
 
 	load(id: string) {
-		return this.#read()[id];
+		return this.#read().get(id);
 	}
 
 	save(id: string, choice: T) {
-		try {
-			localStorage.setItem(this.#key, JSON.stringify({ ...this.#read(), [id]: choice }));
-		} catch {
-			// Answers are a nicety; blocked storage must not break the page.
-		}
+		const answers = this.#read().set(id, choice);
+		writeCookie(this.#name, [...answers].map(([key, value]) => `${key}:${value}`).join('|'));
 	}
 }

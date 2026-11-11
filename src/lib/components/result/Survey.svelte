@@ -8,9 +8,9 @@
 	import veryGood from '#lib/assets/result/face-very-good.svg';
 	import { trackEvent } from '#lib/analytics.ts';
 	import { AGES, GENDERS, OCCUPATIONS, PROVINCES, SATISFACTION } from '#lib/content/survey.ts';
-	import { LocalSurveyStore, type SurveyAnswers } from '#lib/state/survey.ts';
+	import { CookieSurveyStore, type SurveyAnswers } from '#lib/state/survey.ts';
 
-	const store = new LocalSurveyStore();
+	const store = new CookieSurveyStore();
 	const answers = $state<SurveyAnswers>({});
 	// Read after hydration so the prerendered form matches
 	// eslint-disable-next-line svelte/prefer-writable-derived
