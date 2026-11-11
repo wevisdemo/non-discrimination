@@ -85,7 +85,9 @@
 				onclick={() => vote(option.id)}
 			>
 				<span class="flex items-center justify-center gap-s">
-					<span class="relative size-5 shrink-0" aria-hidden="true">
+					<!-- Thai letters carry their tone marks above the line, so their middle sits higher than the
+					     line box's: the icon is nudged up 2px to meet it -->
+					<span class="relative size-5 shrink-0 -translate-y-0.5" aria-hidden="true">
 						<img src={option.icon} alt="" class="absolute" style="inset:{option.inset}" />
 					</span>
 					{option.label}
