@@ -273,9 +273,11 @@ test('the Result survey can be answered once', async ({ page }) => {
 	const survey = page.getByRole('form', { name: 'ขอบคุณที่อยู่ด้วยกันจนจบ !' });
 	await survey.getByRole('button', { name: 'อายุ' }).click();
 	await page.getByRole('option', { name: '18-35 ปี' }).click();
-	await survey.getByRole('button', { name: 'จังหวัด' }).click();
+	const province = survey.getByRole('combobox', { name: 'จังหวัด' });
+	await province.click();
+	await province.fill('เชียง');
 	await page.getByRole('option', { name: 'เชียงใหม่' }).click();
-	await expect(survey.getByRole('button', { name: 'จังหวัด' })).toHaveText('เชียงใหม่');
+	await expect(province).toHaveValue('เชียงใหม่');
 	await survey.getByRole('button', { name: 'พอใจมาก', exact: true }).click();
 	await survey.getByRole('button', { name: 'ส่งคำตอบ' }).click();
 	await expect(survey.getByText('ขอบคุณสำหรับคำตอบ')).toBeVisible();
@@ -283,6 +285,30 @@ test('the Result survey can be answered once', async ({ page }) => {
 	await page.reload();
 	await expect(page.getByText('ขอบคุณสำหรับคำตอบ')).toBeVisible();
 	await expect(page.getByRole('button', { name: 'ส่งคำตอบ' })).toHaveCount(0);
+});
+
+test("the survey's province field can be searched by typing", async ({ page }) => {
+	await page.goto('/#summary');
+	const province = page
+		.getByRole('form', { name: 'ขอบคุณที่อยู่ด้วยกันจนจบ !' })
+		.getByRole('combobox', { name: 'จังหวัด' });
+	await province.click();
+	await expect(page.getByRole('option')).toHaveCount(77);
+
+	// Typing keeps only the provinces that contain it
+	await province.fill('เชียง');
+	await expect(page.getByRole('option')).toHaveText(['เชียงราย', 'เชียงใหม่']);
+	await province.fill('zzz');
+	await expect(page.getByText('ไม่พบจังหวัดที่ค้นหา')).toBeVisible();
+
+	// Choosing with the keyboard works, and leaving without choosing puts the choice back
+	await province.fill('ภูเก็ต');
+	await page.keyboard.press('ArrowDown');
+	await page.keyboard.press('Enter');
+	await expect(province).toHaveValue('ภูเก็ต');
+	await province.fill('กระบี่');
+	await page.keyboard.press('Escape');
+	await expect(province).toHaveValue('ภูเก็ต');
 });
 
 test('the Result has share links and the E-Learning link', async ({ page }) => {
