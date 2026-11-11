@@ -7,10 +7,10 @@
 <script lang="ts">
 	import type { PanzoomObject } from '@panzoom/panzoom';
 	import type { Game } from '#lib/state/game.svelte.ts';
-	import CauseChip from '#lib/components/ui/CauseChip.svelte';
 	import { MAP_SIZE } from '#lib/content/index.ts';
 	import Hotspot from './Hotspot.svelte';
 	import MapScene from './MapScene.svelte';
+	import RevealChips from './RevealChips.svelte';
 
 	let {
 		game,
@@ -176,18 +176,9 @@
 			{#each game.cases as item (item.slug)}
 				<Hotspot {item} found={game.found.has(item.slug)} {onselect} />
 			{/each}
-			<!-- Reveal (Figma "ดูเฉลย"): each case's causes as tags below it -->
+			<!-- Reveal (Figma "ดูเฉลย"): each case's causes as tags near it -->
 			{#if game.mode === 'reveal'}
-				{#each game.cases as item (item.slug)}
-					<ul
-						class="pointer-events-none absolute flex -translate-x-1/2 flex-col items-center gap-xs pt-[10px] whitespace-nowrap"
-						style="left:{((item.hotspot.x + item.hotspot.w / 2) / MAP_SIZE.width) *
-							100}%;top:{((item.hotspot.y + item.hotspot.h) / MAP_SIZE.height) * 100}%"
-						aria-hidden="true"
-					>
-						{#each item.causes as cause (cause)}<li><CauseChip {cause} /></li>{/each}
-					</ul>
-				{/each}
+				<RevealChips cases={game.cases} />
 			{/if}
 		</MapScene>
 	</div>

@@ -8,6 +8,7 @@
 	"formsTh": ["เชิงโครงสร้าง"],
 	"perpetratorTh": "กฎคณะกรรมการข้าราชการตำรวจ",
 	"affectedTh": "ผู้มีเพศกำกวม",
+	"tagsAbove": true,
 	"hotspot": {
 		"x": 1996,
 		"y": 1292,

@@ -44,6 +44,8 @@ export const caseSchema = z
 		affectedTh: z.string().min(1),
 		/** บันทึกเพิ่มเติม: the legal basis or a later development, when the datasheet has one */
 		noteTh: z.string().min(1).optional(),
+		/** Reveal mode draws this case's cause tags above it instead of below, where the tags would crowd its neighbours */
+		tagsAbove: z.boolean().optional(),
 		hotspot: z.object({
 			x: z.number().min(0),
 			y: z.number().min(0),

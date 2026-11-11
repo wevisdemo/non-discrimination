@@ -127,6 +127,20 @@ test('reveal tags each case with its causes', async ({ page }) => {
 	await page.getByRole('button', { name: 'เฉลยตำแหน่งภาพ' }).click();
 	// One tag per cause across the 18 cases (the intersex case has two)
 	await expect(page.locator('#explore ul[aria-hidden="true"] li')).toHaveCount(19);
+
+	// Where cases crowd together the tags must not pile up
+	const groups = await page
+		.locator('#explore ul[aria-hidden="true"]')
+		.evaluateAll((els) => els.map((el) => el.getBoundingClientRect()));
+	expect(groups).toHaveLength(18);
+	for (let i = 0; i < groups.length; i++) {
+		for (let j = i + 1; j < groups.length; j++) {
+			const a = groups[i];
+			const b = groups[j];
+			const clash = a.left < b.right && b.left < a.right && a.top < b.bottom && b.top < a.bottom;
+			expect(clash, `tags ${i} and ${j} overlap`).toBe(false);
+		}
+	}
 });
 
 test('เจาะดูทีละภาพ steps through the cases in datasheet order', async ({ page }) => {
