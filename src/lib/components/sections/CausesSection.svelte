@@ -3,7 +3,7 @@
 	import parliamentBg from '#lib/assets/kp3/parliament-bg.png?enhanced';
 	import parliamentWatch from '#lib/assets/kp3/parliament-watch.svg';
 	import ruleCancelled from '#lib/assets/kp3/rule-cancelled.svg';
-	import { backendConfigured, loadResults, sendVote, type Results } from '#lib/api/client.ts';
+	import { backendConfigured, loadLawResults, sendLawVote, type Results } from '#lib/api/client.ts';
 	import PollBar from '#lib/components/ui/PollBar.svelte';
 	import { trackEvent } from '#lib/analytics.ts';
 	import { CookiePollStore, LAW_CHOICES, type LawChoice } from '#lib/state/poll.ts';
@@ -16,9 +16,6 @@
 		'กฎหมายระหว่างประเทศด้านสิทธิมนุษยชนทุกฉบับ',
 		'รัฐธรรมนูญ 2560 มาตรา 4 และ 27'
 	];
-
-	/** What the poll is called in the NocoDB table */
-	const LAW_POLL_NAME = 'การมีกฎหมายขจัดการเลือกปฏิบัติต่อบุคคล ‘เป็นการเฉพาะ’';
 
 	const options: { id: LawChoice; lead: string; rest: string }[] = [
 		{ id: 'agree', lead: 'ดีเลย', rest: 'จะได้มีมาตรฐาน\nป้องกันการละเมิดสิทธิได้มากขึ้น' },
@@ -52,7 +49,7 @@
 
 	/** The shares of every voter; if the API is down the bars are left out rather than faked */
 	async function showResults() {
-		results = backendConfigured ? await loadResults('law') : mock;
+		results = backendConfigured ? await loadLawResults() : mock;
 	}
 
 	/** One vote per visitor: the shares count votes, so an answer is not changed afterwards */
@@ -62,8 +59,7 @@
 		store.save('law', choice);
 		trackEvent({ name: 'poll_answered', slug: 'law', choice });
 		if (backendConfigured) {
-			const label = options.find((o) => o.id === choice)?.lead ?? choice;
-			await sendVote({ id: 'law', name: LAW_POLL_NAME }, label);
+			await sendLawVote(options.find((o) => o.id === choice)?.lead ?? choice);
 		}
 		await showResults();
 	}

@@ -47,7 +47,7 @@ const insert = (table: string, row: Record<string, unknown>) =>
 	});
 
 /**
- * A poll as the tables hold it: `id` (the case slug, or `law`) is what results are filtered on,
+ * A case poll as `poll_votes` holds it: `id` (the case slug) is what results are filtered on,
  * `name` the readable title (the case's Thai name) that lets a person read the table.
  */
 export type PollRef = { id: string; name: string };
@@ -57,10 +57,14 @@ export async function sendVote(poll: PollRef, choice: string): Promise<boolean> 
 	return (await insert('poll_votes', { poll: poll.name, poll_id: poll.id, choice })) !== undefined;
 }
 
-/** Shares keyed by the same Thai choice labels that `sendVote` stores */
-export async function loadResults(pollId: string): Promise<Results | undefined> {
-	const where = encodeURIComponent(`(poll_id,eq,${pollId})`);
-	const res = await call('poll_votes', `/groupby?column_name=choice&where=${where}&limit=50`);
+/** The KP3 poll is a different poll, so it has its own table, `law_votes`, with just the choice */
+export async function sendLawVote(choice: string): Promise<boolean> {
+	return (await insert('law_votes', { choice })) !== undefined;
+}
+
+/** Shares keyed by the Thai choice labels that were stored, from the rows `groupby` counted */
+async function shares(table: string, query: string): Promise<Results | undefined> {
+	const res = await call(table, `/groupby?column_name=choice${query}&limit=50`);
 	if (!res) return undefined;
 	try {
 		const data = (await res.json()) as { list?: { choice?: string; count?: string | number }[] };
@@ -77,6 +81,11 @@ export async function loadResults(pollId: string): Promise<Results | undefined> 
 		return undefined;
 	}
 }
+
+export const loadResults = (pollId: string) =>
+	shares('poll_votes', `&where=${encodeURIComponent(`(poll_id,eq,${pollId})`)}`);
+
+export const loadLawResults = () => shares('law_votes', '');
 
 export async function sendSurvey(answers: SurveyAnswers): Promise<boolean> {
 	return (await insert('survey_responses', answers)) !== undefined;

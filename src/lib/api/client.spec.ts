@@ -23,6 +23,8 @@ describe('without a token', () => {
 		expect(api.backendConfigured).toBe(false);
 		expect(await api.sendVote(KAREN, 'เคยได้ยินมา')).toBe(false);
 		expect(await api.loadResults('karen')).toBeUndefined();
+		expect(await api.sendLawVote('ดีเลย')).toBe(false);
+		expect(await api.loadLawResults()).toBeUndefined();
 		expect(await api.sendSurvey({ age: '18-35 ปี' })).toBe(false);
 		expect(fetchMock).not.toHaveBeenCalled();
 	});
@@ -55,6 +57,31 @@ describe('with a token', () => {
 		expect((fetchMock.mock.calls[0][1]?.headers as Record<string, string>)['xc-token']).toBe(
 			'tok123'
 		);
+	});
+
+	it('keeps the KP3 poll in its own table, with just the choice and the time', async () => {
+		const { api, fetchMock } = await load('tok123');
+		expect(await api.sendLawVote('ดีเลย')).toBe(true);
+		expect(fetchMock.mock.calls[0][0]).toBe(`${TABLES}/law_votes`);
+		const row = JSON.parse(fetchMock.mock.calls[0][1]?.body as string);
+		expect(Object.keys(row).sort()).toEqual(['CreatedAt', 'choice']);
+		expect(row.choice).toBe('ดีเลย');
+	});
+
+	it('counts the KP3 votes from law_votes, with no poll filter', async () => {
+		const rows = {
+			list: [
+				{ count: '3', choice: 'ดีเลย' },
+				{ count: '1', choice: 'ไม่เห็นด้วย' }
+			]
+		};
+		const { api, fetchMock } = await load('tok123', async () => Response.json(rows));
+		expect(await api.loadLawResults()).toEqual({
+			total: 4,
+			percent: { ดีเลย: 75, ไม่เห็นด้วย: 25 }
+		});
+		const url = String(fetchMock.mock.calls[0][0]);
+		expect(url).toBe(`${TABLES}/law_votes/groupby?column_name=choice&limit=50`);
 	});
 
 	it('adds a survey row to survey_responses, with the time', async () => {
@@ -91,6 +118,8 @@ describe('with a token', () => {
 		const failing = await load('tok123', async () => new Response('no', { status: 403 }));
 		expect(await failing.api.sendVote(KAREN, 'เคยได้ยินมา')).toBe(false);
 		expect(await failing.api.loadResults('karen')).toBeUndefined();
+		expect(await failing.api.sendLawVote('ดีเลย')).toBe(false);
+		expect(await failing.api.loadLawResults()).toBeUndefined();
 		expect(await failing.api.sendSurvey({ age: '18-35 ปี' })).toBe(false);
 
 		const offline = await load('tok123', async () => {
