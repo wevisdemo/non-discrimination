@@ -10,9 +10,9 @@ export type SurveyAnswers = {
 };
 
 /**
- * Where survey answers go: the API in /worker when VITE_API_URL is set (then NocoDB, for สำนักงาน
- * กสม.), otherwise nowhere, and the browser only remembers that this visitor answered. Either way
- * the answers are sent once.
+ * Where survey answers go: NocoDB (for สำนักงาน กสม.) when the build has a token
+ * (VITE_NOCODB_TOKEN), otherwise nowhere, and the browser only remembers that this visitor
+ * answered. Either way the answers are sent once.
  */
 export interface SurveyStore {
 	submitted(): boolean;

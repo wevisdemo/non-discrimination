@@ -30,7 +30,7 @@
 		{ id: 'never', label: 'ไม่เคยเจอ/เห็น/ได้ยิน', icon: cross, inset: '15% 15% 15% 15%' }
 	];
 
-	// MOCKUP: placeholder shares (sum 100), shown only while there is no backend (VITE_API_URL)
+	// MOCKUP: placeholder shares (sum 100), shown only while there is no NocoDB token (VITE_NOCODB_TOKEN)
 	const mock: Results = {
 		total: 0,
 		percent: { experienced: 41.2, witnessed: 27.6, heard: 18.5, never: 12.7 }

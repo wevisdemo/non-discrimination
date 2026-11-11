@@ -1,56 +1,71 @@
 /**
- * The site's side of the polls/survey API (the Cloudflare Worker in /worker). The address is a
- * build-time variable, `VITE_API_URL`; when it is not set there is no backend: polls show
- * placeholder shares and the survey only remembers that it was answered in the browser.
+ * The polls and the Result survey talk to NocoDB (sheets.wevis.info) straight from the browser.
+ * The token is a build-time variable, `VITE_NOCODB_TOKEN` (the `NOCODB_TOKEN` Actions secret in the
+ * deploy workflow), so it ends up in the published JavaScript and anyone can read it: use a token
+ * from a NocoDB account that is an Editor on this base only (see architecture.md §9).
  *
- * Every call resolves, never throws: a visitor must be able to use the page when the API is down.
+ * When there is no token there is no backend: polls show placeholder shares and the survey only
+ * remembers that it was answered in the browser.
+ *
+ * Every call resolves, never throws: a visitor must be able to use the page when NocoDB is down.
  */
 import type { SurveyAnswers } from '#lib/state/survey.ts';
 
-const BASE = String(import.meta.env.VITE_API_URL ?? '').replace(/\/+$/, '');
+const TOKEN = String(import.meta.env.VITE_NOCODB_TOKEN ?? '').replace(/^['"]|['"]$/g, '');
+const URL_BASE = String(import.meta.env.VITE_NOCODB_URL ?? 'https://sheets.wevis.info').replace(
+	/\/+$/,
+	''
+);
+const BASE_ID = String(import.meta.env.VITE_NOCODB_BASE ?? 'pjcgtwxsuwfob3r');
 
-export const backendConfigured = BASE !== '';
+export const backendConfigured = TOKEN !== '';
 
 /** The share of each choice, in percent with one decimal, and how many votes that is out of */
 export type Results = { total: number; percent: Record<string, number> };
 
 const TIMEOUT_MS = 8000;
 
-async function call(path: string, init?: RequestInit): Promise<Response | undefined> {
+async function call(table: string, suffix = '', init: RequestInit = {}) {
 	if (!backendConfigured) return undefined;
 	try {
-		const res = await fetch(`${BASE}${path}`, { ...init, signal: AbortSignal.timeout(TIMEOUT_MS) });
+		const res = await fetch(`${URL_BASE}/api/v1/db/data/noco/${BASE_ID}/${table}${suffix}`, {
+			...init,
+			headers: { 'xc-token': TOKEN, 'Content-Type': 'application/json' },
+			signal: AbortSignal.timeout(TIMEOUT_MS)
+		});
 		return res.ok ? res : undefined;
 	} catch {
 		return undefined;
 	}
 }
 
-const post = (path: string, body: unknown) =>
-	call(path, {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify(body)
-	});
+const insert = (table: string, row: Record<string, unknown>) =>
+	call(table, '', { method: 'POST', body: JSON.stringify(row) });
 
 export async function sendVote(poll: string, choice: string): Promise<boolean> {
-	return (await post('/votes', { poll, choice })) !== undefined;
+	return (await insert('poll_votes', { poll, choice })) !== undefined;
 }
 
 export async function loadResults(poll: string): Promise<Results | undefined> {
-	const res = await call(`/results?poll=${encodeURIComponent(poll)}`);
+	const where = encodeURIComponent(`(poll,eq,${poll})`);
+	const res = await call('poll_votes', `/groupby?column_name=choice&where=${where}&limit=50`);
 	if (!res) return undefined;
 	try {
-		const data = (await res.json()) as Partial<Results>;
-		if (typeof data.total !== 'number' || !data.percent || typeof data.percent !== 'object') {
-			return undefined;
-		}
-		return { total: data.total, percent: data.percent };
+		const data = (await res.json()) as { list?: { choice?: string; count?: string | number }[] };
+		const counts = (data.list ?? []).filter((row) => row.choice);
+		const total = counts.reduce((sum, row) => sum + (Number(row.count) || 0), 0);
+		const percent = Object.fromEntries(
+			counts.map((row) => [
+				row.choice as string,
+				total ? Math.round(((Number(row.count) || 0) / total) * 1000) / 10 : 0
+			])
+		);
+		return { total, percent };
 	} catch {
 		return undefined;
 	}
 }
 
 export async function sendSurvey(answers: SurveyAnswers): Promise<boolean> {
-	return (await post('/survey', answers)) !== undefined;
+	return (await insert('survey_responses', answers)) !== undefined;
 }

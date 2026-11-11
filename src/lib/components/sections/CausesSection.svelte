@@ -31,7 +31,7 @@
 		}
 	];
 
-	// MOCKUP: placeholder shares (sum 100), shown only while there is no backend (VITE_API_URL)
+	// MOCKUP: placeholder shares (sum 100), shown only while there is no NocoDB token (VITE_NOCODB_TOKEN)
 	const mock: Results = { total: 0, percent: { agree: 71.8, unnecessary: 17.5, disagree: 10.7 } };
 
 	const store = new LocalPollStore('non-discrimination:law-poll', LAW_CHOICES);
