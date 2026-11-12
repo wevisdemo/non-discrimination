@@ -20,6 +20,11 @@ export const introBubbles: {
 	variant: BubbleVariant;
 	text: string;
 	offset: { x: number; y: number };
+	/**
+	 * Drawn at this scale in its own close-up. The close-ups zoom the map by different amounts and a
+	 * bubble's text scales with the map, so a close-up with a deeper zoom would show bigger text.
+	 */
+	closeUpScale?: number;
 }[] = [
 	{
 		slug: 'gender-promotion',
@@ -31,7 +36,10 @@ export const introBubbles: {
 		slug: 'ex-con-job',
 		variant: 'yellow',
 		text: 'มีคนไม่ถูกรับเข้า\nทำงานเพราะมี\nประวัติอาชญากรรม',
-		offset: { x: -30, y: 150 }
+		offset: { x: -30, y: 150 },
+		// Its close-up is the deepest (2.3), so its text would read bigger than the other two (1.95
+		// and 2.1): scaled to match their average
+		closeUpScale: (introGender.zoom + introHiv.zoom) / 2 / introExCon.zoom
 	},
 	{
 		slug: 'hiv-test-job',

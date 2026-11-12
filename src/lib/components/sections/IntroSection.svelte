@@ -33,11 +33,14 @@
 				{#each introBubbles as bubble (bubble.slug)}
 					<IntroBubble
 						variant={bubble.variant}
-						class="absolute transition-opacity duration-700 {active === bubble.slug ||
-						active === 'bubbles-all'
+						class="absolute origin-top transition-[opacity,transform] duration-700 {active ===
+							bubble.slug || active === 'bubbles-all'
 							? ''
 							: 'opacity-0'}"
-						style={pinTo(bubble.slug, bubble.offset)}>{bubble.text}</IntroBubble
+						style="{pinTo(bubble.slug, bubble.offset)};{active === bubble.slug &&
+						bubble.closeUpScale
+							? `transform:scale(${bubble.closeUpScale})`
+							: ''}">{bubble.text}</IntroBubble
 					>
 				{/each}
 			</div>
