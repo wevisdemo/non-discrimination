@@ -138,42 +138,47 @@
 	</div>
 {/snippet}
 
-<div
-	bind:this={popover}
-	role="dialog"
-	aria-modal="true"
-	aria-labelledby="tutorial-title"
-	class="z-[3] flex flex-col gap-m rounded-card bg-surface px-m drop-shadow-[4px_4px_2px_rgba(0,0,0,0.25)] {tip
-		? 'fixed w-[400px] max-w-[calc(100vw-32px)] pt-s pb-m'
-		: 'absolute top-[calc(50%-22px)] left-1/2 -translate-1/2 pb-m ' +
-			(step === 0 ? 'w-[278px] pt-m' : 'w-[400px] max-w-[calc(100vw-32px)] pt-l')}"
-	style={tip ? place.box : undefined}
->
-	{#if step === 0}
-		<p id="tutorial-title" class="text-b5 text-primary">
-			มาดูกันว่าปุ่มต่าง ๆ ในส่วนนี้ทำอะไรได้บ้าง
-		</p>
-		{@render nav(false, 'ถัดไป')}
-	{:else if tip}
-		<p class="text-b6 text-[#767676]">{step}/{tips.length}</p>
-		<div class="flex flex-col gap-xs text-b5 text-primary">
-			<h3 id="tutorial-title" class="font-body font-bold text-primary">{tip.title}</h3>
-			<p>{tip.body}</p>
-		</div>
-		{@render nav(true, 'ถัดไป')}
-	{:else}
-		<h3 id="tutorial-title" class="sr-only">วิธีสำรวจ</h3>
-		<ul class="flex flex-col gap-xs text-b5 text-primary">
-			<li class="flex items-center gap-xxs">
-				<img src={zoomPan} alt="" width="16" height="16" />เลื่อนและซูม เพื่อสำรวจ
-			</li>
-			<li class="flex items-center gap-xxs">
-				<img src={cursor} alt="" width="16" height="16" />คลิกเพื่อดูรายละเอียดเหตุการณ์
-			</li>
-		</ul>
-		{@render nav(true, 'เริ่มสำรวจ!')}
-	{/if}
-</div>
+<!-- A box of its own for every step: the first sits in the middle by a transform and the others
+     beside their buttons, and Safari on iPad left the first one's shadow painted where it had been
+     when the same element moved from one to the other -->
+{#key step}
+	<div
+		bind:this={popover}
+		role="dialog"
+		aria-modal="true"
+		aria-labelledby="tutorial-title"
+		class="z-[3] flex flex-col gap-m rounded-card bg-surface px-m shadow-[4px_4px_4px_rgba(0,0,0,0.25)] {tip
+			? 'fixed w-[400px] max-w-[calc(100vw-32px)] pt-s pb-m'
+			: 'absolute top-[calc(50%-22px)] left-1/2 -translate-1/2 pb-m ' +
+				(step === 0 ? 'w-[278px] pt-m' : 'w-[400px] max-w-[calc(100vw-32px)] pt-l')}"
+		style={tip ? place.box : undefined}
+	>
+		{#if step === 0}
+			<p id="tutorial-title" class="text-b5 text-primary">
+				มาดูกันว่าปุ่มต่าง ๆ ในส่วนนี้ทำอะไรได้บ้าง
+			</p>
+			{@render nav(false, 'ถัดไป')}
+		{:else if tip}
+			<p class="text-b6 text-[#767676]">{step}/{tips.length}</p>
+			<div class="flex flex-col gap-xs text-b5 text-primary">
+				<h3 id="tutorial-title" class="font-body font-bold text-primary">{tip.title}</h3>
+				<p>{tip.body}</p>
+			</div>
+			{@render nav(true, 'ถัดไป')}
+		{:else}
+			<h3 id="tutorial-title" class="sr-only">วิธีสำรวจ</h3>
+			<ul class="flex flex-col gap-xs text-b5 text-primary">
+				<li class="flex items-center gap-xxs">
+					<img src={zoomPan} alt="" width="16" height="16" />เลื่อนและซูม เพื่อสำรวจ
+				</li>
+				<li class="flex items-center gap-xxs">
+					<img src={cursor} alt="" width="16" height="16" />คลิกเพื่อดูรายละเอียดเหตุการณ์
+				</li>
+			</ul>
+			{@render nav(true, 'เริ่มสำรวจ!')}
+		{/if}
+	</div>
+{/key}
 
 {#if tip && place.arrow}
 	<img

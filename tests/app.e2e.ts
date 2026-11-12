@@ -213,6 +213,27 @@ test('แนะนำการสำรวจ opens the map with a four-step tut
 	await expect(page.getByRole('button', { name: 'ถัดไป' })).toHaveCount(0);
 });
 
+test('each tutorial step is a box of its own, with a box-shadow and no filter', async ({
+	page
+}) => {
+	// Safari on iPad left the first box's shadow painted when one element moved between steps;
+	// that came from a filter drop-shadow on an element that changed how it is positioned
+	await page.goto('/#explore-tutorial');
+	const box = page.locator('[role="dialog"][aria-labelledby="tutorial-title"]');
+	for (let step = 0; step <= 4; step++) {
+		await expect(box).toHaveCount(1);
+		await expect(box).toHaveCSS('filter', 'none');
+		await expect(box).not.toHaveCSS('box-shadow', 'none');
+		// Mark this step's box; the next step must not be the same element
+		await box.evaluate((el) => (el.dataset.step = 'seen'));
+		// The primary button has the focus, step after step
+		await expect(box.locator('[data-primary]')).toBeFocused();
+		if (step === 4) break;
+		await page.getByRole('button', { name: 'ถัดไป' }).click();
+		await expect(box).not.toHaveAttribute('data-step', 'seen');
+	}
+});
+
 test('the tutorial can be skipped', async ({ page }) => {
 	await page.goto('/#explore-tutorial');
 	await page.getByRole('button', { name: 'ข้าม', exact: true }).click();
