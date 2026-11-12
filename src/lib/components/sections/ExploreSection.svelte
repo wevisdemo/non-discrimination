@@ -15,9 +15,11 @@
 	import { cases, getCase } from '#lib/content/index.ts';
 	import { explore } from '#lib/state/explore.svelte.ts';
 	import { Game } from '#lib/state/game.svelte.ts';
-	import { LocalProgressStore } from '#lib/state/progress.ts';
+	import { MemoryProgressStore } from '#lib/state/progress.ts';
 
-	const game = new Game(cases, new LocalProgressStore());
+	// Found cases (the check marks and the counter) last for the visit: a refresh starts the search
+	// again. They are not saved in the browser
+	const game = new Game(cases, new MemoryProgressStore());
 	let reading = $state(false);
 	onMount(() => game.restore());
 

@@ -1,35 +1,14 @@
 /**
- * Where player progress is persisted. Only the browser implementation exists today;
- * a backend-backed store can implement the same interface later without UI changes.
+ * Where the cases a player has found are kept. They are only kept in memory, for the visit: the
+ * check marks are gone after a refresh, so the search can be played again. A store that persists
+ * them (the browser, or a backend) can implement the same interface without UI changes.
  */
 export interface ProgressStore {
 	load(): string[];
 	save(foundSlugs: string[]): void;
 }
 
-const KEY = 'non-discrimination:found';
-
-export class LocalProgressStore implements ProgressStore {
-	load(): string[] {
-		try {
-			const raw = localStorage.getItem(KEY);
-			const parsed: unknown = raw ? JSON.parse(raw) : [];
-			return Array.isArray(parsed) ? parsed.filter((s) => typeof s === 'string') : [];
-		} catch {
-			// Private mode, blocked storage or corrupt data: start fresh.
-			return [];
-		}
-	}
-
-	save(foundSlugs: string[]): void {
-		try {
-			localStorage.setItem(KEY, JSON.stringify(foundSlugs));
-		} catch {
-			// Progress is a convenience; losing it must not break the game.
-		}
-	}
-}
-
+/** Kept in memory only: gone with the page */
 export class MemoryProgressStore implements ProgressStore {
 	#found: string[] = [];
 	load() {
