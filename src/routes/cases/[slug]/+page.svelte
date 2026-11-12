@@ -8,8 +8,6 @@
 
 <svelte:head>
 	<title>{data.item.titleTh} · ไม่เลือกปฏิบัติ</title>
-	<meta property="og:title" content={data.item.titleTh} />
-	<meta property="og:description" content={data.item.summaryTh} />
 </svelte:head>
 
 <div class="mx-auto flex w-full max-w-[640px] flex-col gap-xl px-m pt-xxl pb-xl">

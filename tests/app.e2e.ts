@@ -448,6 +448,46 @@ test('map controls: reveal, hints drawer and exit', async ({ page }) => {
 	await expect(page).toHaveURL(/#explore-intro$/);
 });
 
+test('every page declares its icons and a share image, and they all load', async ({ page }) => {
+	for (const path of ['/', '/cases/karen/', '/definition/age/']) {
+		await page.goto(path);
+		const icons = await page
+			.locator('link[rel="icon"], link[rel="apple-touch-icon"]')
+			.evaluateAll((els) => els.map((el) => (el as HTMLLinkElement).href));
+		expect(icons, path).toHaveLength(3);
+		for (const href of icons) expect((await page.request.get(href)).ok(), href).toBe(true);
+
+		// The share image is an absolute address on the published site (a link preview cannot use a
+		// relative one), 1200 by 630 px as in Figma
+		const image = await page.locator('meta[property="og:image"]').getAttribute('content');
+		expect(image, path).toMatch(/^https:\/\/wevisdemo\.github\.io\/(.*\/)?og-image\.png$/);
+		await expect(page.locator('meta[name="twitter:image"]')).toHaveAttribute('content', image!);
+		await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
+			'content',
+			'summary_large_image'
+		);
+		await expect(page.locator('meta[property="og:image:width"]')).toHaveAttribute(
+			'content',
+			'1200'
+		);
+		// One title, once: a case page shares as that case, the others as the site
+		await expect(page.locator('meta[property="og:title"]')).toHaveCount(1);
+		await expect(page.locator('meta[property="og:description"]')).toHaveCount(1);
+		await expect(page.locator('meta[property="og:title"]')).toHaveAttribute(
+			'content',
+			path === '/cases/karen/' ? 'ผู้ต้องขังชาวกะเหรี่ยงถูกบังคับตัดผม' : /Spot the Discrimination/
+		);
+
+		// Fetch it from the local server (same file name, without the published origin)
+		const res = await page.request.get(
+			new URL(image!).pathname.replace(/^.*\/(?=og-image\.png)/, '/')
+		);
+		expect(res.headers()['content-type']).toBe('image/png');
+		const png = await res.body();
+		expect([png.readUInt32BE(16), png.readUInt32BE(20)]).toEqual([1200, 630]);
+	}
+});
+
 test('case and definition pages are prerendered', async ({ page }) => {
 	await page.goto('/cases/hijab-school/');
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText(
