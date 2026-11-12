@@ -68,13 +68,17 @@
 					<h2 class="font-body text-b4 font-bold">
 						สืบหา {cases.length} การเลือกปฏิบัติ<span class="whitespace-nowrap">ที่ซ่อนอยู่</span>
 					</h2>
-					<!-- Line breaks as in Figma: three lines on tablet and up; phones wrap on their own -->
-					<p class="text-b6 sm:whitespace-nowrap">
+					<!-- Evenly filled lines, broken between phrases and never inside one: `text-balance` evens
+					     the lines out, and each phrase is kept whole -->
+					<p class="text-b6 text-balance">
 						<strong class="block">วิธีเล่น:</strong>
-						เลื่อนและขยายภาพเมืองเพื่อค้นหาการเลือกปฏิบัติที่ซ่อน<br class="max-sm:hidden" />อยู่ {cases.length}
-						จุด <br class="sm:hidden" />ภาพการเลือกปฏิบัติ<br
-							class="max-sm:hidden"
-						/>จะสามารถกดเพื่ออ่านรายละเอียดได้
+						<span class="inline-block">เลื่อนและขยายภาพเมือง</span>
+						<span class="inline-block">เพื่อค้นหา</span>
+						<span class="inline-block">การเลือกปฏิบัติ</span>
+						<span class="inline-block">ที่ซ่อนอยู่ {cases.length} จุด</span>
+						<span class="inline-block">ภาพการเลือกปฏิบัติ</span>
+						<span class="inline-block">จะสามารถกด</span>
+						<span class="inline-block">เพื่ออ่านรายละเอียดได้</span>
 					</p>
 					<Button href="#explore">สำรวจเลย !</Button>
 					<!-- Opens the map with the tutorial over it (Figma "kp2-tutorial") -->

@@ -368,6 +368,26 @@ test("the survey's province field can be searched by typing", async ({ page }) =
 	await expect(province).toHaveValue('ภูเก็ต');
 });
 
+test('the how-to-play text breaks between phrases, never inside one', async ({ page }) => {
+	for (const width of [360, 412, 1280]) {
+		await page.setViewportSize({ width, height: 800 });
+		await page.goto('/');
+		await page.locator('[data-step="mission"]').scrollIntoViewIfNeeded();
+		const phrases = page.locator('#definition p span.inline-block');
+		await expect(phrases.first()).toBeVisible();
+		// Each phrase is on one line: a phrase that wrapped would have several boxes stacked
+		const wrapped = await phrases.evaluateAll((els) =>
+			els.filter((el) => el.getClientRects().length > 1 || el.getBoundingClientRect().height > 24)
+		);
+		expect(wrapped, `${width}px`).toHaveLength(0);
+		// And it stays short: no more than four lines
+		const tops = await phrases.evaluateAll((els) => [
+			...new Set(els.map((el) => Math.round(el.getBoundingClientRect().top / 4)))
+		]);
+		expect(tops.length, `${width}px`).toBeLessThanOrEqual(4);
+	}
+});
+
 test('in the Result the contact box reads at the size of the text under it', async ({ page }) => {
 	await page.goto('/#summary');
 	const size = (text: string) =>
