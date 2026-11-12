@@ -69,7 +69,7 @@
 
 	<div class="flex flex-col items-center gap-l bg-surface px-m py-xl">
 		<div class="flex w-full max-w-[600px] flex-col gap-m">
-			<ReportingChannels headingLevel={2} />
+			<ReportingChannels headingLevel={2} large />
 			<p class="text-center text-b5 text-primary">
 				หรือเรียนรู้เพิ่มเติมเรื่องสิทธิมนุษยชน<br />ที่เว็บไซต์อย่างเป็นทางการของสำนักงาน กสม.
 			</p>

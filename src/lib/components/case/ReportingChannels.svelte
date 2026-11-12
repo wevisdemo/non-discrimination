@@ -5,7 +5,14 @@
 	import web from '#lib/assets/kp2/web.svg';
 	import { reportingChannels as c } from '#lib/content/index.ts';
 
-	let { headingLevel = 3 }: { headingLevel?: 2 | 3 } = $props();
+	let {
+		headingLevel = 3,
+		large = false
+	}: {
+		headingLevel?: 2 | 3;
+		/** The opening line at 16px, as the text under the box in the Result, instead of 14px */
+		large?: boolean;
+	} = $props();
 
 	const row =
 		'flex w-full flex-wrap items-center gap-s rounded-sm border border-primary p-s text-b6';
@@ -17,7 +24,7 @@
 <!-- Figma "Contact": the same for every case -->
 <section class="flex w-full flex-col gap-m text-center">
 	<div class="flex flex-col gap-xxs text-primary">
-		<p class="text-b6">หากมีเรื่องร้องเรียนด้านสิทธิมนุษยชน สามารถติดต่อ</p>
+		<p class={large ? 'text-b5' : 'text-b6'}>หากมีเรื่องร้องเรียนด้านสิทธิมนุษยชน สามารถติดต่อ</p>
 		<svelte:element this={`h${headingLevel}`} class="text-b5 font-bold text-primary">
 			{c.officeFull}
 		</svelte:element>

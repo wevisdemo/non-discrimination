@@ -368,6 +368,20 @@ test("the survey's province field can be searched by typing", async ({ page }) =
 	await expect(province).toHaveValue('ภูเก็ต');
 });
 
+test('in the Result the contact box reads at the size of the text under it', async ({ page }) => {
+	await page.goto('/#summary');
+	const size = (text: string) =>
+		page
+			.locator('#summary')
+			.getByText(text)
+			.first()
+			.evaluate((el) => getComputedStyle(el).fontSize);
+	const below = await size('หรือเรียนรู้เพิ่มเติมเรื่องสิทธิมนุษยชน');
+	expect(below).toBe('16px');
+	expect(await size('หากมีเรื่องร้องเรียนด้านสิทธิมนุษยชน')).toBe(below);
+	expect(await size('สำนักงานคณะกรรมการสิทธิมนุษยชนแห่งชาติ (สำนักงาน กสม.)')).toBe(below);
+});
+
 test('the กสม. Facebook page is linked from the contact box, on a case and in the Result', async ({
 	page
 }) => {
