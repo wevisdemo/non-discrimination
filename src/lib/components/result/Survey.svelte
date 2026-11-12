@@ -114,7 +114,7 @@
 								aria-label="เปิดรายชื่อจังหวัด"
 								class="absolute inset-y-0 right-m flex items-center"
 							>
-								<img src={chevron} alt="" width="22" height="22" class="mix-blend-multiply" />
+								<img src={chevron} alt="" width="22" height="22" />
 							</Combobox.Trigger>
 						</div>
 						<Combobox.Portal>
@@ -148,7 +148,7 @@
 							class="flex w-full items-center justify-between gap-s rounded-card bg-ui-secondary py-s pr-m pl-m text-left text-b5 text-body disabled:bg-[#d9d9d9]"
 						>
 							{answers[field.key] ?? field.placeholder}
-							<img src={chevron} alt="" width="22" height="22" class="mix-blend-multiply" />
+							<img src={chevron} alt="" width="22" height="22" />
 						</Select.Trigger>
 						<Select.Portal>
 							<!-- Figma "Survey" Dropdown state and "Dropdown_item": a white card of options split by blue

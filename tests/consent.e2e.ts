@@ -71,7 +71,8 @@ test("a visitor who accepted and later declines has the site's cookies removed",
 	await page.evaluate(() => localStorage.setItem('cookieSetting', '{"Functionality":false}'));
 	await page.reload();
 	await expect(page.getByRole('button', { name: 'เคยเห็นกับตา' })).toBeVisible();
-	expect(await ourCookies(page)).toEqual([]);
+	// The banner reports the saved answer once the page has hydrated, which is when they go
+	await expect.poll(() => ourCookies(page)).toEqual([]);
 });
 
 test('the banner has no accessibility violations', async ({ page }) => {
