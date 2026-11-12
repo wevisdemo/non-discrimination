@@ -178,7 +178,7 @@
 			{#each SATISFACTION as level, i (level.score)}
 				<button
 					type="button"
-					class="size-10 rounded-full enabled:not-aria-pressed:hover:bg-ui-primary-hover disabled:not-aria-pressed:bg-[#d9d9d9] disabled:not-aria-pressed:grayscale aria-pressed:bg-accent"
+					class="size-10 rounded-full bg-ui-secondary enabled:not-aria-pressed:hover:bg-ui-primary-hover disabled:not-aria-pressed:bg-[#d9d9d9] disabled:not-aria-pressed:grayscale aria-pressed:bg-accent"
 					aria-pressed={answers.satisfaction === level.score}
 					aria-label={level.label}
 					onclick={() => {
