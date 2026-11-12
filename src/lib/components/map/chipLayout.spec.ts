@@ -87,7 +87,12 @@ describe('layoutChips', () => {
 });
 
 describe('the cases that ask for their tags above', () => {
-	it('is the case with two causes, whose tags would crowd its neighbours', () => {
-		expect(cases.filter((c) => c.tagsAbove).map((c) => c.slug)).toEqual(['katoey-police']);
+	it('are three: the case with two causes, and two whose tags ran into the buttons at the bottom of a phone', () => {
+		expect(
+			cases
+				.filter((c) => c.tagsAbove)
+				.map((c) => c.slug)
+				.sort()
+		).toEqual(['elderly-mobile-banking', 'katoey-police', 'social-security']);
 	});
 });

@@ -121,6 +121,26 @@ test('opening a case updates the URL, counts it as found, and back closes it', a
 	await expect(page.locator('#explore button[aria-label$="(พบแล้ว)"] svg')).toHaveCount(1);
 });
 
+test('a case off screen can be opened without the map slipping off its edges', async ({ page }) => {
+	await page.setViewportSize({ width: 412, height: 917 });
+	await page.goto('/#explore');
+	// Focusing a hotspot that is off screen makes the browser scroll the clipped map box to it
+	await page.locator('#explore button[aria-label*="Mobile Banking"]').click();
+	await expect(page).toHaveURL(/\/cases\//);
+	await page.waitForTimeout(1000);
+	const gaps = await page.evaluate(() => {
+		const map = [...document.querySelectorAll<HTMLElement>('#explore *')].find((e) =>
+			/scale\(/.test(e.style.transform)
+		)!;
+		const box = map.parentElement!;
+		const [c, r] = [box.getBoundingClientRect(), map.getBoundingClientRect()];
+		return { scroll: box.scrollTop + box.scrollLeft, gaps: [r.top - c.top, c.bottom - r.bottom] };
+	});
+	expect(gaps.scroll).toBe(0);
+	// The map still covers the screen: no white band at the bottom (or top)
+	for (const gap of gaps.gaps) expect(gap).toBeLessThanOrEqual(0);
+});
+
 test('found cases last for the visit, and a refresh starts the search again', async ({ page }) => {
 	// Progress an earlier version saved in the browser is not read any more
 	await page.addInitScript(() =>

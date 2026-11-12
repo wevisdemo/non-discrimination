@@ -141,6 +141,13 @@
 		const onWheel = (e: WheelEvent) => {
 			if (e.ctrlKey || e.metaKey) pz?.zoomWithWheel(e);
 		};
+		// The browser scrolls this clipped box to bring a focused hotspot into view (Tab, or a click on
+		// one off screen), which drags the map off its edges and leaves a white band. Panzoom does all the
+		// moving, so the box itself never scrolls.
+		const onScroll = () => {
+			if (parent.scrollLeft || parent.scrollTop) parent.scrollTo(0, 0);
+		};
+		parent.addEventListener('scroll', onScroll);
 		let destroyed = false;
 
 		// Client-only and lazy: the package is CJS (breaks SSR) and the map works without it.
@@ -164,6 +171,7 @@
 			destroyed = true;
 			cancelAnimationFrame(frame);
 			parent.removeEventListener('wheel', onWheel);
+			parent.removeEventListener('scroll', onScroll);
 			pz?.destroy();
 		};
 	}

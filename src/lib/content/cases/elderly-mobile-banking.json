@@ -8,6 +8,7 @@
 	"formsTh": ["เชิงโครงสร้าง"],
 	"perpetratorTh": "ธนาคารพาณิชย์แห่งหนึ่ง",
 	"affectedTh": "ผู้สูงอายุเกิน 70 ปี",
+	"tagsAbove": true,
 	"hotspot": {
 		"x": 2084,
 		"y": 2869,
