@@ -314,7 +314,8 @@ test('the Result survey can be answered once', async ({ page }) => {
 
 	await page.reload();
 	await expect(page.getByText('ขอบคุณสำหรับคำตอบ')).toBeVisible();
-	await expect(page.getByRole('button', { name: 'ส่งคำตอบ' })).toHaveCount(0);
+	// The button stays, greyed out, and cannot send it a second time
+	await expect(survey.getByRole('button', { name: 'ส่งคำตอบ' })).toBeDisabled();
 	// What was chosen is still shown, locked
 	await expect(survey.getByRole('button', { name: 'อายุ' })).toHaveText('18-35 ปี');
 	await expect(survey.getByRole('combobox', { name: 'จังหวัด' })).toHaveValue('เชียงใหม่');

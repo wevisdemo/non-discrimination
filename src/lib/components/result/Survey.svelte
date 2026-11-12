@@ -108,11 +108,11 @@
 								}}
 								onfocus={() => (provinceOpen = true)}
 								onclick={() => (provinceOpen = true)}
-								class="w-full rounded-card bg-ui-secondary py-s pr-[52px] pl-m text-left text-b5 text-body placeholder:text-body disabled:opacity-60"
+								class="w-full rounded-card bg-ui-secondary py-s pr-[52px] pl-m text-left text-b5 text-body placeholder:text-body disabled:bg-[#d9d9d9]"
 							/>
 							<Combobox.Trigger
 								aria-label="เปิดรายชื่อจังหวัด"
-								class="absolute inset-y-0 right-m flex items-center disabled:opacity-60"
+								class="absolute inset-y-0 right-m flex items-center"
 							>
 								<img src={chevron} alt="" width="22" height="22" class="mix-blend-multiply" />
 							</Combobox.Trigger>
@@ -145,7 +145,7 @@
 					>
 						<Select.Trigger
 							aria-labelledby="survey-{field.key}"
-							class="flex w-full items-center justify-between gap-s rounded-card bg-ui-secondary py-s pr-m pl-m text-left text-b5 text-body disabled:opacity-60"
+							class="flex w-full items-center justify-between gap-s rounded-card bg-ui-secondary py-s pr-m pl-m text-left text-b5 text-body disabled:bg-[#d9d9d9]"
 						>
 							{answers[field.key] ?? field.placeholder}
 							<img src={chevron} alt="" width="22" height="22" class="mix-blend-multiply" />
@@ -178,7 +178,7 @@
 			{#each SATISFACTION as level, i (level.score)}
 				<button
 					type="button"
-					class="size-10 rounded-full not-aria-pressed:hover:bg-ui-primary-hover aria-pressed:bg-accent"
+					class="size-10 rounded-full enabled:not-aria-pressed:hover:bg-ui-primary-hover disabled:not-aria-pressed:bg-[#d9d9d9] disabled:not-aria-pressed:grayscale aria-pressed:bg-accent"
 					aria-pressed={answers.satisfaction === level.score}
 					aria-label={level.label}
 					onclick={() => {
@@ -191,20 +191,32 @@
 			{/each}
 		</div>
 	</fieldset>
+	<!-- Figma "Survey" Submitted: the button stays but greys out, with a blue thank-you under it -->
+	<button
+		type="submit"
+		disabled={sending || done}
+		class="rounded-full bg-ui-primary px-m py-s text-b5 text-ink enabled:hover:bg-ui-primary-hover disabled:bg-[#d9d9d9] disabled:text-[#767676]"
+		>ส่งคำตอบ</button
+	>
+	{#if failed}
+		<p class="text-b6 text-ink" role="alert">ส่งคำตอบไม่สำเร็จ กรุณาลองอีกครั้ง</p>
+	{/if}
 	{#if done}
-		<p class="rounded-full bg-ui-primary px-m py-s text-b5 text-ink" aria-live="polite">
+		<p
+			class="flex items-center gap-xs rounded-full bg-primary px-m py-s text-b5 text-white"
+			aria-live="polite"
+		>
+			<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+				<path
+					d="M3 8.5l3.2 3.2L13 4.8"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				/>
+			</svg>
 			ขอบคุณสำหรับคำตอบ
 		</p>
-	{:else}
-		<button
-			type="submit"
-			disabled={sending}
-			class="rounded-full bg-ui-primary px-m py-s text-b5 text-ink hover:bg-ui-primary-hover disabled:opacity-60"
-			>ส่งคำตอบ</button
-		>
-		{#if failed}
-			<p class="text-b6 text-ink" role="alert">ส่งคำตอบไม่สำเร็จ กรุณาลองอีกครั้ง</p>
-		{/if}
 	{/if}
 	<p class="text-[12px] leading-normal text-body">
 		แบบสอบถามนี้ไม่มีการเก็บข้อมูลที่ระบุตัวบุคคล<br
