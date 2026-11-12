@@ -367,6 +367,20 @@ test("the survey's province field can be searched by typing", async ({ page }) =
 	await expect(province).toHaveValue('ภูเก็ต');
 });
 
+test('the กสม. Facebook page is linked from the contact box, on a case and in the Result', async ({
+	page
+}) => {
+	// Its icon says it opens in a new tab, which is part of the link's name
+	const name = 'สำนักงานคณะกรรมการสิทธิมนุษยชนแห่งชาติ (เปิดในแท็บใหม่)';
+	for (const path of ['/cases/karen/', '/#summary']) {
+		await page.goto(path);
+		const link = page.getByRole('link', { name }).first();
+		await expect(link, path).toHaveAttribute('href', 'https://www.facebook.com/nhrct?locale=th_TH');
+		await expect(link, path).toHaveAttribute('target', '_blank');
+		await expect(link, path).toHaveAttribute('rel', /noopener/);
+	}
+});
+
 test('the Result has share links and the E-Learning link', async ({ page }) => {
 	await page.goto('/#summary');
 	const summary = page.locator('#summary');
