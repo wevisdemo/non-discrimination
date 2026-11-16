@@ -202,7 +202,7 @@
 						disabled={!!answer}
 						onclick={() => vote(option.id)}
 					>
-						<span class="block whitespace-pre-line"
+						<span class="block text-balance whitespace-pre-line"
 							><strong>{option.lead}</strong> {option.rest}</span
 						>
 						{#if answer && results}
