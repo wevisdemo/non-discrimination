@@ -28,7 +28,7 @@
 		{
 			id: 'disagree',
 			lead: 'ไม่เห็นด้วย',
-			rest: 'การจำกัดสิทธิกับคนบางกลุ่มยังจำเป็น\nเพื่อให้สังคมอยู่ในร่องในรอย'
+			rest: 'การจำกัดสิทธิกับคนบางกลุ่มยังจำเป็น เพื่อให้สังคมอยู่ในร่องในรอย'
 		}
 	];
 
@@ -110,7 +110,7 @@
 				{/snippet}
 				{#snippet stereotypes()}
 					<p class="text-b5">
-						เมื่อเคยชินกับภาพจำที่ลดคุณค่า<br />คนบางกลุ่มเราย่อม <strong>ไม่รู้ตัว</strong>
+						เมื่อเคยชินกับภาพจำที่ลดคุณค่า<br />คนบางกลุ่ม เราย่อม <strong>ไม่รู้ตัว</strong>
 						ว่านั่นคือการตัดสินคุณค่า และ <strong>เกลียดกลัว</strong> พวกเขาจากภาพจำเหล่านั้น
 					</p>
 					<p class="text-b5">
@@ -218,7 +218,7 @@
 				class="flex w-full items-center justify-center gap-s rounded-card bg-surface-tint p-s text-b6"
 			>
 				<img src={ruleCancelled} alt="" width="20" height="20" class="mix-blend-multiply" />
-				แบบสอบถามนี้ไม่มีการเก็บข้อมูลที่ระบุตัวบุคคล
+				<span class="text-center text-balance">แบบสอบถามนี้ไม่มีการเก็บข้อมูลที่ระบุตัวบุคคล</span>
 			</p>
 		</section>
 	</div>

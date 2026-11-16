@@ -16,7 +16,7 @@
 		<h2 class="font-header text-h7-m leading-normal font-bold text-primary lg:text-h7">
 			อยากเข้าใจการเลือกปฏิบัติแบบละเอียดยิ่งขึ้น ?
 		</h2>
-		<p class="text-b5">คำนิยาม รูปแบบ การแยกแยะ วิธีรับมือ และอื่น ๆ</p>
+		<p class="text-b6 sm:text-b5">คำนิยาม รูปแบบ การแยกแยะ วิธีรับมือ และอื่น ๆ</p>
 	</div>
 	<div class="flex w-full gap-xs">
 		{#each [learn1, learn2, learn3] as img, i (i)}

@@ -73,12 +73,10 @@
 					<p class="text-b6 text-balance">
 						<strong class="block">วิธีเล่น:</strong>
 						<span class="inline-block">เลื่อนและขยายภาพเมือง</span>
-						<span class="inline-block">เพื่อค้นหา</span>
-						<span class="inline-block">การเลือกปฏิบัติ</span>
+						<span class="inline-block">เพื่อค้นหาการเลือกปฏิบัติ</span>
 						<span class="inline-block">ที่ซ่อนอยู่ {cases.length} จุด</span>
 						<span class="inline-block">ภาพการเลือกปฏิบัติ</span>
-						<span class="inline-block">จะสามารถกด</span>
-						<span class="inline-block">เพื่ออ่านรายละเอียดได้</span>
+						<span class="inline-block">จะสามารถกดเพื่ออ่านรายละเอียดได้</span>
 					</p>
 					<Button href="#explore">สำรวจเลย !</Button>
 					<!-- Opens the map with the tutorial over it (Figma "kp2-tutorial") -->
