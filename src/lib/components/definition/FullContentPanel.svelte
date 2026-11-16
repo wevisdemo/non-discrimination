@@ -228,14 +228,14 @@
 										ปฏิญญาสากลว่าด้วยสิทธิมนุษยชน ‘แม่บท’ ของอนุสัญญาสิทธิต่าง ๆ และรัฐธรรมนูญ 2560
 										‘กฎหมายสูงสุด’ ของไทย ได้แจกแจง <strong>เหตุแห่งการเลือกปฏิบัติ</strong> ไว้ดังนี้
 									</p>
-									<div class="flex flex-wrap gap-x-l">
+									<div class="flex flex-wrap gap-x-l lg:justify-center">
 										{#each grounds as column, i (i)}
 											<ul class="list-disc pl-[21px]">
 												{#each column as g (g)}<li>{g}</li>{/each}
 											</ul>
 										{/each}
 									</div>
-									<p>และเหตุอื่นใดที่ไม่เป็นธรรม</p>
+									<p class="lg:text-center">และเหตุอื่นใดที่ไม่เป็นธรรม</p>
 								</Accordion>
 							</div>
 
@@ -250,7 +250,7 @@
 								<Accordion title="มิติแห่งการเลือกปฏิบัติ">
 									{#snippet subtitle()}เหตุการณ์แวดล้อมที่เกิดการเลือกปฏิบัติขึ้น{/snippet}
 									<div class="flex justify-center"><SpotArt kind="dimension" /></div>
-									<div>
+									<div class="lg:self-center">
 										<p>เช่น</p>
 										<ul class="list-disc pl-[21px] leading-[1.8]">
 											{#each dimensions as d (d)}<li>{d}</li>{/each}
