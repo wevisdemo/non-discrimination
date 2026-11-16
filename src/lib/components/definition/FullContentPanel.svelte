@@ -177,12 +177,12 @@
 	<Dialog.Portal>
 		<Dialog.Overlay class="fixed inset-0 z-40 bg-white/70" />
 		<!-- Figma "Popup Desktop size": from 1024px wide the popup is 60vw by 80vh (the 30px close button
-		     included) and centred; below that, a 600px sheet 83% of the screen tall sitting on the bottom
-		     edge. Tabs stick to the top of the sheet as it scrolls. dvh is vh on desktop and fits under
+		     included) and centred; below that, a 600px sheet from just under the header (its close button
+		     under the menu button) down to the bottom edge. Tabs stick to the top of the sheet as it scrolls. dvh is vh on desktop and fits under
 		     phone address bars. -->
 		<Dialog.Content
 			aria-label="อ่านเนื้อหาเต็ม"
-			class="fixed bottom-0 left-1/2 z-50 h-[calc(83dvh+30px)] w-[600px] max-w-[calc(100vw-32px)] -translate-x-1/2 outline-none lg:top-1/2 lg:bottom-auto lg:h-[80dvh] lg:w-[60vw] lg:-translate-y-1/2"
+			class="fixed top-[52px] bottom-0 left-1/2 z-50 w-[600px] max-w-[calc(100vw-32px)] -translate-x-1/2 outline-none lg:top-1/2 lg:bottom-auto lg:h-[80dvh] lg:w-[60vw] lg:-translate-y-1/2"
 		>
 			<div class="flex h-full flex-col">
 				<!-- The close button stays put; only the sheet below it scrolls, under the sticky tabs -->
