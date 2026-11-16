@@ -19,7 +19,7 @@
 	];
 
 	const options: { id: LawChoice; lead: string; rest: string }[] = [
-		{ id: 'agree', lead: 'ดีเลย', rest: 'จะได้มีมาตรฐาน\nป้องกันการละเมิดสิทธิได้มากขึ้น' },
+		{ id: 'agree', lead: 'ดีเลย', rest: 'จะได้มีมาตรฐาน\nและป้องกันการละเมิดสิทธิได้มากขึ้น' },
 		{
 			id: 'unnecessary',
 			lead: 'ไม่เห็นจำเป็น',
