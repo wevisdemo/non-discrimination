@@ -42,7 +42,7 @@
 		{/if}
 		<svelte:element
 			this={`h${headingLevel}`}
-			class="flex-1 text-center font-header text-[18px] leading-[1.4] font-bold text-ink"
+			class="flex-1 text-center font-header text-[18px] leading-[1.4] font-bold text-ink max-lg:text-balance"
 		>
 			{item.titleTh}
 		</svelte:element>
