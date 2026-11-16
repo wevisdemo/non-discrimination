@@ -19,7 +19,7 @@
 	onMount(() => (explore.ready = true));
 
 	const description =
-		'Spot the Discrimination: ตระหนัก เข้าใจ ไม่เลือกปฏิบัติ สำรวจเมืองและค้นหาการเลือกปฏิบัติที่ซ่อนอยู่ในชีวิตประจำวัน';
+		'สืบหาการเลือกปฏิบัติที่ซุกซ่อนอยู่ในชีวิตประจำวันและเรียนรู้เรื่องสิทธิที่จะไม่ถูกเลือกปฏิบัติ';
 	const shareTitle = 'Spot the Discrimination: ตระหนัก เข้าใจ ไม่เลือกปฏิบัติ';
 	// A case page shares as that case (its name and what happened); everything else as the site
 	const item = $derived(
