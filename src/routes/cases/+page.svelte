@@ -2,7 +2,7 @@
 	import CaseList from '#lib/components/case/CaseList.svelte';
 </script>
 
-<svelte:head><title>เคสทั้งหมด · ไม่เลือกปฏิบัติ</title></svelte:head>
+<svelte:head><title>เคสทั้งหมด · Spot the Discrimination</title></svelte:head>
 
 <!-- Non-visual path to every case (design.md §2.4 accessibility) -->
 <section class="mx-auto w-full max-w-[1280px] px-m pt-xxl pb-xl lg:px-xl">

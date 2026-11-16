@@ -7,7 +7,7 @@
 </script>
 
 <svelte:head>
-	<title>{data.item.titleTh} · ไม่เลือกปฏิบัติ</title>
+	<title>{data.item.titleTh} · Spot the Discrimination</title>
 </svelte:head>
 
 <div class="mx-auto flex w-full max-w-[640px] flex-col gap-xl px-m pt-xxl pb-xl">

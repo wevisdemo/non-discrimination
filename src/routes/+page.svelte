@@ -13,7 +13,7 @@
 	onMount(() => stageTracker.watch());
 </script>
 
-<svelte:head><title>Spot the Discrimination · ไม่เลือกปฏิบัติ</title></svelte:head>
+<svelte:head><title>Spot the Discrimination</title></svelte:head>
 
 <!-- The page behind the map overlay can't be reached while it is open -->
 <div inert={explore.open}>

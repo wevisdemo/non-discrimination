@@ -40,7 +40,7 @@
 	<link rel="icon" href={asset('favicon.svg')} type="image/svg+xml" />
 	<link rel="icon" href={asset('favicon.ico')} sizes="48x48" />
 	<link rel="apple-touch-icon" href={asset('apple-touch-icon.png')} />
-	<title>ไม่เลือกปฏิบัติ</title>
+	<title>Spot the Discrimination</title>
 	<meta name="description" content={description} />
 
 	<!-- How a shared link looks (Figma "OG+Favicon"). The image has to be an absolute URL -->

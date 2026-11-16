@@ -6,7 +6,7 @@
 	let { data }: PageProps = $props();
 </script>
 
-<svelte:head><title>{getCause(data.cause).labelTh} · ไม่เลือกปฏิบัติ</title></svelte:head>
+<svelte:head><title>{getCause(data.cause).labelTh} · Spot the Discrimination</title></svelte:head>
 
 <div class="px-m pt-xxl pb-xl">
 	<DefinitionPanel cause={data.cause} />
