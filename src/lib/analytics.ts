@@ -6,7 +6,13 @@ export type AnalyticsEvent =
 	| { name: 'poll_answered'; slug: string; choice: string }
 	| { name: 'survey_submitted' };
 
-/** No-op until an analytics provider is chosen (M5). Call sites stay the same. */
+/** Sends the event to Plausible, with everything but the name as its props. Safe if it is blocked. */
 export function trackEvent(event: AnalyticsEvent): void {
 	if (import.meta.env.DEV) console.debug('[analytics]', event);
+	const { name, ...props } = event;
+	try {
+		window.plausible?.(name, Object.keys(props).length ? { props } : undefined);
+	} catch {
+		// Analytics must never break the page
+	}
 }

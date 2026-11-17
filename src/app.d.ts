@@ -15,4 +15,11 @@ declare global {
 	}
 }
 
+declare global {
+	interface Window {
+		/** Plausible's tracker (src/app.html); absent until it loads or if it is blocked */
+		plausible?: (name: string, options?: { props?: Record<string, string> }) => void;
+	}
+}
+
 export {};

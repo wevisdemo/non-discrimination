@@ -114,7 +114,7 @@ src/
    │  ├─ story/                 ScrollStory (sticky map + scroll steps), StoryCard, ThoughtBubble, ContinueLink, Balloons, GameThumbnail
    │  ├─ case/                  CaseCard, CasePanel, CasePoll, ReportingChannels, CaseList
    │  └─ definition/            DefinitionPanel, SearchCTA
-   └─ analytics.ts              trackEvent(): no-op until a provider is chosen
+   └─ analytics.ts              trackEvent(): sends events to Plausible (script in app.html)
 tests/app.e2e.ts                Playwright flows + axe on every page type
 ```
 
