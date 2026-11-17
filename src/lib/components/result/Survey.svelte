@@ -46,12 +46,16 @@
 		{ key: 'province', label: 'จังหวัด', placeholder: 'เลือกจังหวัด', options: PROVINCES }
 	] as const;
 
+	// Every question has to be answered before it can be sent
+	const complete = $derived(
+		fields.every((f) => answers[f.key]) && answers.satisfaction !== undefined
+	);
 	let sending = $state(false);
 	let failed = $state(false);
 
 	async function submit(e: SubmitEvent) {
 		e.preventDefault();
-		if (sending) return;
+		if (sending || !complete) return;
 		sending = true;
 		failed = false;
 		const sent = await store.submit($state.snapshot(answers));
@@ -194,7 +198,7 @@
 	<!-- Figma "Survey" Submitted: the button stays but greys out, with a blue thank-you under it -->
 	<button
 		type="submit"
-		disabled={sending || done}
+		disabled={!complete || sending || done}
 		class="rounded-full bg-ui-primary px-m py-s text-b5 text-ink enabled:hover:bg-ui-primary-hover disabled:bg-[#d9d9d9] disabled:text-[#767676]"
 		>ส่งคำตอบ</button
 	>

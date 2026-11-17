@@ -350,11 +350,17 @@ test('the Result survey can be answered once', async ({ page }) => {
 	const survey = page.getByRole('form', { name: 'ขอบคุณที่อยู่ด้วยกันจนจบ !' });
 	await survey.getByRole('button', { name: 'อายุ' }).click();
 	await page.getByRole('option', { name: '18-35 ปี' }).click();
+	await survey.getByRole('button', { name: 'เพศ' }).click();
+	await page.getByRole('option', { name: 'หญิง' }).click();
+	await survey.getByRole('button', { name: 'อาชีพ' }).click();
+	await page.getByRole('option', { name: 'สื่อมวลชน' }).click();
 	const province = survey.getByRole('combobox', { name: 'จังหวัด' });
 	await province.click();
 	await province.fill('เชียง');
 	await page.getByRole('option', { name: 'เชียงใหม่' }).click();
 	await expect(province).toHaveValue('เชียงใหม่');
+	// Sending needs every question answered, the satisfaction level included
+	await expect(survey.getByRole('button', { name: 'ส่งคำตอบ' })).toBeDisabled();
 	await survey.getByRole('button', { name: 'พอใจมาก', exact: true }).click();
 	await survey.getByRole('button', { name: 'ส่งคำตอบ' }).click();
 	await expect(survey.getByText('ขอบคุณสำหรับคำตอบ')).toBeVisible();
@@ -386,9 +392,9 @@ test('the survey keeps the choices made so far through a refresh', async ({ page
 		'aria-pressed',
 		'true'
 	);
-	// Untouched fields stay empty, and it can still be sent
+	// Untouched fields stay empty, so it cannot be sent yet
 	await expect(survey.getByRole('button', { name: 'อายุ' })).toHaveText('เลือกอายุ');
-	await expect(survey.getByRole('button', { name: 'ส่งคำตอบ' })).toBeVisible();
+	await expect(survey.getByRole('button', { name: 'ส่งคำตอบ' })).toBeDisabled();
 });
 
 test("the survey's province field can be searched by typing", async ({ page }) => {
