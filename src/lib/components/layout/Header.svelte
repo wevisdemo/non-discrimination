@@ -39,9 +39,8 @@
 <header
 	class="pointer-events-none fixed inset-x-0 top-0 z-40 flex items-center justify-between px-m py-m lg:p-l"
 >
-	<!-- Figma mobile drops the logos over the map so the long game label fits.
-	     Partners: the full Friedrich Naumann logo on desktop, its icon on phones -->
-	<div class="flex items-center gap-s lg:gap-[29px] {explore.open ? 'max-lg:invisible' : ''}">
+	<!-- Partners: the full Friedrich Naumann logo on desktop, its icon on phones -->
+	<div class="flex items-center gap-s lg:gap-[29px]">
 		<a href={resolve('/')} class="pointer-events-auto">
 			<img
 				src={wevisLogo}
@@ -97,11 +96,7 @@
 				</svg>
 			{:else}
 				<!-- Leave room for the logo on phones (Figma mobile truncates the label instead of overlapping) -->
-				<span
-					class="truncate {explore.open
-						? 'max-w-[min(45vw,calc(100vw-120px))]'
-						: 'max-w-[min(45vw,calc(100vw-255px))]'}">{current.label}</span
-				>
+				<span class="max-w-[min(45vw,calc(100vw-255px))] truncate">{current.label}</span>
 				<img src={hamburger} alt="" width="24" height="24" />
 				<span class="sr-only">เมนู</span>
 			{/if}
