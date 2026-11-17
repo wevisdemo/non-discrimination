@@ -1,7 +1,10 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
+	import fnfIcon from '#lib/assets/intro/fnf-icon.svg';
+	import fnfLogo from '#lib/assets/intro/fnf-logo.svg';
 	import hamburger from '#lib/assets/intro/hamburger.svg';
+	import nhrcLogo from '#lib/assets/intro/nhrc-logo.svg';
 	import wevisLogo from '#lib/assets/intro/wevis-logo.svg';
 	import { stages } from '#lib/stages.ts';
 	import { explore } from '#lib/state/explore.svelte.ts';
@@ -34,12 +37,42 @@
 
 <!-- Floats over the full-bleed map, as in the prototype -->
 <header
-	class="pointer-events-none fixed inset-x-0 top-0 z-40 flex items-start justify-between px-m py-m lg:px-l"
+	class="pointer-events-none fixed inset-x-0 top-0 z-40 flex items-center justify-between px-m py-m lg:p-l"
 >
-	<!-- Figma mobile drops the logo over the map so the long game label fits -->
-	<a href={resolve('/')} class="pointer-events-auto {explore.open ? 'max-lg:invisible' : ''}">
-		<img src={wevisLogo} alt="WeVis" width="105" height="32" class="h-6 w-auto lg:h-8" />
-	</a>
+	<!-- Figma mobile drops the logos over the map so the long game label fits.
+	     Partners: the full Friedrich Naumann logo on desktop, its icon on phones -->
+	<div class="flex items-center gap-s lg:gap-[29px] {explore.open ? 'max-lg:invisible' : ''}">
+		<a href={resolve('/')} class="pointer-events-auto">
+			<img
+				src={wevisLogo}
+				alt="WeVis"
+				width="105"
+				height="32"
+				class="h-auto w-[60px] lg:w-[110px]"
+			/>
+		</a>
+		<img
+			src={fnfLogo}
+			alt="Friedrich Naumann Foundation for Freedom Thailand"
+			width="144"
+			height="39"
+			class="h-auto w-36 max-lg:hidden"
+		/>
+		<img
+			src={fnfIcon}
+			alt="Friedrich Naumann Foundation for Freedom Thailand"
+			width="24"
+			height="24"
+			class="lg:hidden"
+		/>
+		<img
+			src={nhrcLogo}
+			alt="สำนักงานคณะกรรมการสิทธิมนุษยชนแห่งชาติ"
+			width="44"
+			height="44"
+			class="size-6 lg:size-11"
+		/>
+	</div>
 
 	<nav aria-label="เนื้อหา" class="pointer-events-auto relative" {@attach closeOnOutside}>
 		<!-- One button for both states so keyboard focus stays on it when the menu opens -->
@@ -67,7 +100,7 @@
 				<span
 					class="truncate {explore.open
 						? 'max-w-[min(45vw,calc(100vw-120px))]'
-						: 'max-w-[min(45vw,calc(100vw-210px))]'}">{current.label}</span
+						: 'max-w-[min(45vw,calc(100vw-255px))]'}">{current.label}</span
 				>
 				<img src={hamburger} alt="" width="24" height="24" />
 				<span class="sr-only">เมนู</span>
