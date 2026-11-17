@@ -297,7 +297,7 @@
 									การเลือกปฏิบัติเกิดกับผู้คนหลากหลายกลุ่ม<br
 									/>เรียงลำดับตามความเร่งด่วนในการแก้ปัญหา ดังนี้
 								</p>
-								<ol class="w-full list-decimal pl-[21px] leading-[1.8]">
+								<ol class="w-full list-decimal pl-[21px] leading-[1.8] lg:w-fit">
 									{#each victims as v, i (v)}<li class={i === 0 ? 'font-bold' : ''}>{v}</li>{/each}
 								</ol>
 								<p class="w-full {source}">
