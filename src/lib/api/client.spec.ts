@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
+vi.mock('$app/paths', () => ({ resolve: () => '/non-discrimination/' }));
+
 /** Loads the client with a token set (or not) and `fetch` answering `reply` */
 async function load(token: string | undefined, reply?: () => Promise<Response>) {
 	vi.resetModules();
@@ -51,6 +53,32 @@ describe('with a token', () => {
 		expect(Date.parse(row.CreatedAt)).toBeLessThanOrEqual(Date.now());
 	});
 
+	it('sends the same visitor_id on every row once cookies are allowed, and none before', async () => {
+		const jar = new Map<string, string>();
+		vi.stubGlobal('location', { protocol: 'https:' });
+		vi.stubGlobal('document', {
+			get cookie() {
+				return [...jar].map(([k, v]) => `${k}=${v}`).join('; ');
+			},
+			set cookie(line: string) {
+				const [pair] = line.split(';');
+				const eq = pair.indexOf('=');
+				jar.set(pair.slice(0, eq), pair.slice(eq + 1));
+			}
+		});
+		const { api, fetchMock } = await load('tok123');
+		await api.sendLawVote('ดีเลย');
+		expect(JSON.parse(fetchMock.mock.calls[0][1]?.body as string)).not.toHaveProperty('visitor_id');
+		(await import('#lib/state/consent.ts')).setFunctionality(true);
+		await api.sendLawVote('ดีเลย');
+		await api.sendVote(KAREN, 'เคยโดนกับตัว');
+		const [a, b] = [1, 2].map((i) => JSON.parse(fetchMock.mock.calls[i][1]?.body as string));
+		expect(a.visitor_id).toMatch(
+			/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/
+		);
+		expect(b.visitor_id).toBe(a.visitor_id);
+	});
+
 	it('ignores quotes around the token, as in a quoted .env value', async () => {
 		const { fetchMock, api } = await load("'tok123'");
 		await api.sendVote(KAREN, 'เคยได้ยินมา');
@@ -64,7 +92,12 @@ describe('with a token', () => {
 		expect(await api.sendLawVote('ดีเลย')).toBe(true);
 		expect(fetchMock.mock.calls[0][0]).toBe(`${TABLES}/law_votes`);
 		const row = JSON.parse(fetchMock.mock.calls[0][1]?.body as string);
-		expect(Object.keys(row).sort()).toEqual(['CreatedAt', 'choice']);
+		expect(Object.keys(row).sort()).toEqual(['CreatedAt', 'choice', 'created_at_th']);
+		expect(row.created_at_th).toMatch(/^\d{4}-\d\d-\d\d \d\d:\d\d:\d\d$/);
+		// Thai time is UTC+7
+		expect(Date.parse(`${row.created_at_th.replace(' ', 'T')}+07:00`)).toBe(
+			Math.floor(Date.parse(row.CreatedAt) / 1000) * 1000
+		);
 		expect(row.choice).toBe('ดีเลย');
 	});
 

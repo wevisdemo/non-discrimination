@@ -9,6 +9,7 @@
  *
  * Every call resolves, never throws: a visitor must be able to use the page when NocoDB is down.
  */
+import { visitorId } from '#lib/state/cookie.ts';
 import type { SurveyAnswers } from '#lib/state/survey.ts';
 
 const TOKEN = String(import.meta.env.VITE_NOCODB_TOKEN ?? '').replace(/^['"]|['"]$/g, '');
@@ -39,12 +40,24 @@ async function call(table: string, suffix = '', init: RequestInit = {}) {
 	}
 }
 
-/** Rows carry the time they were made, which NocoDB does not fill in for rows added over its API */
-const insert = (table: string, row: Record<string, unknown>) =>
-	call(table, '', {
+/**
+ * Rows carry the time they were made, which NocoDB does not fill in for rows added over its API:
+ * `CreatedAt` in UTC and `created_at_th` as Thai time (UTC+7, "2026-11-17 18:03:12") to read at a glance,
+ * and `visitor_id` (a random id per browser, only if the visitor allowed cookies) to follow one visitor
+ */
+const insert = (table: string, row: Record<string, unknown>) => {
+	const now = new Date();
+	const visitor = visitorId();
+	return call(table, '', {
 		method: 'POST',
-		body: JSON.stringify({ ...row, CreatedAt: new Date().toISOString() })
+		body: JSON.stringify({
+			...row,
+			...(visitor && { visitor_id: visitor }),
+			CreatedAt: now.toISOString(),
+			created_at_th: now.toLocaleString('sv-SE', { timeZone: 'Asia/Bangkok' })
+		})
 	});
+};
 
 /**
  * A case poll as `poll_votes` holds it: `id` (the case slug) is what results are filtered on,

@@ -3,7 +3,7 @@ import { allowsCookies, setFunctionality } from './consent.ts';
 
 /**
  * The few cookies the site sets, to remember that this browser has already voted or answered the
- * survey. They hold nothing about the visitor, last a year, and are scoped to the site's own path:
+ * survey, plus a random id for this browser (`visitorId`). They hold nothing else about the visitor, last a year, and are scoped to the site's own path:
  * wevisdemo.github.io serves other projects on the same host, which must not see or clear them.
  * They are "Functionality" cookies in the cookie banner's terms, so nothing is written until the
  * visitor has accepted them (consent.ts), and they are removed again if they decline.
@@ -12,7 +12,8 @@ export const COOKIES = {
 	caseVotes: 'nd-poll',
 	lawVote: 'nd-law-poll',
 	surveySent: 'nd-survey',
-	surveyAnswers: 'nd-survey-answers'
+	surveyAnswers: 'nd-survey-answers',
+	visitor: 'nd-visitor'
 } as const;
 const ONE_YEAR_S = 60 * 60 * 24 * 365;
 
@@ -38,6 +39,24 @@ export function writeCookie(name: string, value: string) {
 		document.cookie = `${name}=${encodeURIComponent(value)}; Path=${path()}; Max-Age=${ONE_YEAR_S}; SameSite=Lax${secure}`;
 	} catch {
 		// Remembering is a nicety; blocked cookies must not break the page
+	}
+}
+
+/**
+ * A random id for this browser, sent with every vote and the survey so one visitor's rows can be
+ * matched. It is made only once cookies are allowed; until then (or if they are blocked) there is none.
+ */
+export function visitorId(): string | undefined {
+	const saved = readCookie(COOKIES.visitor);
+	if (saved) return saved;
+	if (!allowsCookies()) return undefined;
+	try {
+		const id = crypto.randomUUID();
+		writeCookie(COOKIES.visitor, id);
+		return id;
+	} catch {
+		// randomUUID needs a secure context; without it there is no id, not a broken page
+		return undefined;
 	}
 }
 
