@@ -76,3 +76,4 @@ Every push to `main` builds and deploys to GitHub Pages via `.github/workflows/d
 
 - In the repository settings, set **Pages → Source** to **GitHub Actions**.
 - Add the Actions secret `NOCODB_TOKEN` (the Editor-only token above). Without it the deployed site shows placeholder poll percentages.
+- **Another domain:** build with `VITE_SITE_ORIGIN=https://your.domain` (the absolute `og:image` for link previews is made from it; default `https://wevisdemo.github.io`) and `BASE_PATH=/sub/path` if it is not served from the root, e.g. `VITE_SITE_ORIGIN=https://example.org BASE_PATH= pnpm build`.
