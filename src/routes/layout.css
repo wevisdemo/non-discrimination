@@ -184,6 +184,9 @@
 
 @layer base {
 	html {
+		/* Keeps the scrollbar's space when a dialog locks the page's scroll, so fixed things (the
+		   header, อ่านเนื้อหาเต็ม) stay put; bits-ui skips its own compensation when this is set */
+		scrollbar-gutter: stable;
 		scroll-behavior: smooth;
 		font-family: var(--font-body);
 		font-size: 100%;
