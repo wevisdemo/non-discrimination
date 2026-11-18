@@ -158,8 +158,9 @@
 			class="absolute inset-0 size-full object-cover object-bottom"
 		/>
 		<p class="relative text-center text-b4">
-			<span class="block md:inline-block">ชวนจับตาและติดตามความคืบหน้า</span>
-			<span class="block md:inline-block">ของแต่ละร่างที่</span>
+			<span class="block md:inline-block">ชวนจับตาและติดตามความคืบหน้า</span><span
+				class="block md:inline-block">ของแต่ละร่างที่</span
+			>
 		</p>
 		<img
 			src={parliamentWatch}

@@ -14,8 +14,9 @@
 >
 	<div class="flex flex-col gap-xs">
 		<h2 class="font-header text-h7-m leading-normal font-bold text-primary lg:text-h7">
-			<span class="inline-block">อยากเข้าใจการเลือกปฏิบัติ</span>
-			<span class="inline-block">แบบละเอียดยิ่งขึ้น ?</span>
+			<span class="inline-block">อยากเข้าใจการเลือกปฏิบัติ</span><span class="inline-block"
+				>แบบละเอียดยิ่งขึ้น ?</span
+			>
 		</h2>
 		<p class="text-b6 sm:text-b5">คำนิยาม รูปแบบ การแยกแยะ วิธีรับมือ และอื่น ๆ</p>
 	</div>
