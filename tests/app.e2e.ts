@@ -117,7 +117,7 @@ test('opening a case updates the URL, counts it as found, and back closes it', a
 	await page.goBack();
 	await expect(dialog).toBeHidden();
 	// The map overlay is still up underneath, with a check on the found case
-	await expect(page.getByText('พบแล้ว 1/18 เคส')).toBeVisible();
+	await expect(page.getByText('พบแล้ว 1/18 ภาพ')).toBeVisible();
 	await expect(page.locator('#explore button[aria-label$="(พบแล้ว)"] svg')).toHaveCount(1);
 });
 
@@ -147,25 +147,25 @@ test('found cases last for the visit, and a refresh starts the search again', as
 		localStorage.setItem('non-discrimination:found', JSON.stringify(['karen', 'hijab-school']))
 	);
 	await page.goto('/#explore');
-	await expect(page.getByText('พบแล้ว 0/18 เคส')).toBeVisible();
+	await expect(page.getByText('พบแล้ว 0/18 ภาพ')).toBeVisible();
 	await expect(page.locator('#explore button[aria-label$="(พบแล้ว)"] svg')).toHaveCount(0);
 
 	await page
 		.getByRole('button', { name: 'กรณี: นักเรียนมุสลิมถูกห้ามคลุมฮิญาบมาโรงเรียนในเขตวัด' })
 		.click();
 	await page.goBack();
-	await expect(page.getByText('พบแล้ว 1/18 เคส')).toBeVisible();
+	await expect(page.getByText('พบแล้ว 1/18 ภาพ')).toBeVisible();
 	await expect(page.locator('#explore button[aria-label$="(พบแล้ว)"] svg')).toHaveCount(1);
 
 	// A refresh clears the check marks and the counter, so it can be found again
 	await page.reload();
-	await expect(page.getByText('พบแล้ว 0/18 เคส')).toBeVisible();
+	await expect(page.getByText('พบแล้ว 0/18 ภาพ')).toBeVisible();
 	await expect(page.locator('#explore button[aria-label$="(พบแล้ว)"] svg')).toHaveCount(0);
 	await page
 		.getByRole('button', { name: 'กรณี: นักเรียนมุสลิมถูกห้ามคลุมฮิญาบมาโรงเรียนในเขตวัด' })
 		.click();
 	await page.goBack();
-	await expect(page.getByText('พบแล้ว 1/18 เคส')).toBeVisible();
+	await expect(page.getByText('พบแล้ว 1/18 ภาพ')).toBeVisible();
 });
 
 test('hints list every case to look for', async ({ page }) => {
@@ -337,7 +337,7 @@ test('KP3 explains why discrimination persists and asks about a dedicated law', 
 	await agree.click();
 	await expect(agree).toHaveAttribute('aria-pressed', 'true');
 	await expect(kp3.getByText('71.8%')).toBeVisible();
-	await expect(kp3.getByText('ขอบคุณสำหรับความเห็น')).toBeVisible();
+	await expect(kp3.getByText('ขอบคุณที่ร่วมแบ่งปันความคิดเห็น')).toBeVisible();
 	await page.reload();
 	await expect(page.locator('#causes').getByRole('button', { name: /^ดีเลย/ })).toHaveAttribute(
 		'aria-pressed',

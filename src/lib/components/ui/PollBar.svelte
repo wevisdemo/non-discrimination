@@ -17,12 +17,22 @@
 	});
 </script>
 
-<!-- Figma Poll answered state: the share of votes as a blue bar on grey, the number at the end -->
+<!-- Figma Poll answered state: the share of votes as a blue bar on grey, the number at the end.
+     The number is black, and white where the bar runs under it: a white copy (drawn from
+     data-label, so the text exists once) is clipped to the bar's width -->
 <span class="relative mt-xs block h-4 w-full bg-[#d9d9d9]">
 	<span class="block h-full bg-primary" style="width:{shown.current}%"></span>
-	<span
-		class="absolute inset-y-0 right-xs flex items-center text-b6 font-bold {percent > 80
-			? 'text-white'
-			: 'text-ink'}">{shown.current.toFixed(1)}%</span
+	<span class="absolute inset-y-0 right-xs flex items-center text-b6 font-bold text-ink"
+		>{shown.current.toFixed(1)}%</span
 	>
+	<span
+		aria-hidden="true"
+		class="absolute inset-0"
+		style="clip-path: inset(0 {100 - shown.current}% 0 0)"
+	>
+		<span
+			data-label="{shown.current.toFixed(1)}%"
+			class="absolute inset-y-0 right-xs flex items-center text-b6 font-bold text-white before:content-[attr(data-label)]"
+		></span>
+	</span>
 </span>

@@ -213,7 +213,7 @@
 				{/each}
 			</div>
 			{#if answer}
-				<p class="text-b6" aria-live="polite">ขอบคุณสำหรับความเห็น</p>
+				<p class="text-b6" aria-live="polite">ขอบคุณที่ร่วมแบ่งปันความคิดเห็น</p>
 			{/if}
 			<p
 				class="flex w-full items-center justify-center gap-s rounded-card bg-surface-tint p-s text-b6"

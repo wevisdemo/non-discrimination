@@ -133,7 +133,7 @@
 				aria-live="polite"
 				data-tutorial="counter"
 			>
-				พบแล้ว {game.found.size}/{game.cases.length} เคส
+				พบแล้ว {game.found.size}/{game.cases.length} ภาพ
 			</p>
 			<div class="absolute top-[79px] right-m lg:right-[34px]">
 				<ExploreNav {game} stepping={!!page.state.stepping} onstep={startStepping} />
