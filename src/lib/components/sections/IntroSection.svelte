@@ -84,14 +84,14 @@
 				{@attach track}
 				class="flex min-h-svh flex-col items-center justify-center gap-l px-m py-xxl"
 			>
-				<StoryCard>
+				<StoryCard class="leading-[1.6] lg:leading-[1.6]">
 					<p>
 						<strong>การเลือกปฏิบัติ</strong><br />คือ ‘ความผิดปกติ’<br
 						/>ที่ยังซุกซ่อนอยู่ในชีวิตประจำวัน
 					</p>
 					<p class="mt-m">อาจเพราะ<strong>ความไม่รู้</strong><br />อาจเพราะ<strong>อคติ</strong></p>
 				</StoryCard>
-				<StoryCard>
+				<StoryCard class="leading-[1.6] lg:leading-[1.6]">
 					<p>
 						ถึงเวลา ‘มองเห็น’ และ ‘ตระหนัก’<br />ใน <strong>สิทธิที่จะไม่ถูกเลือกปฏิบัติ</strong><br
 						/>ซึ่งเป็นสิทธิพื้นฐานของเราทุกคน
